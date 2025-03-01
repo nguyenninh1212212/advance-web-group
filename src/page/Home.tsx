@@ -1,5 +1,8 @@
 import React from "react";
+import { FaFilter } from "react-icons/fa";
 import CardComic from "../components/card/CardComic";
+import { fakedatadetail } from "../FakeData/FakedataDetail";
+import CardComicDetail from "../components/card/CardComicDetail";
 
 const Home = () => {
   const fakedata = [
@@ -76,11 +79,22 @@ const Home = () => {
             ))}
           </div>
         </div>
+
         <div>
-          <p className="p-1 w-32 mb-1 text-white rounded-sm bg-primary-200 text-center">
-            Đề cử
-          </p>
-          <div className="w-full h-72 bg-yellow-400 rounded-lg"></div>
+          <div className="flex justify-between items-center">
+            <p className="p-1 w-60 mb-[10px] text-cyan-500 rounded-sm text-left text-[20px]">
+              Truyện mới cập nhật
+            </p>
+            <FaFilter/>
+          </div>
+          <div className="w-full h-auto bg-white border rounded-lg grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4">
+              {fakedatadetail.map((e, _i) => (
+                  <div key={_i} className="snap-start flex justify-center items-center">
+                    <CardComicDetail data={e} message={""} />
+                  </div>
+              ))}
+
+          </div>
         </div>
       </div>
       <div className=" w-4/5 bg-blue-500 rounded-lg"></div>
