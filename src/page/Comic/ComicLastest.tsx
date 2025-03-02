@@ -1,11 +1,10 @@
-import React from "react";
 import CardComichorizontal from "../../components/card/CardComichorizontal";
 import { groupDataIntoFour } from "../../util/group/groupdata";
 import { fakedatadetail } from "../../FakeData/FakedataDetail";
 
 const ComicLastest = () => {
   //Xử lý logic sau
-  const groupdata = groupDataIntoFour(fakedatadetail);
+  const groupdata = groupDataIntoFour(fakedatadetail, 4);
   return (
     <div className="flex overflow-hidden gap-3 justify-between mb-3">
       {groupdata.map((group, _i) => (

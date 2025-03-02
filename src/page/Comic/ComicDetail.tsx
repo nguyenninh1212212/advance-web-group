@@ -1,98 +1,127 @@
-import React from "react";
-import { useLocation, Link } from "react-router-dom";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { FaAngleDown } from "react-icons/fa";
+import React, { useEffect, useMemo, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
+import { BiComment } from "react-icons/bi";
 import { formatNumber } from "../../util/format/formatNumber";
+import { IChapter, IComicDetail } from "../../type/comic";
+import { fakedata } from "../../FakeData/FakeDataComic";
+import CardCategory from "../../components/card/CardCategory";
 
-const ComicDetail: React.FC = () => {
-  const location = useLocation();
-  const { data } = location.state || {};
-  console.log("🚀 ~ data:", data);
+const ComicDetail: React.FC<IComicDetail> = () => {
+  const { id } = useParams();
+  const data = fakedata.find((comic) => comic.id == id);
+  const [seeMore, setSeeMore] = useState<boolean>(false);
+  const datamemo = useMemo(() => data, [data]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
+  if (!data)
+    return (
+      <p className="text-center text-lg">
+        Truyện không tồn tại "Chỉ có chainsaw man có dữ liệu"
+      </p>
+    );
 
   return (
-    <div className="flex justify-between gap-4 ">
-      <main className=" w-5/6 ">
-        {/* Content of the comic detail page */}
-        <div className="text-left ml-4 flex justify-start mb-5">
-          <Link to={`/home`}>
-            <p className="text-sm text-blue-500 hover:text-purple-500 hover:underline">
-              Trang chủ
-            </p>
-          </Link>
-          <p className="text-sm ml-1 mr-1 text-gray-300 font-bold">{">>"}</p>
-          <Link to={""}>
-            <p className="text-sm text-blue-500 hover:text-purple-500 hover:underline">
-              Thể loại
-            </p>
-          </Link>
-          <p className="text-sm ml-1 mr-1 text-gray-300 font-bold">{">>"}</p>
-          <Link to={`/comicdetail/${data.id}`} state={{ data }}>
-            <p className="text-sm text-blue-500 hover:text-purple-500 hover:underline">
-              {data.title}
-            </p>
-          </Link>
+    <div className="flex flex-col gap-4 min-h-screen ">
+      <div className="flex gap-4">
+        {/* Thông tin truyện */}
+        <div className="w-1/3 flex flex-col items-start">
+          <img
+            className="h-96 w-72 rounded-xl"
+            src={data.image}
+            alt={data.title}
+          />
+          <ul className="mt-2 text-stone-500 flex flex-col gap-1">
+            <li className="text-black font-medium text-3xl">
+              {datamemo?.title}
+            </li>
+            <li>
+              Tác giả: <span className="text-black">David Grayson</span>
+            </li>
+            <li className="cursor-pointer" onClick={() => setSeeMore(!seeMore)}>
+              <p className={`text-black ${seeMore ? "" : "line-clamp-2"}`}>
+                <span className="text-stone-500">Mô tả: </span>
+                Lucia là một cô gái bình thường... nhưng cô có thể nhìn thấy
+                tương lai qua những giấc mơ của mình... Lucia là một cô gái bình
+                thường... nhưng cô có thể nhìn thấy tương lai qua những giấc mơ
+                của mình... Lucia là một cô gái bình thường... nhưng cô có thể
+                nhìn thấy tương lai qua những giấc mơ của mình...
+              </p>
+            </li>
+            <li className="flex gap-1">
+              Lượt xem:{" "}
+              <span className="text-black flex items-center gap-1">
+                {formatNumber(data.view)} <FaEye />
+              </span>
+            </li>
+            <li className="flex gap-1">
+              Đánh giá:{" "}
+              <span className="text-black flex items-center gap-1">
+                {formatNumber(data.cmt)} <BiComment />
+              </span>
+            </li>
+          </ul>
+          <section className="flex flex-wrap gap-2  mt-2">
+            <span className="text-stone-500">Tag :</span>
+            {datamemo?.categoties.map((category) => (
+              <CardCategory key={category.id} name={category.name} />
+            ))}
+          </section>
         </div>
 
-        <div>
-          {data && (
-            <div className="flex flex-col gap-2">
-              <div className="h-80 w-full flex flex-row items-start">
-                <img
-                  className="ml-10 h-80 w-auto"
-                  src={`${data.image}`}
-                  alt=""
-                />
-                <div className="flex flex-col items-start ml-5">
-                  <p className="text-4xl mb-9 font-bold">{data.title}</p>
-                  <p className="mb-6">Tác giả: </p>
-                  <p className="mb-6">Trạng thái: </p>
-                  <p className="mb-6">Thể loại: </p>
-                  <div className="flex justify-left items-center gap-3 mb-6">
-                    <p>Lượt xem: {formatNumber(data.view)} </p>
-                    <FaEye />
+        {/* Danh sách chapter */}
+        <div className="w-2/3">
+          <div className="border-b-2 border-stone-500 w-auto pb-2">
+            <p className="text-white p-2 rounded-md w-auto bg-primary-200 inline-block">
+              {data.chapter[0]?.title}
+            </p>
+          </div>
+          <div className="border-2 border-gray-200 rounded-lg h-auto overflow-y-auto scrollbar-hide p-3">
+            {data.chapter.map((chap: IChapter) => (
+              <Link
+                key={chap.id}
+                to={`/${data.title}/chapter/${chap.id}/${chap.images.id}`}
+                state={{ chapId: chap.id }}
+                className="flex justify-between items-center hover:bg-stone-400 rounded-lg p-2"
+              >
+                <div className="flex items-center gap-2">
+                  <img
+                    src={chap.images.url}
+                    alt=""
+                    className="rounded-xl w-20 h-20"
+                  />
+                  <div>
+                    <p>{chap.title}</p>
+                    <p className="text-gray-400">{chap.createdAt}</p>
                   </div>
                 </div>
-              </div>
-
-              <div className="h-350 w-full ">
-                <div className="flex justify-left items-center border-b-2 border-cyan-200">
-                  <GiHamburgerMenu className="text-gray-400 ml-2" />
-                  <p className="ml-3 text-gray-400">Danh sách chương</p>
-                </div>
-                <div className="flex justify-between items-center">
-                  <div className="flex justify-left items-center">
-                    <p className="text-xl ml-2">Số chương</p>
-                    <FaAngleDown className="mt-2 ml-1 text-xl" />
-                  </div>
-                  <p className="text-xl mr-3">Cập nhật</p>
-                </div>
-                <div className="border-2 border-gray-200 rounded-lg h-auto overflow-y-auto p-3">
-                  <section className="text-xs flex flex-col gap-2 ml-1 mr-2">
-                    {data.chapter.map((chap: string, index: number) => (
-                      <div
-                        key={index}
-                        className="flex justify-between hover:text-blue-500 transition-colors duration-300 border-b-2 border-dashed border-gray-150 mb-1"
-                      >
-                        <Link to={`/${chap}:${index}`}>
-                          <p>{chap}</p>
-                        </Link>
-                        <p className="text-gray-400">{data.time[index]}</p>
-                      </div>
-                    ))}
-                  </section>
-                </div>
-              </div>
-
-              <div className="h-35 w-full">
-                <p>Comment section</p>
-              </div>
-            </div>
+                <p
+                  className={`font-bold ${
+                    chap.price > 0 ? "text-orange-500" : "text-green-500"
+                  }`}
+                >
+                  {chap.price > 0 ? `${chap.price} $` : "FREE"}
+                </p>
+              </Link>
+            ))}
+          </div>
+          {data.chapter.length > 4 && (
+            <p className="text-center text-sm text-gray-500">Xem thêm...</p>
           )}
+          <section className="w-full border-t border-stone-500 ">
+            <p className="font-bold text-xl my-2">Truyện liên quan:</p>
+            <div className="w-56 rounded-lg overflow-hidden my-2 p-3 bg-stone-400 text-white">
+              <img src={datamemo?.image} alt="" />
+              <p>{datamemo?.title}</p>
+            </div>
+          </section>
         </div>
-      </main>
+      </div>
 
-      <div className=" w-1/6 bg-blue-500 rounded-lg"></div>
+      {/* Thể loại */}
+      <div className="flex w-full rounded-lg "></div>
     </div>
   );
 };

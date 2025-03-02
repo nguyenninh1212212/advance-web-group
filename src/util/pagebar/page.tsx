@@ -39,15 +39,15 @@ const Pagination: React.FC<PaginationProps> = ({
   }
 
   return (
-    <div className="flex items-center justify-center bg-primary-200 p-2 rounded-lg">
+    <div className="flex items-center justify-center bg-primary-400 p-1 w-96 rounded-lg my-4 self-center">
       {pages.map((p, index) => (
         <button
           key={index}
           onClick={() => typeof p === "number" && handleClick(p)}
           className={`px-3 py-1 mx-1 rounded ${
             p === page
-              ? "bg-white text-primary-200 font-bold"
-              : "bg-primary-200 text-white"
+              ? "bg-white text-primary-400 font-bold"
+              : "bg-primary-400 text-white"
           }`}
         >
           {p}

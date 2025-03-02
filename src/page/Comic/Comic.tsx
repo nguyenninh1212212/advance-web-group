@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import ComicContainer from "./ComicContainer";
 
 const Comic = () => {
@@ -5,14 +6,19 @@ const Comic = () => {
     <div className="flex flex-col gap-3">
       <div>
         <p className="p-1 mb-1 w-32 text-white rounded-sm bg-primary-200 text-center">
-          Yêu Thích
+          Comming soon
         </p>
         <ComicContainer />
       </div>
       <div>
-        <p className="p-1 mb-1 w-32 text-white rounded-sm bg-primary-200 text-center">
-          Lịch sử xem
-        </p>
+        <div className="flex items-center w-full justify-between">
+          <p className="p-1 mb-1 w-32 text-white rounded-sm bg-primary-200 text-center">
+            Lịch sử xem
+          </p>
+          <Link to="/" className="text-cyan-500">
+            Xem thêm
+          </Link>
+        </div>
         <ComicContainer />
       </div>
     </div>
