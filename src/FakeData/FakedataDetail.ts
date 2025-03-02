@@ -28,9 +28,9 @@ export const fakedatadetail = [
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp-aHR-SlFEkjXQglZ0NZC3QfNslKXA6myRg&s",
     time: ["10 days ago","10 days ago","10 days ago",],
-    view:100,
+    view:100000000,
     cmt:100,
-    like:100
+    like:1000
   },
   {
     id: "4",
@@ -39,6 +39,7 @@ export const fakedatadetail = [
     image:
       "https://m.media-amazon.com/images/M/MV5BMWU1OGEwNmQtNGM3MS00YTYyLThmYmMtN2FjYzQzNzNmNTE0XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
     time: ["10 days ago","10 days ago","10 days ago",],
+    
     view:100,
     cmt:100,
     like:100
