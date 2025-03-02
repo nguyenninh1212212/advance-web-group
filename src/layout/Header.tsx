@@ -7,8 +7,8 @@ import { icon } from "../constant";
 const Header: React.FC<LayoutRouteProps> = ({ children }) => {
   return (
     <>
-      <div className=" w-screen fixed top-4 item-center justify-center flex z-50 ">
-        <div className="w-[1200px] bg-primary-100 h-[70px] rounded-md flex justify-between items-center gap-2 overflow-hidden p-3">
+      <div className=" fixed w-screen bg-primary-100 border-b-2 shadow-2xl border-b-orange-500 item-center justify-center flex z-50 overflow-auto scrollbar-hide">
+        <div className="  w-[1200px]  h-[70px]  flex justify-between items-center gap-2 overflow-hidden p-3">
           <div className="w-1/5 flex items-center text-white font-bold gap-2">
             <img src={icon.logo} alt="" className="w-16 h-16 rounded-full" />
             <p>Tư Bản Truyện</p>

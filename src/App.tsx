@@ -56,7 +56,7 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <div className="App">
+      <div className="App overflow-auto scrollbar-hide">
         <Routes>{renderRoutes(publicRoutes)}</Routes>
       </div>
     </Router>
