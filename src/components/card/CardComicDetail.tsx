@@ -1,9 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaEye } from "react-icons/fa";
-import { FaComment } from "react-icons/fa";
-import { FaHeart } from "react-icons/fa";
-
+import { FaEye, FaComment, FaHeart } from "react-icons/fa";
+import { formatNumber } from "../../customFunc/formatNumber";
 
 interface payload {
   data: {
@@ -32,17 +30,16 @@ const CardComicDetail: React.FC<payload> = ({ data }) => {
           <section className="line-clamp-2 grid grid-cols-3 ml-1">
             <div className="flex items-center">
               <FaEye className="text-white h-3 w-3 flex-shrink-0"/>
-              <p className="text-xs">{view}</p>
+              <p className="text-xs">{formatNumber(view)}</p>
             </div>
             <div className="flex items-center">
               <FaComment className="text-white h-3 w-3 flex-shrink-0"/>
-              <p className="text-xs">{cmt}</p>
+              <p className="text-xs">{formatNumber(cmt)}</p>
             </div>
             <div className="flex items-center">
               <FaHeart className="text-white h-3 w-3 flex-shrink-0"/>
-              <p className="text-xs">{like}</p>
+              <p className="text-xs">{formatNumber(like)}</p>
             </div>
-
           </section>
         </div>
 
@@ -55,7 +52,6 @@ const CardComicDetail: React.FC<payload> = ({ data }) => {
                   <p className="hover:underline">{chap}</p>
                 </Link>
                 <p className="text-gray-400">{time[index]}</p>
-                
               </div>
             ))}
           </section>
