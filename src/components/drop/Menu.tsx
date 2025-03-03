@@ -4,19 +4,24 @@ import { categoriesWithColors } from "../../util/category";
 interface payload {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsValue: React.Dispatch<React.SetStateAction<Array<string>>>;
+  setValue: (name: string) => void;
+  value: string[];
 }
 
-const Menu: React.FC<payload> = ({ isOpen, setIsValue }) => {
+const Menu: React.FC<payload> = ({ isOpen, setValue, value }) => {
   return (
     <>
       {isOpen ? (
-        <div className="bg-primary-400 p-3 w-96 rounded-lg">
+        <div className="bg-primary-300 p-3 w-96 rounded-lg">
           {categoriesWithColors.map((e) => (
             <button
-              className={`text-black bg-white p-2 rounded-md m-1`}
+              className={`  p-2 rounded-md m-1 ${
+                value.includes(e.name)
+                  ? "bg-white text-black"
+                  : "bg-primary-300 text-white"
+              }`}
               value={e.name}
-              onClick={() => setIsValue(e.name)}
+              onClick={() => setValue(e.name)}
             >
               {e.name}
             </button>

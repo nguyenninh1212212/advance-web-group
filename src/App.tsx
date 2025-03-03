@@ -5,8 +5,8 @@ import "./App.css";
 
 interface RouteType {
   path: string;
-  component: React.FC;
-  layout?: React.FC<{ children: React.ReactNode }> | null; // Layout phải nhận children
+  component: React.ComponentType<any>;
+  layout?: React.FC<{ children: React.ReactNode }> | null;
   children?: RouteType[];
 }
 
