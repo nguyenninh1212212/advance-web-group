@@ -14,15 +14,15 @@ const CardComicDetail: React.FC<payload> = ({ data }) => {
           <section className="line-clamp-2 grid grid-cols-3 ml-1">
             <div className="flex items-center">
               <FaEye className="text-white h-3 w-3 flex-shrink-0" />
-              <p className="text-xs">{formatNumber(view)}</p>
+              <p className="text-xs pl-1">{formatNumber(view)}</p>
             </div>
             <div className="flex items-center">
               <FaComment className="text-white h-3 w-3 flex-shrink-0" />
-              <p className="text-xs">{formatNumber(cmt)}</p>
+              <p className="text-xs pl-1">{formatNumber(cmt)}</p>
             </div>
             <div className="flex items-center">
               <FaHeart className="text-white h-3 w-3 flex-shrink-0" />
-              <p className="text-xs">{formatNumber(like)}</p>
+              <p className="text-xs pl-1">{formatNumber(like)}</p>
             </div>
           </section>
         </div>

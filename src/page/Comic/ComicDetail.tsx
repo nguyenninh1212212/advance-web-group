@@ -82,7 +82,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
             {data.chapter.map((chap: IChapter) => (
               <Link
                 key={chap.id}
-                to={`/${data.title}/chapter/${chap.id}/${chap.images.id}`}
+                to={chap.price === 0 ? `/${data.title}/chapter/${chap.id}/${chap.images.id}` : "/auth/login"}
                 state={{ chapId: chap.id }}
                 className="flex justify-between items-center hover:bg-stone-400 rounded-lg p-2"
               >

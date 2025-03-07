@@ -36,12 +36,14 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
 
           {/* Nút đăng nhập/đăng ký */}
           <div className="w-1/5 flex justify-evenly gap-2">
-            <button className="bg-cyan-400 text-white p-2 text-sm font-light rounded-md w-28">
+            <Link to="/auth/register"><button className="bg-cyan-400 text-white p-2 text-sm font-light rounded-md w-28">
               Đăng ký
             </button>
-            <button className="bg-cyan-400 text-white p-2 text-sm font-light rounded-md w-28">
+            </Link>
+            <Link to="/auth/login"><button className="bg-cyan-400 text-white p-2 text-sm font-light rounded-md w-28">
               Đăng nhập
             </button>
+            </Link>
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@ import ComicDetail from "../page/Comic/ComicDetail";
 import Chapter from "../page/Chapter/Chapter";
 import Login from "../page/Auth/Login";
 import Register from "../page/Auth/Register";
+import ForgotPassword from "../page/Auth/ForgotPassword";
 const publicRoutes = [
   {
     path: "/auth/login",
@@ -12,6 +13,10 @@ const publicRoutes = [
   {
     path: "/auth/register",
     component: Register,
+  },
+  {
+    path: "/auth/forgot",
+    component: ForgotPassword,
   },
   {
     path: "/",

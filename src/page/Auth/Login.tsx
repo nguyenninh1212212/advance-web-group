@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
 import { icon } from "../../constant";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -8,6 +9,7 @@ const Login = () => {
 
   return (
     <div className="flex  flex-col justify-center items-center h-screen bg-gray-900">
+      <Link to="/">
       <div className="relative  -top-10 text-white flex items-center gap-2">
         <img
           src={icon.logo}
@@ -16,13 +18,16 @@ const Login = () => {
         />
         <p className="text-2xl font-bold">Tư bản truyện</p>
       </div>
+      </Link>
       <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-96  border-t-2 border-primary-200">
         {/* Logo */}
+        
         <div className="text-center mb-4">
           <h2 className="text-xl font-semibold text-white">
             Sign in to your account
           </h2>
         </div>
+        
 
         {/* Form */}
         <div className="space-y-4">
@@ -56,7 +61,7 @@ const Login = () => {
               <input type="checkbox" className="accent-primary-200" />
               <span>Remember me</span>
             </label>
-            <a href="#" className="text-primary-200 hover:underline">
+            <a href="/auth/forgot" className="text-primary-200 hover:underline">
               Forgot Password?
             </a>
           </div>

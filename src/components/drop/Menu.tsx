@@ -18,7 +18,7 @@ const Menu: React.FC<payload> = ({ isOpen, setValue, value }) => {
               className={`  p-2 rounded-md m-1 ${
                 value.includes(e.name)
                   ? "bg-white text-black"
-                  : "bg-primary-300 text-white"
+                  : "bg-cyan-600 text-white"
               }`}
               value={e.name}
               onClick={() => setValue(e.name)}
