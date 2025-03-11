@@ -28,7 +28,7 @@ const CardComicDetail: React.FC<payload> = ({ data }) => {
         </div>
 
         <div>
-          <section className="line-clamp-2">{title}</section>
+          <section className="line-clamp-2 text-white">{title}</section>
         </div>
       </Link>
     </div>

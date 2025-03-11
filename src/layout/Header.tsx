@@ -1,14 +1,16 @@
 import React from "react";
 import { GrSearch } from "react-icons/gr";
-import { LayoutRouteProps } from "react-router-dom";
+import { LayoutRouteProps, useNavigate } from "react-router-dom";
 import { icon } from "../constant";
 import { Link } from "react-router-dom";
 
 const Header: React.FC<LayoutRouteProps> = ({ children }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Navbar cố định */}
-      <div className="fixed w-screen bg-primary-100 border-b-2 shadow-2xl border-b-orange-500 flex justify-center z-50">
+      <div className="fixed w-screen bg-gray-800 border-b-4 shadow-2xl border-b-primary-200 flex justify-center z-50 ">
         <div className="w-[1200px] h-[70px] flex justify-between items-center p-3">
           <Link
             to="/"
@@ -36,14 +38,18 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
 
           {/* Nút đăng nhập/đăng ký */}
           <div className="w-1/5 flex justify-evenly gap-2">
-            <Link to="/auth/register"><button className="bg-cyan-400 text-white p-2 text-sm font-light rounded-md w-28">
+            <button
+              className="bg-cyan-400 text-white p-2 text-sm font-light rounded-md w-28"
+              onClick={() => navigate("/auth/register")}
+            >
               Đăng ký
             </button>
-            </Link>
-            <Link to="/auth/login"><button className="bg-cyan-400 text-white p-2 text-sm font-light rounded-md w-28">
+            <button
+              className="bg-cyan-400 text-white p-2 text-sm font-light rounded-md w-28"
+              onClick={() => navigate("/auth/login")}
+            >
               Đăng nhập
             </button>
-            </Link>
           </div>
         </div>
       </div>
@@ -54,7 +60,7 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
       </main>
 
       {/* Footer cố định dưới cùng */}
-      <footer className="bg-primary-100 w-full h-40 flex items-center justify-center mt-auto">
+      <footer className="bg-gray-800 w-full border-t-2 border-t-primary-200  h-40 flex items-center justify-center mt-auto">
         <p className="text-white">© 2025 Tư Bản Truyện. All rights reserved.</p>
       </footer>
     </div>

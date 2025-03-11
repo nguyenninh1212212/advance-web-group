@@ -1,7 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import publicRoutes from "./router";
+import { publicRoutes, privateRoutes } from "./router";
 import "./App.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import PrivateRoute from "./router/PrivateRouter";
+
+const queryClient = new QueryClient();
 
 interface RouteType {
   path: string;
@@ -11,42 +15,36 @@ interface RouteType {
 }
 
 const App: React.FC = () => {
-  const renderRoutes = (routes: RouteType[]) => {
+  const renderRoutes = (routes: RouteType[], isPrivate: boolean) => {
     return routes.map((route, index) => {
       const Page = route.component;
       const Layout = route.layout;
-
-      if (route.children) {
-        return (
-          <Route
-            key={index}
-            path={route.path}
-            element={
-              Layout ? (
-                <Layout>
-                  <Page />
-                </Layout>
-              ) : (
-                <Page />
-              )
-            }
-          >
-            {renderRoutes(route.children)}
-          </Route>
-        );
-      }
 
       return (
         <Route
           key={index}
           path={route.path}
           element={
-            Layout ? (
+            isPrivate ? (
+              <PrivateRoute>
+                {Layout ? (
+                  <Layout>
+                    <Page />
+                  </Layout>
+                ) : (
+                  <Page />
+                )}
+              </PrivateRoute>
+            ) : Layout ? (
               <Layout>
                 <Page />
+                {route.children && renderRoutes(route.children, isPrivate)}
               </Layout>
             ) : (
-              <Page />
+              <>
+                <Page />
+                {route.children && renderRoutes(route.children, isPrivate)}
+              </>
             )
           }
         />
@@ -56,9 +54,14 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <div className="App overflow-auto scrollbar-hide">
-        <Routes>{renderRoutes(publicRoutes)}</Routes>
-      </div>
+      <QueryClientProvider client={queryClient}>
+        <div className="App bg-gray-700 text-white">
+          <Routes>
+            {renderRoutes(publicRoutes, false)}{" "}
+            {renderRoutes(privateRoutes, true)}
+          </Routes>
+        </div>
+      </QueryClientProvider>
     </Router>
   );
 };

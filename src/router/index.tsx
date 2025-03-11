@@ -4,9 +4,6 @@ import ComicDetail from "../page/Comic/ComicDetail";
 import Chapter from "../page/Chapter/Chapter";
 import Login from "../page/Auth/Login";
 import Register from "../page/Auth/Register";
-import ForgotPassword from "../page/Auth/ForgotPassword";
-import AdminPage from "../page/Account/Admin/AdminPage";
-
 const publicRoutes = [
   {
     path: "/auth/login",
@@ -17,17 +14,8 @@ const publicRoutes = [
     component: Register,
   },
   {
-    path: "/auth/forgot",
-    component: ForgotPassword,
-  },
-  {
     path: "/",
     component: Home,
-    layout: Header,
-  },
-  {
-    path: "/admin",
-    component: AdminPage,
     layout: Header,
   },
   {
@@ -41,5 +29,17 @@ const publicRoutes = [
     layout: Header,
   },
 ];
+const privateRoutes = [
+  // {
+  //   path: "/:name/detail/:id",
+  //   component: ComicDetail,
+  //   layout: Header,
+  // },
+  // {
+  //   path: "/:name/chapter/:id/:number",
+  //   component: Chapter,
+  //   layout: Header,
+  // },
+];
 
-export default publicRoutes;
+export { publicRoutes, privateRoutes };
