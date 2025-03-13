@@ -18,7 +18,8 @@ const publicRoutes = [
     component: Home,
     layout: Header,
   },
-
+];
+const privateRoutes = [
   {
     path: "/:name/detail/:id",
     component: ComicDetail,
@@ -31,4 +32,4 @@ const publicRoutes = [
   },
 ];
 
-export default publicRoutes;
+export { publicRoutes, privateRoutes };

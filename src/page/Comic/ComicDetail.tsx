@@ -27,7 +27,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
     <div className="flex flex-col gap-4 min-h-screen ">
       <div className="flex gap-4">
         {/* Thông tin truyện */}
-        <div className="w-1/3 flex flex-col items-start">
+        <div className="w-1/3 pr-5 flex flex-col items-start">
           <img
             className="h-96 w-72 rounded-xl"
             src={data.image}
