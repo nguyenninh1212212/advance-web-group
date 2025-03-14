@@ -18,8 +18,6 @@ const publicRoutes = [
     component: Home,
     layout: Header,
   },
-];
-const privateRoutes = [
   {
     path: "/:name/detail/:id",
     component: ComicDetail,
@@ -30,6 +28,18 @@ const privateRoutes = [
     component: Chapter,
     layout: Header,
   },
+];
+const privateRoutes = [
+  // {
+  //   path: "/:name/detail/:id",
+  //   component: ComicDetail,
+  //   layout: Header,
+  // },
+  // {
+  //   path: "/:name/chapter/:id/:number",
+  //   component: Chapter,
+  //   layout: Header,
+  // },
 ];
 
 export { publicRoutes, privateRoutes };

@@ -11,7 +11,6 @@ const Cardhorizontal: React.FC<payload> = ({ data }) => {
       to={`/${title}/detail/${id}`}
       className="flex items-center bg-zinc-900 text-white p-3 rounded-lg w-[100%] "
     >
-      {/* Hình ảnh */}
       <img
         src={`${image}`}
         alt="Thumbnail"

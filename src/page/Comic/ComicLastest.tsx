@@ -8,7 +8,7 @@ const ComicLastest = () => {
   return (
     <div className="flex overflow-hidden gap-3 justify-between mb-3">
       {groupdata.map((group, _i) => (
-        <div className=" w-auto h-[400px] bg-stone-400 rounded-lg p-2" key={_i}>
+        <div className=" w-auto h-[500px] bg-gray-400 p-2" key={_i}>
           {group.map((e) => (
             <div className="py-1">
               <CardComichorizontal data={e} message={""} />
