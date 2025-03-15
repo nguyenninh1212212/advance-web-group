@@ -1,65 +1,68 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useLayoutEffect } from "react";
 import { fakedatadetail } from "../../FakeData/FakedataDetail";
 import CardComicDetail from "../../components/card/CardComicDetail";
-import { groupData } from "../../util/group/groupdata";
-import { FaChevronRight } from "react-icons/fa6";
-import { FaChevronLeft } from "react-icons/fa";
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
+
+const ITEMS_PER_GROUP = 6;
 
 const ComicContainer = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const itemRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const groupedData = groupData(fakedatadetail, 6);
+  const totalItems = fakedatadetail.length;
+  const totalGroups = Math.ceil(totalItems / ITEMS_PER_GROUP);
 
-  useEffect(() => {
-    if (containerRef.current) {
+  useLayoutEffect(() => {
+    if (containerRef.current && itemRef.current) {
+      const itemWidth = itemRef.current.offsetWidth;
+      const groupWidth = itemWidth * ITEMS_PER_GROUP;
       containerRef.current.scrollTo({
-        left: containerRef.current.offsetWidth * currentIndex,
+        left: groupWidth * currentIndex,
         behavior: "smooth",
       });
     }
   }, [currentIndex]);
 
   const nextGroup = () => {
-    if (currentIndex < groupedData.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    }
+    setCurrentIndex((prevIndex) =>
+      prevIndex < totalGroups - 1 ? prevIndex + 1 : 0
+    );
   };
 
   const prevGroup = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
+    setCurrentIndex((prevIndex) =>
+      prevIndex > 0 ? prevIndex - 1 : totalGroups - 1
+    );
   };
 
   return (
-    <div className="w-full h-auto rounded-lg py-2  relative">
+    <div className="w-full h-auto rounded-lg py-2 relative">
       {/* Container cuộn ngang */}
       <div
         ref={containerRef}
-        className="flex overflow-x-hidden snap-x scroll-smooth w-full"
+        className="flex overflow-x-scroll snap-x scroll-smooth w-full scrollbar-hide"
       >
-        {groupedData.map((group, groupIndex) => (
-          <div key={groupIndex} className="flex min-w-full  ">
-            {group.map((e, itemIndex) => (
-              <div key={itemIndex} className="snap-start">
-                <CardComicDetail data={e} message={""} />
-              </div>
-            ))}
+        {fakedatadetail.map((e, index) => (
+          <div
+            key={index}
+            ref={index === 0 ? itemRef : null}
+            className="snap-start flex-shrink-0 w-1/6"
+          >
+            <CardComicDetail data={e} message={""} />
           </div>
         ))}
       </div>
 
+      {/* Nút bấm */}
       <button
         onClick={prevGroup}
-        className="absolute -left-3 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-3 rounded"
-        disabled={currentIndex === 0}
+        className="absolute -left-3 top-1/2 transform -translate-y-1/2 bg-gray-950 text-white px-3 py-3 rounded"
       >
         <FaChevronLeft />
       </button>
       <button
         onClick={nextGroup}
-        className="absolute -right-3 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-3 rounded"
-        disabled={currentIndex === groupedData.length - 1}
+        className="absolute -right-3 top-1/2 transform -translate-y-1/2 bg-gray-950 text-white px-3 py-3 rounded"
       >
         <FaChevronRight />
       </button>

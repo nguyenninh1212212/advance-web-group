@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { BiComment } from "react-icons/bi";
 import { formatNumber } from "../../util/format/formatNumber";
@@ -43,7 +43,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
             src={data.image}
             alt={data.title}
           />
-          <ul className="mt-2 text-stone-500 flex flex-col gap-1">
+          <ul className="mt-2 text-stone-300 flex flex-col gap-1">
             <li className=" font-medium text-3xl text-white">
               {datamemo?.title}
             </li>
@@ -52,7 +52,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
             </li>
             <li className="cursor-pointer" onClick={() => setSeeMore(!seeMore)}>
               <p className={`text-white ${seeMore ? "" : "line-clamp-2"}`}>
-                <span className="text-stone-500">Mô tả: </span>
+                <span className="text-stone-300">Mô tả: </span>
                 Lucia là một cô gái bình thường... nhưng cô có thể nhìn thấy
                 tương lai qua những giấc mơ của mình... Lucia là một cô gái bình
                 thường... nhưng cô có thể nhìn thấy tương lai qua những giấc mơ
@@ -74,7 +74,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
             </li>
           </ul>
           <section className="flex flex-wrap gap-2  mt-2">
-            <span className="text-stone-500">Tag :</span>
+            <span className="text-stone-300">Tag :</span>
             {datamemo?.categoties.map((category) => (
               <CardCategory key={category.id} name={category.name} />
             ))}
@@ -88,19 +88,17 @@ const ComicDetail: React.FC<IComicDetail> = () => {
               {data.chapter[0]?.title}
             </p>
           </div>
-          <div className="border-2 border-gray-200 rounded-lg h-auto overflow-y-auto scrollbar-hide p-3">
+          <div className=" h-auto overflow-y-auto scrollbar-hide p-3">
             {data.chapter.map((chap: IChapter) => (
               <div
                 key={chap.id}
-                className="flex justify-between items-center hover:bg-stone-400 rounded-lg p-2 cursor-pointer"
-                onClick={() =>
-                  isPurchase(chap.price, chap.title, chap.id, chap.images.id)
-                }
+                className="flex justify-between items-center hover:bg-stone-500 rounded-lg p-2 cursor-pointer"
+                onClick={() => isPurchase(chap.price, chap.title, chap.id)}
               >
                 <div className="flex items-center gap-2 my-3">
                   <div>
                     <p>{chap.title}</p>
-                    <p className="text-gray-400">{chap.createdAt}</p>
+                    <p className="text-white">{chap.createdAt}</p>
                   </div>
                 </div>
                 <p
@@ -116,15 +114,15 @@ const ComicDetail: React.FC<IComicDetail> = () => {
           {data.chapter.length > 4 && (
             <p className="text-center text-sm text-gray-500">Xem thêm...</p>
           )}
-          <section className="w-full border-t border-stone-500 ">
-            <p className="font-bold text-xl my-2">Truyện liên quan:</p>
-            <div className="w-56 rounded-lg overflow-hidden my-2 p-3 bg-stone-400 text-white">
-              <img src={datamemo?.image} alt="" />
-              <p>{datamemo?.title}</p>
-            </div>
-          </section>
         </div>
       </div>
+      <section className="w-full border-t border-stone-500 ">
+        <p className="font-bold text-xl my-2">Truyện liên quan:</p>
+        <div className="w-56 rounded-lg overflow-hidden my-2 p-3 bg-stone-400 text-white">
+          <img src={datamemo?.image} alt="" />
+          <p>{datamemo?.title}</p>
+        </div>
+      </section>
       <Popup isOpen={isOpen} setIsOpen={setIsOpen}>
         <Purchase />
       </Popup>
