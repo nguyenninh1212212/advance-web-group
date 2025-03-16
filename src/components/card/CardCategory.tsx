@@ -1,13 +1,10 @@
 import { Link } from "react-router-dom";
-import { categoryColor } from "../../util/category";
 
 const CardCategory = ({ name }: { name: string }) => {
   return (
     <Link
       to={`/tag/${name}`}
-      className={`${categoryColor(
-        name.toLowerCase()
-      )} p-1 rounded-md inline-block mx-1 h-9`}
+      className={` bg-gray-600 text-gray-300 py-1 px-2 rounded-md inline-block `}
     >
       {name}
     </Link>

@@ -1,27 +1,22 @@
 import { Link } from "react-router-dom";
 import ComicContainer from "./ComicContainer";
 import ComicRank from "./ComicRank";
+import CardTitle from "../../components/card/CardTitle";
 
 const Comic = () => {
   return (
     <div className="flex flex-col gap-3 ">
       <div>
-        <p className="p-1 mb-1 w-32 text-white rounded-sm bg-primary-200 text-center">
-          Comming soon
-        </p>
+        <CardTitle title="Comming soon" />
         <ComicContainer />
       </div>
       <div>
-        <p className="p-1 mb-1 w-32 text-white rounded-sm bg-primary-200 text-center">
-          Top truyện
-        </p>
+        <CardTitle title="Top truyện" />
         <ComicRank />
       </div>
       <div>
         <div className="flex items-center w-full justify-between">
-          <p className="p-1 mb-1 w-32 text-white rounded-sm bg-primary-200 text-center">
-            Lịch sử xem
-          </p>
+          <CardTitle title="Lịch sử xem" />
           <Link to="/" className="text-cyan-500">
             Xem thêm
           </Link>

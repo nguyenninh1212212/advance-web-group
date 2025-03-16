@@ -2,7 +2,7 @@ import { IComicDetail } from "../type/comic";
 
 export const fakedata: IComicDetail[] = [
   {
-    id: "6",
+    id: "1",
     title: "Chainsaw man",
     categoties: [
       { id: "9", name: "Fantasy" },
