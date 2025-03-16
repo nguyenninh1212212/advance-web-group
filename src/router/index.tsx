@@ -5,6 +5,8 @@ import Chapter from "../page/Chapter/Chapter";
 import Login from "../page/Auth/Login";
 import Register from "../page/Auth/Register";
 import AdminPage from "../page/Account/Admin/AdminPage";
+import SidebarMenu from "../layout/MenuLeft";
+
 const publicRoutes = [
   {
     path: "/auth/login",
@@ -22,7 +24,7 @@ const publicRoutes = [
   {
     path: "/admin",
     component: AdminPage,
-    layout: Header,
+    layout: SidebarMenu,
   },
   {
     path: "/:name/detail/:id",

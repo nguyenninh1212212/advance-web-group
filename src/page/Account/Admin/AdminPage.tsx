@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const AdminPage = () => {
-  const [selectedFunction, setSelectedFunction] = useState('Quản lý truyện');
+interface AdminPageProps {
+  selectedFunction: string;
+}
 
+const AdminPage: React.FC<AdminPageProps> = ({ selectedFunction }) => {
+  // Menu nội dung
   const renderContent = () => {
     switch (selectedFunction) {
       case 'Quản lý truyện':
@@ -19,36 +22,8 @@ const AdminPage = () => {
   };
 
   return (
-    <div className="flex p-5">
-      <div className="w-1/5 pr-10">
-        <div
-          className={`p-4 border-b border-gray-300 cursor-pointer ${selectedFunction === 'Quản lý truyện' ? 'bg-orange-500' : 'bg-orange-300'} rounded-t-lg`}
-          onClick={() => setSelectedFunction('Quản lý truyện')}
-        >
-          Quản lý truyện
-        </div>
-        <div
-          className={`p-4 border-b border-gray-300 cursor-pointer ${selectedFunction === 'Quản lý người dùng' ? 'bg-orange-500' : 'bg-orange-300'}`}
-          onClick={() => setSelectedFunction('Quản lý người dùng')}
-        >
-          Quản lý người dùng
-        </div>
-        <div
-          className={`p-4 border-b border-gray-300 cursor-pointer ${selectedFunction === 'Quản lý giao dịch' ? 'bg-orange-500' : 'bg-orange-300'}`}
-          onClick={() => setSelectedFunction('Quản lý giao dịch')}
-        >
-          Quản lý giao dịch
-        </div>
-        <div
-          className={`p-4 cursor-pointer ${selectedFunction === 'Báo cáo thống kê' ? 'bg-orange-500' : 'bg-orange-300'} rounded-b-lg`}
-          onClick={() => setSelectedFunction('Báo cáo thống kê')}
-        >
-          Báo cáo thống kê
-        </div>
-      </div>
-      <div className="w-4/5 bg-gray-100">
-        {renderContent()}
-      </div>
+    <div>
+      {renderContent()}
     </div>
   );
 };
