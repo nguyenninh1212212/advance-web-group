@@ -88,7 +88,7 @@ const SidebarMenu: React.FC<LayoutRouteProps> = ({ children }) => {
         </button>   
       </div>
       {/* Main Content */}
-      <div className="flex-grow bg-gray-100 p-6">
+      <div className="flex-grow p-6">
       <button
             onClick={() => setIsCollapsed(!isCollapsed)}
             className="text-black text-2xl pr-1"
