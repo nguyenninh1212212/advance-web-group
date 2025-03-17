@@ -7,8 +7,8 @@ import ComicNew from "../Comic/ComicNew";
 
 const Home = () => {
   return (
-    <>
-      <div className="my-4 flex gap-2">
+    <div>
+      <div className="my-4 flex flex-wrap gap-2 w-screen  h-auto">
         {category.map((e, _i) => (
           <CardCategory name={e.name} key={_i} />
         ))}
@@ -17,16 +17,11 @@ const Home = () => {
       <ComicLastest />
       <div className="text-black flex w-full gap-3 h-full flex-col ">
         <div className="w-full flex-col flex gap-2">
-          <div>
-            <Comic />
-          </div>
-
-          <div>
-            <ComicNew />
-          </div>
+          <Comic />
+          <ComicNew />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

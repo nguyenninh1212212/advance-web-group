@@ -12,10 +12,10 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen overflow-auto scrollbar-hide">
       {/* Navbar cố định */}
-      <header className="fixed w-screen bg-gray-800 flex justify-center z-50 border-b pb-1 border-stone-500">
-        <div className="w-[1200px] h-[70px] flex justify-between items-center p-3">
+      <header className="fixed w-screen bg-gray-800 flex justify-center z-50 border-b pb-1 border-primary-200 ">
+        <div className="md:w-[1200px] w-full h-[70px] flex justify-between items-center p-3">
           {/* Logo */}
           <Link
             to="/"
@@ -31,12 +31,12 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
 
           {/* Ô tìm kiếm */}
           <div className="flex items-center gap-3">
-            <div className="flex bg-gray-700 rounded-md items-center px-2 gap-2">
+            <div className="hidden md:flex bg-gray-700 rounded-md items-center px-2 gap-2">
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-60 h-8 bg-gray-700 text-white outline-none px-2 placeholder-gray-400"
+                className="md:w-60 md:flex h-8 bg-gray-700 text-white outline-none px-2 placeholder-gray-400"
                 placeholder="Tìm kiếm truyện..."
               />
               <GrSearch className="text-xl cursor-pointer text-white" />
@@ -60,7 +60,7 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
       </header>
 
       {/* Phần nội dung chính */}
-      <main className="flex-grow pt-20 w-[1200px] mx-auto h-auto">
+      <main className="flex-grow pt-24 px-4 md:max-w-[1200px] overflow-hidden w-screen mx-auto h-auto">
         {children}
       </main>
 

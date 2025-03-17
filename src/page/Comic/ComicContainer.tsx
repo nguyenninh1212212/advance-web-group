@@ -3,7 +3,7 @@ import { fakedatadetail } from "../../FakeData/FakedataDetail";
 import CardComicDetail from "../../components/card/CardComicDetail";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
 
-const ITEMS_PER_GROUP = 6;
+const ITEMS_PER_GROUP = 1;
 
 const ComicContainer = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -36,7 +36,7 @@ const ComicContainer = () => {
   };
 
   return (
-    <div className="w-full h-auto rounded-lg py-2 relative">
+    <div className="px-1/6 h-auto rounded-lg py-2 relative w-full">
       {/* Container cuộn ngang */}
       <div
         ref={containerRef}
@@ -46,7 +46,7 @@ const ComicContainer = () => {
           <div
             key={index}
             ref={index === 0 ? itemRef : null}
-            className="snap-start flex-shrink-0 w-1/6"
+            className="snap-start flex-shrink-0 max-w-1/6"
           >
             <CardComicDetail data={e} message={""} />
           </div>
@@ -56,13 +56,13 @@ const ComicContainer = () => {
       {/* Nút bấm */}
       <button
         onClick={prevGroup}
-        className="absolute -left-3 top-1/2 transform -translate-y-1/2 bg-gray-950 text-white px-3 py-3 rounded"
+        className="absolute md:-left-3 -left-0 top-1/2 transform -translate-y-1/2 bg-gray-950 text-white px-3 py-3 rounded"
       >
         <FaChevronLeft />
       </button>
       <button
         onClick={nextGroup}
-        className="absolute -right-3 top-1/2 transform -translate-y-1/2 bg-gray-950 text-white px-3 py-3 rounded"
+        className="absolute md:-right-3 -right-0 top-1/2 transform -translate-y-1/2 bg-gray-950 text-white px-3 py-3 rounded"
       >
         <FaChevronRight />
       </button>

@@ -9,7 +9,7 @@ const Cardhorizontal: React.FC<payload> = ({ data }) => {
   return (
     <Link
       to={`/${title}/detail/${id}`}
-      className="flex items-center bg-zinc-900 text-white p-3 rounded-lg w-[100%] "
+      className="flex items-center bg-zinc-900 text-white rounded-md p-3  overflow-hidden "
     >
       <img
         src={`${image}`}
@@ -31,9 +31,9 @@ const Cardhorizontal: React.FC<payload> = ({ data }) => {
               <span>No Group</span>
             </div>
           </div>
-          <div className="flex  text-xs text-gray-400 gap-1">
+          <div className="flex  text-xs text-gray-400 gap-1 ">
             <IoTime className="text-base" />
-            <span>3 minutes ago</span>
+            <span className="line-clamp-2">3 minutes ago</span>
           </div>
         </div>
       </div>

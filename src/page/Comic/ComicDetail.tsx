@@ -36,53 +36,60 @@ const ComicDetail: React.FC<IComicDetail> = () => {
 
   return (
     <div className="flex flex-col gap-4 min-h-screen ">
-      <div className="flex gap-4">
-        <div className="w-1/3 pr-5 flex flex-col items-start">
+      <div className="flex md:flex-row flex-col gap-4">
+        <div className="md:w-1/3 w-full  md:pr-5 flex flex-col md:items-start items-center">
           <img
-            className="h-96 w-72 rounded-xl"
+            className="md:h-96 md:w-72 w-5/6 h-1/2  rounded-xl object-cover "
             src={data.image}
             alt={data.title}
           />
-          <ul className="mt-2 text-stone-300 flex flex-col gap-1">
-            <li className=" font-medium text-3xl text-white">
-              {datamemo?.title}
-            </li>
-            <li>
-              Tác giả: <span className="text-white">David Grayson</span>
-            </li>
-            <li className="cursor-pointer" onClick={() => setSeeMore(!seeMore)}>
-              <p className={`text-white ${seeMore ? "" : "line-clamp-2"}`}>
-                <span className="text-stone-300">Mô tả: </span>
-                Lucia là một cô gái bình thường... nhưng cô có thể nhìn thấy
-                tương lai qua những giấc mơ của mình... Lucia là một cô gái bình
-                thường... nhưng cô có thể nhìn thấy tương lai qua những giấc mơ
-                của mình... Lucia là một cô gái bình thường... nhưng cô có thể
-                nhìn thấy tương lai qua những giấc mơ của mình...
-              </p>
-            </li>
-            <li className="flex gap-1 ">
-              Lượt xem:{" "}
-              <span className=" flex items-center gap-1 text-white">
-                {formatNumber(data.view)} <FaEye />
-              </span>
-            </li>
-            <li className="flex gap-1">
-              Đánh giá:{" "}
-              <span className="flex items-center gap-1 text-white">
-                {formatNumber(data.cmt)} <BiComment />
-              </span>
-            </li>
-          </ul>
-          <section className="flex flex-wrap gap-2  mt-2">
-            <span className="text-stone-300">Tag :</span>
-            {datamemo?.categoties.map((category) => (
-              <CardCategory key={category.id} name={category.name} />
-            ))}
-          </section>
+          <div>
+            <ul className="mt-2 text-stone-300 flex flex-col gap-1">
+              <li className=" font-medium text-3xl text-white">
+                {datamemo?.title}
+              </li>
+              <li>
+                Tác giả: <span className="text-white">David Grayson</span>
+              </li>
+              <li
+                className="cursor-pointer"
+                onClick={() => setSeeMore(!seeMore)}
+              >
+                <p className={`text-white ${seeMore ? "" : "line-clamp-2"}`}>
+                  <span className="text-stone-300">Mô tả: </span>
+                  Lucia là một cô gái bình thường... nhưng cô có thể nhìn thấy
+                  tương lai qua những giấc mơ của mình... Lucia là một cô gái
+                  bình thường... nhưng cô có thể nhìn thấy tương lai qua những
+                  giấc mơ của mình... Lucia là một cô gái bình thường... nhưng
+                  cô có thể nhìn thấy tương lai qua những giấc mơ của mình...
+                </p>
+              </li>
+              <li className="flex gap-1 ">
+                Lượt xem:{" "}
+                <span className=" flex items-center gap-1 text-white">
+                  {formatNumber(data.view)} <FaEye />
+                </span>
+              </li>
+              <li className="flex gap-1">
+                Đánh giá:{" "}
+                <span className="flex items-center gap-1 text-white">
+                  {formatNumber(data.cmt)} <BiComment />
+                </span>
+              </li>
+              <li>
+                <section className="flex flex-wrap gap-2  mt-2">
+                  <span className="text-stone-300">Tag :</span>
+                  {datamemo?.categoties.map((category) => (
+                    <CardCategory key={category.id} name={category.name} />
+                  ))}
+                </section>
+              </li>
+            </ul>
+          </div>
         </div>
 
         {/* Danh sách chapter */}
-        <div className="w-2/3">
+        <div className="md:w-2/3">
           <div className="border-b-2 border-stone-500 w-auto pb-2">
             <p className="text-white p-2 rounded-md w-auto bg-primary-200 inline-block ">
               {data.chapter[0]?.title}

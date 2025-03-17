@@ -39,7 +39,7 @@ const Pagination: React.FC<PaginationProps> = ({
   }
 
   return (
-    <div className="flex items-center justify-center bg-primary-400 p-1 w-96 rounded-lg my-4 self-center">
+    <div className="flex items-center justify-center bg-primary-400 p-1 w-1/2 rounded-lg my-4 self-center">
       {pages.map((p, index) => (
         <button
           key={index}
