@@ -19,7 +19,7 @@ const ResultDetail = () => {
       <div>
         <button
           className="mb-4 px-4 py-2 bg-gray-700 text-white rounded-lg"
-          onClick={() => navigate(-1)} // Quay lại trang trước
+          onClick={() => navigate("/")} // Quay lại trang trước
         >
           ← Quay lại
         </button>
