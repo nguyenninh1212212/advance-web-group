@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { GrSearch } from "react-icons/gr";
 import { LayoutRouteProps } from "react-router-dom";
-import { icon } from "../constant";
 import { Link } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
 import { IoAlbums } from "react-icons/io5";
-import Profile from "../components/popup/Profile";
+import Profile from "../components/popup/Profile";  
+import { GiAngularSpider } from "react-icons/gi";
 
 const Header: React.FC<LayoutRouteProps> = ({ children }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -19,14 +19,12 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
           {/* Logo */}
           <Link
             to="/"
-            className="w-1/5 flex items-center text-white font-bold gap-2"
+            className="w-fit flex items-center text-white font-bold gap-2"
           >
-            <img
-              src={icon.logo}
-              alt="Logo"
-              className="w-16 h-16 rounded-full"
-            />
-            <p className="font-semibold font-sans">TƯ BẢN TRUYỆN</p>
+            <GiAngularSpider className="text-5xl" />
+            <p className="font-semibold font-sans md:text-3xl whitespace-nowrap">
+              Manga Capital
+            </p>
           </Link>
 
           {/* Ô tìm kiếm */}
@@ -39,7 +37,13 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
                 className="md:w-60 md:flex h-8 bg-gray-700 text-white outline-none px-2 placeholder-gray-400"
                 placeholder="Tìm kiếm truyện..."
               />
-              <GrSearch className="text-xl cursor-pointer text-white" />
+              <Link
+                to={`/result?keyword=${encodeURIComponent(
+                  searchTerm
+                )}&page=0&limit=18  `}
+              >
+                <GrSearch className="text-xl cursor-pointer text-white" />
+              </Link>
             </div>
 
             {/* Album icon */}
@@ -53,7 +57,7 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
                 className="text-2xl cursor-pointer"
                 onClick={() => setIsOpen(!isOpen)}
               />
-              {isOpen && <Profile />}
+              {isOpen && <Profile onClose={() => setIsOpen(!isOpen)} />}
             </div>
           </div>
         </div>

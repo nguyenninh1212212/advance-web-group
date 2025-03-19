@@ -15,7 +15,7 @@ const ComicRank = () => {
           .map((e, _i) => (
             <div
               key={_i}
-              className="flex items-center gap-3 p-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition cursor-pointer"
+              className="flex items-center gap-3 p-3 rounded-lg bg-gray-800 hover:bg-gray-700 hover:relative hover:scale-110 transition cursor-pointer"
               onClick={() => navigate(`/${e.title}/detail/${e.id}`)}
             >
               {/* Hình ảnh */}

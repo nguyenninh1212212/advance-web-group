@@ -1,8 +1,10 @@
 export const category = [
-  { name: "adventure" },
-  { name: "action" },
-  { name: "shonen" },
-  { name: "fantasy" },
-  { name: "supernatural" },
-  { name: "horror" },
+  { name: "Home" },
+  { name: "All" },
+  { name: "Adventure" },
+  { name: "Action" },
+  { name: "Shonen" },
+  { name: "Fantasy" },
+  { name: "Supernatural" },
+  { name: "Horror" },
 ];

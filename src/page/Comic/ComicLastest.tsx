@@ -35,11 +35,11 @@ const ComicLastest = () => {
       {/* Danh sách comic */}
       <div
         ref={scrollRef}
-        className="flex overflow-x-auto gap-3 my-3 md:w-full w-full scrollbar-hide scroll-smooth"
+        className="flex md:overflow-hidden  overflow-x-auto gap-3 my-3 md:w-full w-full scrollbar-hide scroll-smooth"
       >
         {groupdata.map((group, _i) => (
           <div
-            className="min-w-full md:min-w-[300px] h-[500px] rounded-lg bg-gray-400 p-2 flex flex-col"
+            className="min-w-full md:min-w-[200px] h-[500px] rounded-lg bg-gray-400 p-2 flex flex-col"
             key={_i}
           >
             {group.map((e, index) => (
@@ -52,7 +52,7 @@ const ComicLastest = () => {
       </div>
 
       {/* Indicator dạng chấm */}
-      <div className="flex gap-2 mt-2">
+      <div className="flex gap-2 mt-2 md:hidden">
         {groupdata.map((_, i) => (
           <span
             key={i}

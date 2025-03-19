@@ -1,14 +1,32 @@
-import { Link } from "react-router-dom";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setCategory } from "../../redux/slices/categorySlice";
+import { RootState } from "../../redux/store";
 
-const CardCategory = ({ name }: { name: string }) => {
+interface Props {
+  name: string;
+}
+
+const CardCategory: React.FC<Props> = ({ name }) => {
+  const dispatch = useDispatch();
+  const selectedCategory = useSelector(
+    (state: RootState) => state.category.selectedCategory
+  );
+
+  const handleClick = () => {
+    dispatch(setCategory(name));
+  };
+
   return (
-    <Link
-      to={`/tag/${name}`}
-      className={` bg-gray-600 text-gray-300 py-1 px-2 rounded-md inline-block `}
+    <button
+      className={`bg-gray-600 text-gray-300 py-1 px-3 rounded-2xl inline-block ${
+        selectedCategory === name ? "bg-indigo-600 text-white" : ""
+      }`}
+      onClick={handleClick}
     >
       {name}
-    </Link>
+    </button>
   );
 };
 
-export default CardCategory;
+export default React.memo(CardCategory);

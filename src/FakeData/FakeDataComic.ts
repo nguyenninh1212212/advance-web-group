@@ -21,7 +21,7 @@ export const fakedata: IComicDetail[] = [
         createdAt: "03/02/2025",
       },
       {
-        id: "250",
+        id: "2511",
         title: "Chapter 249",
         price: 0,
         images: {
@@ -31,7 +31,7 @@ export const fakedata: IComicDetail[] = [
         createdAt: "02/02/2025",
       },
       {
-        id: "250",
+        id: "2522",
         title: "Chapter 248",
         price: 0,
         images: {
@@ -41,7 +41,7 @@ export const fakedata: IComicDetail[] = [
         createdAt: "01/02/2025",
       },
       {
-        id: "250",
+        id: "25022",
         title: "Chapter 248",
         price: 0,
         images: {

@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { publicRoutes, privateRoutes } from "./router";
+import RoutesConfig from "./router/index";
 import "./App.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import PrivateRoute from "./router/PrivateRouter";
@@ -15,6 +15,7 @@ interface RouteType {
 }
 
 const App: React.FC = () => {
+  const { publicRoutes, privateRoutes } = RoutesConfig();
   const renderRoutes = (routes: RouteType[], isPrivate: boolean) => {
     return routes.map((route, index) => {
       const Page = route.component;

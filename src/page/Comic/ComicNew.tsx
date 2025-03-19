@@ -16,7 +16,7 @@ const ComicNew = () => {
       </div>
 
       {/* Comic list */}
-      <div className="w-full h-auto  rounded-lg grid grid-cols-3 md:grid-cols-6  gap-4 pt-4 grid-cols-2">
+      <div className="w-full h-auto  rounded-lg grid md:grid-cols-5  gap-4 pt-4 grid-cols-2">
         {fakedatadetail.map((e, _i) => (
           <div key={_i} className="snap-start flex justify-center items-center">
             <CardComicDetail data={e} message="" />

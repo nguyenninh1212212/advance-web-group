@@ -5,9 +5,9 @@ import { BiComment } from "react-icons/bi";
 import { formatNumber } from "../../util/format/formatNumber";
 import { IChapter, IComicDetail } from "../../type/comic";
 import { fakedata } from "../../FakeData/FakeDataComic";
-import CardCategory from "../../components/card/CardCategory";
 import Popup from "../../components/popup/Popup";
 import Purchase from "../../components/popup/Purchase";
+import CardCategoryDetail from "../../components/card/CardCategoryDetail";
 
 const ComicDetail: React.FC<IComicDetail> = () => {
   const { id } = useParams();
@@ -16,6 +16,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
   const [seeMore, setSeeMore] = useState<boolean>(false);
   const navigate = useNavigate();
   const datamemo = useMemo(() => data, [data]);
+
   const isPurchase = (price: number, title: string, idImages: string) => {
     if (price > 0) {
       setIsOpen(!isOpen);
@@ -80,7 +81,10 @@ const ComicDetail: React.FC<IComicDetail> = () => {
                 <section className="flex flex-wrap gap-2  mt-2">
                   <span className="text-stone-300">Tag :</span>
                   {datamemo?.categoties.map((category) => (
-                    <CardCategory key={category.id} name={category.name} />
+                    <CardCategoryDetail
+                      key={category.id}
+                      name={category.name}
+                    />
                   ))}
                 </section>
               </li>
