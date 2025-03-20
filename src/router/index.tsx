@@ -6,6 +6,7 @@ import Login from "../page/Auth/Login";
 import Register from "../page/Auth/Register";
 import HomeLayout from "../layout/HomeLayout";
 import ResultDetail from "../page/Result/ResultDetail";
+import ResultSearch from "../page/Result/ResultSearch";
 
 const RoutesConfig = () => {
   const publicRoutes = [
@@ -25,6 +26,11 @@ const RoutesConfig = () => {
     {
       path: "/genders/:name",
       component: ResultDetail,
+      layout: Header,
+    },
+    {
+      path: "/filter",
+      component: ResultSearch,
       layout: Header,
     },
     {

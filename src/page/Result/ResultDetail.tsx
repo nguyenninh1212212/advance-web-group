@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Pagination from "../../util/pagebar/page";
 import { fakedatadetail } from "../../FakeData/FakedataDetail";
@@ -6,9 +6,9 @@ import CardResult from "../../components/card/CardResult";
 
 const ResultDetail = () => {
   const { name } = useParams();
+  const [page, setPage] = useState<number>(1);
   useEffect(() => window.scrollTo(0, 0), []);
 
-  // Random danh sách truyện
   const shuffledData = [...fakedatadetail]
     .sort(() => Math.random() - 0.5)
     .slice(0, 5);
@@ -30,14 +30,7 @@ const ResultDetail = () => {
           <CardResult data={e} key={_i} />
         ))}
       </div>
-      <Pagination
-        limit={10}
-        page={1}
-        total={0}
-        setPage={function (value: React.SetStateAction<number>): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
+      <Pagination limit={10} page={page} total={20} setPage={setPage} />
     </div>
   );
 };

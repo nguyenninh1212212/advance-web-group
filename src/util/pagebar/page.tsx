@@ -15,26 +15,34 @@ const Pagination: React.FC<PaginationProps> = ({
 }) => {
   const totalPage = Math.ceil(total / limit);
 
-  const handleClick = (newPage: number) =>
-    newPage >= 1 && newPage <= totalPage && setPage(newPage);
+  const handleClick = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPage) {
+      setPage(newPage);
+    }
+  };
 
-  const pages: (number | string)[] = [1];
+  let pages: (number | string)[] = [];
 
-  if (totalPage > 5 && page > 2) {
-    pages.push("...");
-  }
+  if (totalPage <= 5) {
+    pages = Array.from({ length: totalPage }, (_, i) => i + 1);
+  } else {
+    pages = [1];
 
-  const middlePages = Array.from({ length: totalPage }, (_, i) => i + 1).filter(
-    (p) => p >= page - 1 && p <= page + 1 && p > 1 && p < totalPage
-  );
+    if (page > 3) {
+      pages.push("...");
+    }
 
-  pages.push(...middlePages);
+    const middlePages = Array.from(
+      { length: totalPage },
+      (_, i) => i + 1
+    ).filter((p) => p >= page - 1 && p <= page + 1 && p > 1 && p < totalPage);
 
-  if (totalPage > 5 && page < totalPage - 1) {
-    pages.push("...");
-  }
+    pages.push(...middlePages);
 
-  if (totalPage > 1) {
+    if (page < totalPage - 2) {
+      pages.push("...");
+    }
+
     pages.push(totalPage);
   }
 
@@ -49,6 +57,7 @@ const Pagination: React.FC<PaginationProps> = ({
               ? "bg-white text-primary-400 font-bold"
               : "bg-primary-400 text-white"
           }`}
+          disabled={p === "..."}
         >
           {p}
         </button>
