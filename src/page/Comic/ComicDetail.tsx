@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { FaEye } from "react-icons/fa";
+import { FaEye, FaHeart, FaStar } from "react-icons/fa";
 import { BiComment } from "react-icons/bi";
 import { formatNumber } from "../../util/format/formatNumber";
 import { IChapter, IComicDetail } from "../../type/comic";
@@ -8,10 +8,13 @@ import { fakedata } from "../../FakeData/FakeDataComic";
 import Popup from "../../components/popup/Popup";
 import Purchase from "../../components/popup/Purchase";
 import CardCategoryDetail from "../../components/card/CardCategoryDetail";
+import { VscDebugStart } from "react-icons/vsc";
+import { IoStarSharp } from "react-icons/io5";
 
 const ComicDetail: React.FC<IComicDetail> = () => {
   const { id } = useParams();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpenRate, setIsOpenRate] = useState<boolean>(false);
   const data = fakedata.find((comic) => comic.id == id);
   const [seeMore, setSeeMore] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -58,11 +61,11 @@ const ComicDetail: React.FC<IComicDetail> = () => {
               >
                 <p className={`text-white ${seeMore ? "" : "line-clamp-2"}`}>
                   <span className="text-stone-300">Mô tả: </span>
-                  Lucia là một cô gái bình thường... nhưng cô có thể nhìn thấy
-                  tương lai qua những giấc mơ của mình... Lucia là một cô gái
-                  bình thường... nhưng cô có thể nhìn thấy tương lai qua những
-                  giấc mơ của mình... Lucia là một cô gái bình thường... nhưng
-                  cô có thể nhìn thấy tương lai qua những giấc mơ của mình...
+                  Lucia là một cô gái bình thường nhưng cô có thể nhìn thấy
+                  tương lai qua những giấc mơ của mình Lucia là một cô gái bình
+                  thường nhưng cô có thể nhìn thấy tương lai qua những giấc mơ
+                  của mình Lucia là một cô gái bình thường nhưng cô có thể nhìn
+                  thấy tương lai qua những giấc mơ của mình
                 </p>
               </li>
               <li className="flex gap-1 ">
@@ -74,19 +77,27 @@ const ComicDetail: React.FC<IComicDetail> = () => {
               <li className="flex gap-1">
                 Đánh giá:{" "}
                 <span className="flex items-center gap-1 text-white">
-                  {formatNumber(data.cmt)} <BiComment />
+                  {formatNumber(data.cmt)} <FaStar />
                 </span>
               </li>
-              <li>
-                <section className="flex flex-wrap gap-2  mt-2">
-                  <span className="text-stone-300">Tag :</span>
-                  {datamemo?.categoties.map((category) => (
-                    <CardCategoryDetail
-                      key={category.id}
-                      name={category.name}
+              <li className="flex p-2">
+                <div className="flex gap-4 text-2xl mt-2">
+                  <p className="flex flex-col items-center">
+                    <FaHeart className="cursor-pointer" />
+                    <p className="text-sm text-zinc-400">Theo dõi</p>
+                  </p>
+                  <p className="flex flex-col items-center">
+                    <VscDebugStart className="cursor-pointer " />
+                    <p className="text-sm text-zinc-400">Đọc từ đầu</p>
+                  </p>
+                  <p className="flex flex-col items-center">
+                    <FaStar
+                      className="cursor-pointer"
+                      onClick={() => setIsOpenRate(!isOpenRate)}
                     />
-                  ))}
-                </section>
+                    <p className="text-sm text-zinc-400">Đánh giá</p>
+                  </p>
+                </div>
               </li>
             </ul>
           </div>
@@ -95,9 +106,12 @@ const ComicDetail: React.FC<IComicDetail> = () => {
         {/* Danh sách chapter */}
         <div className="md:w-2/3">
           <div className="border-b-2 border-stone-500 w-auto pb-2">
-            <p className="text-white p-2 rounded-md w-auto bg-primary-200 inline-block ">
-              {data.chapter[0]?.title}
-            </p>
+            <section className="flex flex-wrap gap-2  mt-2">
+              <span className="text-stone-300">Tag :</span>
+              {datamemo?.categoties.map((category) => (
+                <CardCategoryDetail key={category.id} name={category.name} />
+              ))}
+            </section>
           </div>
           <div className=" h-auto overflow-y-auto scrollbar-hide p-3">
             {data.chapter.map((chap: IChapter) => (
@@ -123,7 +137,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
             ))}
           </div>
           {data.chapter.length > 4 && (
-            <p className="text-center text-sm text-gray-500">Xem thêm...</p>
+            <p className="text-center text-sm text-gray-500">Xem thêm</p>
           )}
         </div>
       </div>
@@ -137,6 +151,11 @@ const ComicDetail: React.FC<IComicDetail> = () => {
       <Popup isOpen={isOpen} setIsOpen={setIsOpen}>
         <Purchase />
       </Popup>
+      <Popup
+        isOpen={isOpenRate}
+        setIsOpen={setIsOpenRate}
+        children={undefined}
+      />
       {/* Thể loại */}
       <div className="flex w-full rounded-lg "></div>
     </div>

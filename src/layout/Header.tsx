@@ -27,7 +27,7 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
           >
             <GiAngularSpider className="text-5xl" />
             <p className="font-semibold font-sans md:text-3xl whitespace-nowrap">
-              Manga Capital
+              TUBANTRUYEN
             </p>
           </Link>
 
