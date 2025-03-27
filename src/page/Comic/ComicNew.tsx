@@ -6,6 +6,7 @@ import CardTitle from "../../components/card/CardTitle";
 
 const ComicNew = () => {
   const [page, setPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(10);
 
   return (
     <>
@@ -24,7 +25,13 @@ const ComicNew = () => {
         ))}
       </div>
       <center>
-        <Page page={page} limit={10} total={20} setPage={setPage} />
+        <Page
+          page={page}
+          limit={limit}
+          total={20}
+          setPage={setPage}
+          setLimit={setLimit}
+        />
       </center>
     </>
   );

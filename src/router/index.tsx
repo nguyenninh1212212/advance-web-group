@@ -5,7 +5,6 @@ import Chapter from "../page/Chapter/Chapter";
 import Login from "../page/Auth/Login";
 import Register from "../page/Auth/Register";
 import HomeLayout from "../layout/HomeLayout";
-import ResultDetail from "../page/Result/ResultDetail";
 import ResultSearch from "../page/Result/ResultSearch";
 
 const RoutesConfig = () => {
@@ -21,11 +20,6 @@ const RoutesConfig = () => {
     {
       path: "/",
       component: Home,
-      layout: HomeLayout,
-    },
-    {
-      path: "/genders/:name",
-      component: ResultDetail,
       layout: HomeLayout,
     },
     {

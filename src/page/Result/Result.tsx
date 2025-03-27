@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
 import Pagination from "../../util/pagebar/page";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
 import { fakedatadetail } from "../../FakeData/FakedataDetail";
 import CardComicDetail from "../../components/card/CardComicDetail";
 
@@ -25,6 +23,9 @@ const Result = () => {
         page={1}
         total={0}
         setPage={function (value: React.SetStateAction<number>): void {
+          throw new Error("Function not implemented.");
+        }}
+        setLimit={function (value: React.SetStateAction<number>): void {
           throw new Error("Function not implemented.");
         }}
       />

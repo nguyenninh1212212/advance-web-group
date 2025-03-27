@@ -134,7 +134,15 @@ const ResultSearch = () => {
             <CardResult data={e} key={_i} />
           ))}
         </div>
-        <Pagination page={page} limit={6} total={29} setPage={setPage} />
+        <Pagination
+          page={page}
+          limit={6}
+          total={29}
+          setPage={setPage}
+          setLimit={function (value: React.SetStateAction<number>): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
       </section>
     </div>
   );
