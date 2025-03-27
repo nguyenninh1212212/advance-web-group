@@ -26,7 +26,7 @@ const RoutesConfig = () => {
     {
       path: "/genders/:name",
       component: ResultDetail,
-      layout: Header,
+      layout: HomeLayout,
     },
     {
       path: "/filter",

@@ -3,11 +3,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import Pagination from "../../util/pagebar/page";
 import { fakedatadetail } from "../../FakeData/FakedataDetail";
 import CardResult from "../../components/card/CardResult";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const ResultDetail = () => {
-  const { name } = useParams();
   const [page, setPage] = useState<number>(1);
   useEffect(() => window.scrollTo(0, 0), []);
+  const selectedCategory = useSelector(
+    (state: RootState) => state.category.selectedCategory
+  );
 
   const shuffledData = [...fakedatadetail]
     .sort(() => Math.random() - 0.5)
@@ -23,7 +27,9 @@ const ResultDetail = () => {
         >
           ← Quay lại
         </button>
-        <h1 className="text-4xl font-bold border-b w-fit">{name}</h1>
+        <h1 className="text-4xl font-bold border-b w-fit">
+          {selectedCategory}
+        </h1>
       </div>
       <div className="w-full grid grid-cols-2 gap-3">
         {shuffledData.map((e, _i) => (

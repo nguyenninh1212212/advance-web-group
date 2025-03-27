@@ -1,5 +1,8 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setCategory } from "../../redux/slices/categorySlice";
+import { RootState } from "../../redux/store";
 
 interface Props {
   name: string;
@@ -7,9 +10,11 @@ interface Props {
 
 const CardCategoryDetail: React.FC<Props> = ({ name }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleClick = () => {
-    navigate(`/genders/${name}`);
+    navigate(`/`);
+    dispatch(setCategory(name));
   };
 
   return (

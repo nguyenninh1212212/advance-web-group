@@ -6,10 +6,6 @@ import { fakedatadetail } from "../../FakeData/FakedataDetail";
 import CardComicDetail from "../../components/card/CardComicDetail";
 
 const Result = () => {
-  const selectedCategory = useSelector(
-    (state: RootState) => state.category.selectedCategory
-  );
-
   useEffect(() => window.scrollTo(0, 0), []);
 
   // Random danh sách truyện

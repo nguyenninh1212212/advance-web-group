@@ -6,6 +6,7 @@ import ComicNew from "../Comic/ComicNew";
 import { RootState } from "../../redux/store";
 import { category } from "../../util/category";
 import Result from "../Result/Result";
+import ResultDetail from "../Result/ResultDetail";
 
 const Home = () => {
   const selectedCategory = useSelector(
@@ -30,7 +31,7 @@ const Home = () => {
     );
   };
 
-  return <div>{key == category[0].name ? HomePage() : <Result />}</div>;
+  return <div>{key == category[0].name ? HomePage() : <ResultDetail />}</div>;
 };
 
 export default Home;

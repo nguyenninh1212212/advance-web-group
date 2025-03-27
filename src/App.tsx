@@ -34,7 +34,7 @@ const App: React.FC = () => {
           key={index}
           path={route.path}
           element={
-            isPrivate ? (
+            isPrivate == true ? (
               <PrivateRoute>
                 {Layout ? (
                   <Layout>
