@@ -56,7 +56,7 @@ const ComicContainer = () => {
           <div
             key={index}
             ref={index === 0 ? itemRef : null}
-            className="snap-start flex-shrink-0 w-[220px]"
+            className="snap-start flex-shrink-0"
           >
             <CardComicDetail data={e} message={""} />
           </div>

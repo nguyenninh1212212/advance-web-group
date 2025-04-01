@@ -5,8 +5,8 @@ import ComicLastest from "../Comic/ComicLastest";
 import ComicNew from "../Comic/ComicNew";
 import { RootState } from "../../redux/store";
 import { category } from "../../util/category";
-import Result from "../Result/Result";
 import ResultDetail from "../Result/ResultDetail";
+import { fakedatadetail } from "../../FakeData/FakedataDetail";
 
 const Home = () => {
   const selectedCategory = useSelector(
@@ -31,7 +31,15 @@ const Home = () => {
     );
   };
 
-  return <div>{key == category[0].name ? HomePage() : <ResultDetail />}</div>;
+  return (
+    <div>
+      {key == category[0].name ? (
+        HomePage()
+      ) : (
+        <ResultDetail data={fakedatadetail} />
+      )}
+    </div>
+  );
 };
 
 export default Home;

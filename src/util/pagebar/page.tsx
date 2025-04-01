@@ -23,14 +23,14 @@ const Pagination: React.FC<PaginationProps> = ({
     if (inputPage >= 1 && inputPage <= totalPage) {
       setPage(inputPage);
     }
-  }, [inputPage]); // Tự động cập nhật trang khi nhập số
+  }, [inputPage]);
 
   useEffect(() => {
     if (inputLimit > 0) {
       setLimit(inputLimit);
-      setPage(1); // Reset về trang đầu khi đổi limit
+      setPage(1);
     }
-  }, [inputLimit]); // Tự động cập nhật limit khi nhập số
+  }, [inputLimit]);
 
   const handleClick = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPage) {
@@ -40,51 +40,43 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   let pages: (number | string)[] = [];
-
   if (totalPage <= 5) {
     pages = Array.from({ length: totalPage }, (_, i) => i + 1);
   } else {
     pages = [1];
-
-    if (page > 3) {
-      pages.push("...");
-    }
-
+    if (page > 3) pages.push("...");
     const middlePages = Array.from(
       { length: totalPage },
       (_, i) => i + 1
     ).filter((p) => p >= page - 1 && p <= page + 1 && p > 1 && p < totalPage);
-
     pages.push(...middlePages);
-
-    if (page < totalPage - 2) {
-      pages.push("...");
-    }
-
+    if (page < totalPage - 2) pages.push("...");
     pages.push(totalPage);
   }
 
   return (
-    <div className="flex flex-row items-center justify-around bg-primary-400  w-3/4 rounded-lg p-3 my-4 self-center">
-      <div className="flex items-center space-x-2 ">
+    <div className="flex max-md:flex-col items-center justify-center bg-primary-400 w-full max-w-2xl mx-auto rounded-lg p-3 my-4 space-y-3 md:space-y-0 md:justify-between">
+      {/* Items per page */}
+      <div className="flex items-center space-x-2">
         <label className="text-white">Items:</label>
         <input
           type="number"
           value={inputLimit}
           onChange={(e) => setInputLimit(Number(e.target.value))}
-          className="w-16 px-2  rounded border border-gray-300 text-black"
+          className="w-16 px-2 rounded border border-gray-300 text-black"
         />
       </div>
 
-      <div className="flex items-center justify-center space-x-2">
+      {/* Page navigation */}
+      <div className="flex items-center justify-center flex-wrap space-x-1">
         {pages.map((p, index) => (
           <button
             key={index}
             onClick={() => typeof p === "number" && handleClick(p)}
-            className={`px-3 py-1 mx-1 rounded ${
+            className={`px-3 py-1 rounded transition-all ${
               p === page
                 ? "bg-white text-primary-400 font-bold"
-                : "bg-primary-400 text-white"
+                : "bg-primary-500 text-white"
             }`}
             disabled={p === "..."}
           >
@@ -93,8 +85,9 @@ const Pagination: React.FC<PaginationProps> = ({
         ))}
       </div>
 
-      <div className="flex items-center space-x-2 ">
-        <label className="text-white">Go to page:</label>
+      {/* Page input */}
+      <div className="flex items-center space-x-2">
+        <label className="text-white">Page:</label>
         <input
           type="number"
           value={inputPage}
@@ -102,7 +95,7 @@ const Pagination: React.FC<PaginationProps> = ({
             const newPage = Math.min(
               Math.max(Number(e.target.value), 1),
               totalPage
-            ); // Giới hạn từ 1 đến totalPage
+            );
             setInputPage(newPage);
           }}
           className="w-16 px-2 rounded border border-gray-300 text-black"

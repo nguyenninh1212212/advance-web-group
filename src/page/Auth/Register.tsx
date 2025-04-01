@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { icon } from "../../constant";
+import { useNavigate } from "react-router-dom";
+import { GiAngularSpider } from "react-icons/gi";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -22,14 +23,15 @@ const Register = () => {
     console.log("Registered with: ", formData);
   };
 
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col justify-center items-center h-screen bg-gray-900 ">
-      <div className="relative  -top-10 text-white flex items-center gap-2">
-        <img
-          src={icon.logo}
-          alt="MangaDex Logo"
-          className="mx-auto w-20 rounded-full"
-        />
+      <div
+        className="relative  -top-10 text-white flex items-center gap-2"
+        onClick={() => navigate("/")}
+      >
+        <GiAngularSpider className="text-5xl" />
+
         <p className="text-2xl font-bold">Tư bản truyện</p>
       </div>
       <div className="bg-gray-800 p-8 rounded-lg shadow-md w-96 border-t-2 border-t-primary-200">

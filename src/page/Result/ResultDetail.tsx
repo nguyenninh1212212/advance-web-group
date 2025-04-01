@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Pagination from "../../util/pagebar/page";
-import { fakedatadetail } from "../../FakeData/FakedataDetail";
 import CardResult from "../../components/card/CardResult";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { Icard } from "../../type/comic";
 
-const ResultDetail = () => {
+interface payload {
+  data: Icard[];
+}
+const ResultDetail: React.FC<payload> = ({ data }) => {
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   useEffect(() => window.scrollTo(0, 0), []);
@@ -13,9 +16,7 @@ const ResultDetail = () => {
     (state: RootState) => state.category.selectedCategory
   );
 
-  const shuffledData = [...fakedatadetail]
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 5);
+  const shuffledData = [...data].sort(() => Math.random() - 0.5).slice(0, 5);
 
   return (
     <div className="flex flex-col gap-4">

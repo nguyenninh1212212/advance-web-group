@@ -69,6 +69,7 @@ const ResultSearch = () => {
   const [filtersVisible, setFiltersVisible] = useState(true);
 
   const [page, setPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(10);
 
   return (
     <div className="text-white rounded-lg w-full mx-auto flex flex-col">
@@ -101,7 +102,7 @@ const ResultSearch = () => {
         {filtersVisible && (
           <div className="mt-4 grid grid-cols-3 gap-4 text-sm">
             {filters.map((filter, index) => (
-              <div key={index}>
+              <div key={index} className="flex flex-col gap-2 justify-between">
                 <label className="block text-gray-400">{filter.label}</label>
 
                 {filter.name === "authors" ? (
@@ -129,19 +130,17 @@ const ResultSearch = () => {
         )}
       </section>
       <section className="flex flex-col items-center gap-2 mt-6 w-full ">
-        <div className="grid grid-cols-3 gap-2 w-full">
+        <div className="grid grid-cols-2 gap-2 w-full">
           {fakedatadetail.slice(0, 5).map((e, _i) => (
             <CardResult data={e} key={_i} />
           ))}
         </div>
         <Pagination
           page={page}
-          limit={6}
+          limit={limit}
           total={29}
           setPage={setPage}
-          setLimit={function (value: React.SetStateAction<number>): void {
-            throw new Error("Function not implemented.");
-          }}
+          setLimit={setLimit}
         />
       </section>
     </div>

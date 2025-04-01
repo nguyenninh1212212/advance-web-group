@@ -9,9 +9,9 @@ const CardComicDetail: React.FC<payload> = ({ data }) => {
   const { id, title, image, view, cmt, like } = data;
 
   return (
-    <div className="w-[220px] md:h-[350px] h-[300px]  px-1  relative group rounded-md">
+    <div className="w-[220px] md:h-[350px] h-[300px] max-md:w-[180px]  px-1  relative group rounded-md">
       <Link
-        to={`${title}/detail/${id}`}
+        to={`/${title}/detail/${id}`}
         state={{ data }}
         className="block w-full h-full overflow-hidden"
       >

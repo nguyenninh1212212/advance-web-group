@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { FaEye, FaHeart, FaStar } from "react-icons/fa";
-import { BiComment } from "react-icons/bi";
+import { FaComment, FaEye, FaHeart, FaStar } from "react-icons/fa";
 import { formatNumber } from "../../util/format/formatNumber";
 import { IChapter, IComicDetail } from "../../type/comic";
 import { fakedata } from "../../FakeData/FakeDataComic";
@@ -9,7 +8,8 @@ import Popup from "../../components/popup/Popup";
 import Purchase from "../../components/popup/Purchase";
 import CardCategoryDetail from "../../components/card/CardCategoryDetail";
 import { VscDebugStart } from "react-icons/vsc";
-import { IoStarSharp } from "react-icons/io5";
+
+import ComicContainer from "./ComicContainer";
 
 const ComicDetail: React.FC<IComicDetail> = () => {
   const { id } = useParams();
@@ -19,12 +19,14 @@ const ComicDetail: React.FC<IComicDetail> = () => {
   const [seeMore, setSeeMore] = useState<boolean>(false);
   const navigate = useNavigate();
   const datamemo = useMemo(() => data, [data]);
+  const [chapter, setChapter] = useState<IChapter>();
 
-  const isPurchase = (price: number, title: string, idImages: string) => {
-    if (price > 0) {
+  const isPurchase = (chapter: IChapter) => {
+    if (chapter.price > 0) {
       setIsOpen(!isOpen);
+      setChapter(chapter);
     } else {
-      navigate(`/${title}/chapter/${id}/${idImages}`);
+      navigate(`/${chapter.title}/chapter/${id}/${chapter.images}`);
     }
   };
   useEffect(() => {
@@ -81,23 +83,30 @@ const ComicDetail: React.FC<IComicDetail> = () => {
                 </span>
               </li>
               <li className="flex p-2">
-                <div className="flex gap-4 text-2xl mt-2">
-                  <p className="flex flex-col items-center">
+                <ul className="flex gap-4 text-2xl mt-2">
+                  <li className="flex flex-col items-center">
                     <FaHeart className="cursor-pointer" />
                     <p className="text-sm text-zinc-400">Theo dõi</p>
-                  </p>
-                  <p className="flex flex-col items-center">
+                  </li>
+                  <li className="flex flex-col items-center">
                     <VscDebugStart className="cursor-pointer " />
                     <p className="text-sm text-zinc-400">Đọc từ đầu</p>
-                  </p>
-                  <p className="flex flex-col items-center">
+                  </li>
+                  <li className="flex flex-col items-center">
                     <FaStar
                       className="cursor-pointer"
                       onClick={() => setIsOpenRate(!isOpenRate)}
                     />
                     <p className="text-sm text-zinc-400">Đánh giá</p>
-                  </p>
-                </div>
+                  </li>
+                  <li className="flex flex-col items-center">
+                    <FaComment
+                      className="cursor-pointer"
+                      onClick={() => setIsOpenRate(!isOpenRate)}
+                    />
+                    <p className="text-sm text-zinc-400">Bình luận</p>
+                  </li>
+                </ul>
               </li>
             </ul>
           </div>
@@ -118,7 +127,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
               <div
                 key={chap.id}
                 className="flex justify-between items-center hover:bg-stone-500 rounded-lg p-2 cursor-pointer"
-                onClick={() => isPurchase(chap.price, chap.title, chap.id)}
+                onClick={() => isPurchase(chap)}
               >
                 <div className="flex items-center gap-2 my-3">
                   <div>
@@ -141,19 +150,18 @@ const ComicDetail: React.FC<IComicDetail> = () => {
           )}
         </div>
       </div>
-      <section className="w-full border-t border-stone-500 ">
-        <p className="font-bold text-xl my-2">Truyện liên quan:</p>
-        <div className="w-56 rounded-lg overflow-hidden my-2 p-3 bg-stone-400 text-white">
-          <img src={datamemo?.image} alt="" />
-          <p>{datamemo?.title}</p>
-        </div>
-      </section>
-      <Popup isOpen={isOpen} setIsOpen={setIsOpen}>
-        <Purchase />
+      <ComicContainer />
+      <Popup
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        backgroundColor="bg-gray-800"
+      >
+        {chapter ? <Purchase chap={chapter} /> : null}
       </Popup>
       <Popup
         isOpen={isOpenRate}
         setIsOpen={setIsOpenRate}
+        backgroundColor="bg-gray-800"
         children={undefined}
       />
       {/* Thể loại */}
