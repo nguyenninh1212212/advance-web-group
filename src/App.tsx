@@ -1,52 +1,59 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import publicRoutes from "./router";
+import RoutesConfig from "./router/index";
 import "./App.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import PrivateRoute from "./router/PrivateRouter";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+      staleTime: 5 * 60 * 1000,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 interface RouteType {
   path: string;
-  component: React.FC;
-  layout?: React.FC<{ children: React.ReactNode }> | null; // Layout phải nhận children
+  component: React.ComponentType<any>;
+  layout?: React.FC<{ children: React.ReactNode }> | null;
   children?: RouteType[];
 }
 
 const App: React.FC = () => {
-  const renderRoutes = (routes: RouteType[]) => {
+  const { publicRoutes, privateRoutes } = RoutesConfig();
+  const renderRoutes = (routes: RouteType[], isPrivate: boolean) => {
     return routes.map((route, index) => {
       const Page = route.component;
       const Layout = route.layout;
-
-      if (route.children) {
-        return (
-          <Route
-            key={index}
-            path={route.path}
-            element={
-              Layout ? (
-                <Layout>
-                  <Page />
-                </Layout>
-              ) : (
-                <Page />
-              )
-            }
-          >
-            {renderRoutes(route.children)}
-          </Route>
-        );
-      }
 
       return (
         <Route
           key={index}
           path={route.path}
           element={
-            Layout ? (
+            isPrivate == true ? (
+              <PrivateRoute>
+                {Layout ? (
+                  <Layout>
+                    <Page />
+                  </Layout>
+                ) : (
+                  <Page />
+                )}
+              </PrivateRoute>
+            ) : Layout ? (
               <Layout>
                 <Page />
+                {route.children && renderRoutes(route.children, isPrivate)}
               </Layout>
             ) : (
-              <Page />
+              <>
+                <Page />
+                {route.children && renderRoutes(route.children, isPrivate)}
+              </>
             )
           }
         />
@@ -56,9 +63,14 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <div className="App">
-        <Routes>{renderRoutes(publicRoutes)}</Routes>
-      </div>
+      <QueryClientProvider client={queryClient}>
+        <div className="App bg-gray-800 text-white">
+          <Routes>
+            {renderRoutes(publicRoutes, false)}{" "}
+            {renderRoutes(privateRoutes, true)}
+          </Routes>
+        </div>
+      </QueryClientProvider>
     </Router>
   );
 };
