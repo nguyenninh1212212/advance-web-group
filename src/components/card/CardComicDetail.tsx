@@ -9,22 +9,21 @@ const CardComicDetail: React.FC<payload> = ({ data }) => {
   const { id, title, image, view, cmt, like } = data;
 
   return (
-    <div className="w-48 h-auto  px-1  relative group rounded-xl">
-      <div></div>
+    <div className="w-[220px] md:h-[350px] h-[300px]  px-1  relative group rounded-md">
       <Link
         to={`${title}/detail/${id}`}
         state={{ data }}
         className="block w-full h-full overflow-hidden"
       >
         {/* Hình ảnh với hiệu ứng hover */}
-        <div className="relative overflow-hidden rounded-xl">
+        <div className="relative overflow-hidden rounded-md">
           <img
             src={`${image}`}
             alt={title}
-            className="w-full h-64 object-cover  transition-transform duration-300 group-hover:scale-110"
+            className="w-full md:h-[300px] h-64 object-cover  transition-transform duration-300 group-hover:scale-110"
           />
           {/* Hiển thị thông tin khi hover */}
-          <div className="absolute inset-0 h-64 bg-black bg-opacity-70 text-white flex flex-col justify-center items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-xl">
+          <div className="absolute inset-0 md:[300px] rounded-md  bg-black bg-opacity-70 text-white flex flex-col justify-center items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <div className="flex gap-2 mt-2">
               <div className="flex items-center">
                 <FaEye className="text-white h-4 w-4 mr-1" />

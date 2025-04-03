@@ -8,7 +8,7 @@ export const fakedatadetail = [
     time: ["1 day ago"],
     view: 4200000,
     cmt: 10000,
-    like: 220000,
+    like: 290000,
   },
   {
     id: "2",
@@ -30,7 +30,7 @@ export const fakedatadetail = [
     time: ["2 days ago"],
     view: 5000000,
     cmt: 20000,
-    like: 250000,
+    like: 20000,
   },
   {
     id: "4",
