@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { GrSearch } from "react-icons/gr";
 import { LayoutRouteProps } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -9,11 +9,35 @@ import { GiAngularSpider } from "react-icons/gi";
 import { fakedatadetail } from "../FakeData/FakedataDetail";
 import CardSearchResult from "../components/card/CardSearchResult";
 import { LiaSlidersHSolid } from "react-icons/lia";
+import { useDispatch } from "react-redux";
+import { setCategory } from "../redux/slices/categorySlice";
 
 const Header: React.FC<LayoutRouteProps> = ({ children }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [isFocused, setIsFocused] = useState(false);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch();
+
+  // Handle click outside to close the search results
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target as Node)
+      ) {
+        setIsFocused(false);
+      }
+    };
+
+    // Add event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Clean up
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen overflow-auto scrollbar-hide">
@@ -24,6 +48,7 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
           <Link
             to="/"
             className="w-fit flex items-center text-white font-bold gap-2"
+            onClick={() => dispatch(setCategory("Home"))}
           >
             <GiAngularSpider className="text-5xl" />
             <p className="font-semibold font-sans md:text-3xl whitespace-nowrap">
@@ -32,23 +57,26 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
           </Link>
 
           {/* Ô tìm kiếm */}
-          <div className="flex items-center gap-3">
-            <section className="flex flex-col ">
-              <div className="hidden md:flex bg-gray-700 rounded-md items-center px-2 gap-2">
+          <div className="flex items-center gap-3 ">
+            <section className="flex flex-col" ref={searchContainerRef}>
+              <div className="hidden md:flex bg-gray-700 rounded-md items-center px-2 gap-2 overflow-hidden transition-all duration-300 border-2 border-transparent hover:border-gray-600 focus-within:border-primary-200 w-[400px]">
                 <input
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onFocus={() => setIsFocused(true)}
-                  onBlur={() => setTimeout(() => setIsFocused(false), 200)}
-                  className="md:w-60 h-8 bg-gray-700 text-white outline-none px-2 placeholder-gray-400 transition-all duration-300 focus:w-96 focus:h-10"
+                  className="md:w-[400px] h-10 bg-gray-700 text-white outline-none px-2 placeholder-gray-400 transition-all duration-500 ease-in-out focus:bg-gray-600"
                   placeholder="Tìm kiếm truyện..."
                 />
 
-                <GrSearch className="text-xl cursor-pointer text-white" />
+                <GrSearch
+                  className={`text-xl cursor-pointer text-white transition-all duration-300 ${
+                    isFocused ? "scale-125" : ""
+                  }`}
+                />
               </div>
               {isFocused && (
-                <div className="absolute mt-16 w-[430px] min-h-96 bg-zinc-900 p-4 rounded-xl">
+                <div className="absolute mt-16 w-[430px] min-h-96 bg-zinc-900 p-4 rounded-xl shadow-lg">
                   {fakedatadetail.length === 0 ? (
                     <p className="text-center flex justify-between">
                       <p></p> Không tìm thấy...
@@ -71,16 +99,16 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
 
             {/* Album icon */}
             <Link to={"/filter"}>
-              <LiaSlidersHSolid className="text-3xl cursor-pointer text-white" />
+              <LiaSlidersHSolid className="text-3xl cursor-pointer text-white hover:text-primary-200 transition-colors duration-300" />
             </Link>
-            <Link to={"/"}>
-              <IoAlbums className="text-3xl cursor-pointer text-white" />
+            <Link to={"/my/favorite"}>
+              <IoAlbums className="text-3xl cursor-pointer text-white hover:text-primary-200 transition-colors duration-300" />
             </Link>
 
             {/* User Profile */}
             <div className="relative">
               <FaUser
-                className="text-2xl cursor-pointer"
+                className="text-2xl cursor-pointer hover:text-primary-200 transition-colors duration-300"
                 onClick={() => setIsOpen(!isOpen)}
               />
               {isOpen && <Profile onClose={() => setIsOpen(!isOpen)} />}

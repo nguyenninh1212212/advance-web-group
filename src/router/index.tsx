@@ -6,6 +6,7 @@ import Login from "../page/Auth/Login";
 import Register from "../page/Auth/Register";
 import HomeLayout from "../layout/HomeLayout";
 import ResultSearch from "../page/Result/ResultSearch";
+import Favorite from "../page/My/Favorite";
 
 const RoutesConfig = () => {
   const publicRoutes = [
@@ -35,6 +36,11 @@ const RoutesConfig = () => {
     {
       path: "/:name/chapter/:id/:number",
       component: Chapter,
+      layout: Header,
+    },
+    {
+      path: "/my/favorite",
+      component: Favorite,
       layout: Header,
     },
   ];
