@@ -1,40 +1,34 @@
 import React, { useState, useEffect } from "react";
+import usePagination from "./pageHook";
 
 interface PaginationProps {
-  page: number;
-  limit: number;
-  total: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
-  setLimit: React.Dispatch<React.SetStateAction<number>>;
+  initialPage: number;
+  initialLimit: number;
+  totalItem: number;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
-  page,
-  limit,
-  total,
-  setPage,
-  setLimit,
+  initialPage,
+  initialLimit,
+  totalItem,
 }) => {
-  const totalPage = Math.ceil(total / limit);
+  const { page, totalPage, handlePageChange } = usePagination(
+    initialPage,
+    initialLimit,
+    totalItem
+  );
+
   const [inputPage, setInputPage] = useState(page);
-  const [inputLimit, setInputLimit] = useState(limit);
 
   useEffect(() => {
     if (inputPage >= 1 && inputPage <= totalPage) {
-      setPage(inputPage);
+      handlePageChange(inputPage);
     }
   }, [inputPage]);
 
-  useEffect(() => {
-    if (inputLimit > 0) {
-      setLimit(inputLimit);
-      setPage(1);
-    }
-  }, [inputLimit]);
-
   const handleClick = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPage) {
-      setPage(newPage);
+      handlePageChange(newPage);
       setInputPage(newPage);
     }
   };
@@ -56,19 +50,9 @@ const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <div className="flex max-md:flex-col items-center justify-center bg-primary-400 w-full max-w-2xl mx-auto rounded-lg p-3 my-4 space-y-3 md:space-y-0 md:justify-between">
-      {/* Items per page */}
-      <div className="flex items-center space-x-2">
-        <label className="text-white">Items:</label>
-        <input
-          type="number"
-          value={inputLimit}
-          onChange={(e) => setInputLimit(Number(e.target.value))}
-          className="w-16 px-2 rounded border border-gray-300 text-black"
-        />
-      </div>
-
       {/* Page navigation */}
-      <div className="flex items-center justify-center flex-wrap space-x-1">
+      <div className="w-1/4"></div>
+      <div className="flex items-center justify-center flex-wrap space-x-1 w-1/2">
         {pages.map((p, index) => (
           <button
             key={index}
@@ -86,7 +70,7 @@ const Pagination: React.FC<PaginationProps> = ({
       </div>
 
       {/* Page input */}
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-2 w-1/4">
         <label className="text-white">Page:</label>
         <input
           type="number"

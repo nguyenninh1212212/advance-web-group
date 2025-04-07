@@ -18,17 +18,7 @@ const Result = () => {
           <CardComicDetail data={e} key={_i} message="" />
         ))}
       </section>
-      <Pagination
-        limit={10}
-        page={1}
-        total={0}
-        setPage={function (value: React.SetStateAction<number>): void {
-          throw new Error("Function not implemented.");
-        }}
-        setLimit={function (value: React.SetStateAction<number>): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
+      <Pagination initialLimit={10} initialPage={1} totalItem={10} />
     </div>
   );
 };

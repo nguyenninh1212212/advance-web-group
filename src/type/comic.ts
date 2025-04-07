@@ -59,3 +59,9 @@ export interface payload {
   data: Icard;
   message: string;
 }
+
+export interface IHistory {
+  id: string;
+  title: string;
+  chapter: IChapter[];
+}

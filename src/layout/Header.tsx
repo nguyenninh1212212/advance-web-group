@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { GrSearch } from "react-icons/gr";
-import { LayoutRouteProps } from "react-router-dom";
+import { LayoutRouteProps, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
 import { IoAlbums } from "react-icons/io5";
@@ -18,8 +18,13 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
   const [isFocused, setIsFocused] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
+  const location = useLocation();
 
-  // Handle click outside to close the search results
+  // Đóng lại khi điều hướng trang khác
+  useEffect(() => {
+    setIsFocused(false);
+    setIsOpen(false);
+  }, [location]);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -79,7 +84,7 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
                 <div className="absolute mt-16 w-[430px] min-h-96 bg-zinc-900 p-4 rounded-xl shadow-lg">
                   {fakedatadetail.length === 0 ? (
                     <p className="text-center flex justify-between">
-                      <p></p> Không tìm thấy...
+                      <p> Không tìm thấy...</p>
                     </p>
                   ) : (
                     <>

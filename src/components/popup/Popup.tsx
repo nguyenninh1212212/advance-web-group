@@ -21,7 +21,7 @@ const Popup: React.FC<Payload> = ({
       onClick={() => setIsOpen(false)}
     >
       <div
-        className={`bg-black p-5 gap-2 flex-col flex rounded-lg shadow-lg w-1/2 h-auto max-h-1/2 max-md:w-4/5 max-md:max-h-3/5 overflow-y-auto scrollbar-hide ${backgroundColor} `}
+        className={`bg-black p-3 gap-2 flex-col flex rounded-lg shadow-lg mx-4   overflow-y-auto scrollbar-hide ${backgroundColor} `}
         onClick={(e) => e.stopPropagation()}
       >
         <button className="self-end" onClick={() => setIsOpen(!isOpen)}>
