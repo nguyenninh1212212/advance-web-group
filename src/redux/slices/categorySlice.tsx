@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { category } from "../../util/category";
 
 interface CategoryState {
   selectedCategory: string;
 }
 
 const initialState: CategoryState = {
-  selectedCategory: category[0].name,
+  selectedCategory: "Home",
 };
 
 const categorySlice = createSlice({

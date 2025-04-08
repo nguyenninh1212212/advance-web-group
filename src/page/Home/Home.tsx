@@ -33,7 +33,7 @@ const Home = () => {
 
   return (
     <div>
-      {key == category[0].name ? (
+      {key != category[0].name ? (
         HomePage()
       ) : (
         <ResultDetail data={fakedatadetail} />

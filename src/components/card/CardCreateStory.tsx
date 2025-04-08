@@ -15,7 +15,7 @@ const CardCreateStory: React.FC<payload> = ({ data }) => {
   const navigate = useNavigate();
 
   const handleAddChapter = () => {
-    navigate(`/${title}/chapter`);
+    navigate(`/my/stories/${title}/chapter/add`);
   };
 
   return (

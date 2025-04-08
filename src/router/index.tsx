@@ -10,6 +10,7 @@ import Favorite from "../page/My/Favorite";
 import History from "../page/My/History";
 import List from "../page/My/Story/List";
 import CreateStory from "../page/My/Story/CreateStory";
+import CreateChapter from "../page/My/Story/CreateChapter";
 
 const RoutesConfig = () => {
   const publicRoutes = [
@@ -59,6 +60,11 @@ const RoutesConfig = () => {
     {
       path: "/my/stories/create",
       component: CreateStory,
+      layout: Header,
+    },
+    {
+      path: "/my/stories/:name/chapter/add",
+      component: CreateChapter,
       layout: Header,
     },
   ];
