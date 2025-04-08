@@ -4,7 +4,6 @@ import Comic from "../Comic/Comic";
 import ComicLastest from "../Comic/ComicLastest";
 import ComicNew from "../Comic/ComicNew";
 import { RootState } from "../../redux/store";
-import { category } from "../../util/category";
 import ResultDetail from "../Result/ResultDetail";
 import { fakedatadetail } from "../../FakeData/FakedataDetail";
 

@@ -11,6 +11,8 @@ import History from "../page/My/History";
 import List from "../page/My/Story/List";
 import CreateStory from "../page/My/Story/CreateStory";
 import CreateChapter from "../page/My/Story/CreateChapter";
+import SubscriptionPlan from "../page/Subscription/SubscriptionPlan";
+import PaymentHistory from "../page/My/Payment/PaymentHistory";
 
 const RoutesConfig = () => {
   const publicRoutes = [
@@ -65,6 +67,16 @@ const RoutesConfig = () => {
     {
       path: "/my/stories/:name/chapter/add",
       component: CreateChapter,
+      layout: Header,
+    },
+    {
+      path: "/subscription-plan",
+      component: SubscriptionPlan,
+      layout: Header,
+    },
+    {
+      path: "/my/payment-history",
+      component: PaymentHistory,
       layout: Header,
     },
   ];

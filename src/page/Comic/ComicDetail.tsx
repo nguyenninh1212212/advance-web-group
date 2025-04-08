@@ -11,6 +11,7 @@ import { VscDebugStart } from "react-icons/vsc";
 
 import ComicContainer from "./ComicContainer";
 import Rate from "../../components/popup/Rate";
+import useTheme from "../../util/theme/theme";
 
 const ComicDetail: React.FC<IComicDetail> = () => {
   const { id } = useParams();
@@ -21,6 +22,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
   const navigate = useNavigate();
   const datamemo = useMemo(() => data, [data]);
   const [chapter, setChapter] = useState<IChapter>();
+  const theme = useTheme();
 
   const isPurchase = (chapter: IChapter) => {
     if (chapter.price > 0) {
@@ -51,19 +53,19 @@ const ComicDetail: React.FC<IComicDetail> = () => {
             alt={data.title}
           />
           <div>
-            <ul className="mt-2 text-stone-300 flex flex-col gap-1">
-              <li className=" font-medium text-3xl text-white">
+            <ul className={`mt-2  flex flex-col gap-1 ${theme.text}`}>
+              <li className={`font-medium text-3xl ${theme.text}`}>
                 {datamemo?.title}
               </li>
               <li>
-                Tác giả: <span className="text-white">David Grayson</span>
+                Tác giả: <span className={`${theme.text}`}>David Grayson</span>
               </li>
               <li
                 className="cursor-pointer"
                 onClick={() => setSeeMore(!seeMore)}
               >
-                <p className={`text-white ${seeMore ? "" : "line-clamp-2"}`}>
-                  <span className="text-stone-300">Mô tả: </span>
+                <p className={`${theme.text} ${seeMore ? "" : "line-clamp-2"}`}>
+                  <span>Mô tả: </span>
                   Lucia là một cô gái bình thường nhưng cô có thể nhìn thấy
                   tương lai qua những giấc mơ của mình Lucia là một cô gái bình
                   thường nhưng cô có thể nhìn thấy tương lai qua những giấc mơ
@@ -73,13 +75,13 @@ const ComicDetail: React.FC<IComicDetail> = () => {
               </li>
               <li className="flex gap-1 ">
                 Lượt xem:{" "}
-                <span className=" flex items-center gap-1 text-white">
+                <span className={` flex items-center gap-1 ${theme.text}`}>
                   {formatNumber(data.view)} <FaEye />
                 </span>
               </li>
               <li className="flex gap-1">
                 Đánh giá:{" "}
-                <span className="flex items-center gap-1 text-white">
+                <span className={` flex items-center gap-1 ${theme.text}`}>
                   {formatNumber(data.cmt)} <FaStar />
                 </span>
               </li>
@@ -117,7 +119,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
         <div className="md:w-2/3">
           <div className="border-b-2 border-stone-500 w-auto pb-2">
             <section className="flex flex-wrap gap-2  mt-2">
-              <span className="text-stone-300">Tag :</span>
+              <span className={`${theme.text}`}>Tag :</span>
               {datamemo?.categoties.map((category) => (
                 <CardCategoryDetail key={category.id} name={category.name} />
               ))}
@@ -127,13 +129,13 @@ const ComicDetail: React.FC<IComicDetail> = () => {
             {data.chapter.map((chap: IChapter) => (
               <div
                 key={chap.id}
-                className="flex justify-between items-center hover:bg-stone-500 rounded-lg p-2 cursor-pointer"
+                className={`flex justify-between items-center hover:bg-stone-400 rounded-lg p-2 cursor-pointer"`}
                 onClick={() => isPurchase(chap)}
               >
                 <div className="flex items-center gap-2 my-3">
                   <div>
                     <p>{chap.title}</p>
-                    <p className="text-white">{chap.createdAt}</p>
+                    <p className={`${theme.text}`}>{chap.createdAt}</p>
                   </div>
                 </div>
                 <p
