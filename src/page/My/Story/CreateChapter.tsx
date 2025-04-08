@@ -1,6 +1,9 @@
+// pages/chapters/CreateChapter.tsx
 import React, { useState } from "react";
-import { FaPlus, FaUpload, FaTrash } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import CardTitle from "../../../components/card/CardTitle";
+import ImageUpload from "./ImageUploader";
+import ExportWord from "./ExportWord";
 
 const CreateChapter = () => {
   const [title, setTitle] = useState("");
@@ -58,7 +61,7 @@ const CreateChapter = () => {
         onSubmit={handleSubmit}
         className="flex gap-6 flex-wrap md:flex-nowrap m-3"
       >
-        {/* LEFT: Điều chỉnh theo loại truyện */}
+        {/* LEFT */}
         <div className="flex flex-col space-y-4 w-full md:w-1/3 h-full">
           <label className="block text-sm font-medium text-gray-300 mb-1">
             Loại truyện
@@ -72,57 +75,17 @@ const CreateChapter = () => {
             <option value="NOVEL">Truyện chữ (Novel)</option>
           </select>
 
-          {/* Nếu là COMIC thì hiển thị upload ảnh */}
           {type === "COMIC" && (
-            <>
-              <label className="block text-sm font-medium text-gray-300">
-                Ảnh chương
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer bg-indigo-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-indigo-700 transition justify-center">
-                <FaUpload />
-                <span>Chọn ảnh</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageChange}
-                  className="hidden"
-                />
-              </label>
-
-              {/* Danh sách ảnh preview */}
-              <div className="flex flex-col gap-4 max-h-[500px] overflow-y-auto">
-                {previews.length === 0 ? (
-                  <div className="relative w-full h-40 border-dashed border-2 border-gray-400 rounded-lg flex items-center justify-center text-gray-500">
-                    <span>Chưa chọn ảnh</span>
-                  </div>
-                ) : (
-                  previews.map((src, index) => (
-                    <div key={index} className="relative w-full h-60">
-                      <img
-                        src={src}
-                        alt={`preview-${index}`}
-                        className="rounded-lg w-full h-full object-cover border"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeImage(index)}
-                        className="absolute top-0 right-0 bg-red-500 text-white text-xs px-2 py-1 rounded-bl-lg hover:bg-red-600 transition"
-                      >
-                        <FaTrash className="inline-block mr-1" />
-                        Xoá
-                      </button>
-                    </div>
-                  ))
-                )}
-              </div>
-            </>
+            <ImageUpload
+              previews={previews}
+              onImageChange={handleImageChange}
+              removeImage={removeImage}
+            />
           )}
         </div>
 
-        {/* RIGHT: Thông tin chương */}
+        {/* RIGHT */}
         <div className="w-full md:w-2/3 space-y-4">
-          {/* Title */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">
               Tên chương
@@ -137,7 +100,6 @@ const CreateChapter = () => {
             />
           </div>
 
-          {/* Nếu là NOVEL thì hiển thị ô nhập nội dung */}
           {type === "NOVEL" && (
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1">
@@ -146,10 +108,11 @@ const CreateChapter = () => {
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-black min-h-[200px]"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-black min-h-52 "
                 placeholder="Nhập nội dung chương..."
                 required
               />
+              <ExportWord title={title} description={description} />
             </div>
           )}
 
