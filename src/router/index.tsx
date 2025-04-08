@@ -7,6 +7,10 @@ import Register from "../page/Auth/Register";
 import HomeLayout from "../layout/HomeLayout";
 import ResultSearch from "../page/Result/ResultSearch";
 import Favorite from "../page/My/Favorite";
+import History from "../page/My/History";
+import List from "../page/My/Story/List";
+import CreateStory from "../page/My/Story/CreateStory";
+import CreateChapter from "../page/My/Story/CreateChapter";
 
 const RoutesConfig = () => {
   const publicRoutes = [
@@ -41,6 +45,26 @@ const RoutesConfig = () => {
     {
       path: "/my/favorite",
       component: Favorite,
+      layout: Header,
+    },
+    {
+      path: "/my/history",
+      component: History,
+      layout: Header,
+    },
+    {
+      path: "/my/stories",
+      component: List,
+      layout: Header,
+    },
+    {
+      path: "/my/stories/create",
+      component: CreateStory,
+      layout: Header,
+    },
+    {
+      path: "/my/stories/:name/chapter/add",
+      component: CreateChapter,
       layout: Header,
     },
   ];

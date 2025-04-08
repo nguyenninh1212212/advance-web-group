@@ -10,6 +10,7 @@ import CardCategoryDetail from "../../components/card/CardCategoryDetail";
 import { VscDebugStart } from "react-icons/vsc";
 
 import ComicContainer from "./ComicContainer";
+import Rate from "../../components/popup/Rate";
 
 const ComicDetail: React.FC<IComicDetail> = () => {
   const { id } = useParams();
@@ -162,7 +163,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
         isOpen={isOpenRate}
         setIsOpen={setIsOpenRate}
         backgroundColor="bg-gray-800"
-        children={undefined}
+        children={<Rate />}
       />
       {/* Thể loại */}
       <div className="flex w-full rounded-lg "></div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CardCategory from "../components/card/CardCategory";
 import Header from "./Header";
 import { category } from "../util/category";
@@ -11,16 +11,40 @@ interface Props {
 
 const HomeLayout: React.FC<Props> = ({ children }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const categories01 = category.slice(0, 7);
+  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth <= 768);
+
+  // Theo dõi thay đổi kích thước màn hình
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Clean up
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const categoriesToShow = isMobile ? category.slice(0, 7) : category;
+
   return (
     <Header>
-      <div className="pb-4 flex flex-wrap gap-2 w-full  h-auto">
-        {categories01.map((e, index) => (
+      <div className="pb-4 flex flex-wrap gap-2 w-full h-auto">
+        {[
+          { name: "Home", value: "Home" },
+          { name: "All", value: "All" },
+        ].map((e, index) => (
           <CardCategory key={index} name={e.name} />
         ))}
-        {category.length > 6 && (
+        {categoriesToShow.map((e, index) => (
+          <CardCategory key={index} name={e.name} />
+        ))}
+
+        {isMobile && category.length > 7 && (
           <button
-            className={`bg-gray-600 text-gray-300 py-1 px-3 rounded-2xl inline-block `}
+            className="bg-gray-600 text-gray-300 py-1 px-3 rounded-2xl inline-block"
             onClick={() => setIsOpen(!isOpen)}
           >
             <MdOutlineMoreHoriz />
@@ -29,7 +53,9 @@ const HomeLayout: React.FC<Props> = ({ children }) => {
       </div>
 
       {children}
-      {isOpen == true && (
+
+      {/* Popup chỉ xuất hiện khi đang ở mobile và isOpen true */}
+      {isMobile && isOpen && (
         <Popup
           isOpen={isOpen}
           setIsOpen={setIsOpen}

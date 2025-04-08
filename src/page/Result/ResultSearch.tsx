@@ -68,9 +68,6 @@ const filters = [
 const ResultSearch = () => {
   const [filtersVisible, setFiltersVisible] = useState(true);
 
-  const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(10);
-
   return (
     <div className="text-white rounded-lg w-full mx-auto flex flex-col">
       {/* Search Input */}
@@ -135,13 +132,7 @@ const ResultSearch = () => {
             <CardResult data={e} key={_i} />
           ))}
         </div>
-        <Pagination
-          page={page}
-          limit={limit}
-          total={29}
-          setPage={setPage}
-          setLimit={setLimit}
-        />
+        <Pagination initialLimit={10} initialPage={1} totalItem={10} />
       </section>
     </div>
   );

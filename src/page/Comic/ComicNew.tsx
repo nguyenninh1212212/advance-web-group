@@ -1,13 +1,9 @@
 import CardComicDetail from "../../components/card/CardComicDetail";
 import { fakedatadetail } from "../../FakeData/FakedataDetail";
-import { useState } from "react";
-import Page from "../../util/pagebar/page";
 import CardTitle from "../../components/card/CardTitle";
+import Pagination from "../../util/pagebar/page";
 
 const ComicNew = () => {
-  const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(10);
-
   return (
     <>
       <div className="flex justify-between items-center mt-2 relative ">
@@ -25,13 +21,7 @@ const ComicNew = () => {
         ))}
       </div>
       <center>
-        <Page
-          page={page}
-          limit={limit}
-          total={20}
-          setPage={setPage}
-          setLimit={setLimit}
-        />
+        <Pagination initialPage={1} initialLimit={10} totalItem={100} />
       </center>
     </>
   );

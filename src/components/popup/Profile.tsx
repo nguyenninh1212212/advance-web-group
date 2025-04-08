@@ -1,10 +1,12 @@
-import { FaMoneyBill } from "react-icons/fa";
+import { FaHistory, FaMoneyBill } from "react-icons/fa";
 import { FiAtSign, FiLogIn } from "react-icons/fi";
 import { IoIosAddCircle } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { RiBookShelfLine } from "react-icons/ri";
+import { Link, useNavigate } from "react-router-dom";
 
 const Profile = ({ onClose }: { onClose: () => void }) => {
   const navigator = useNavigate();
+
   return (
     <div className="fixed top-3 max-md:top-0 max-md:right-0 w-screen h-screen bg-gray-900 text-white z-50 md:w-[350px] md:h-auto md:rounded-lg md:mt-16 md:-ml-80 md:border border-stone-600 p-4 overflow-y-auto scrollbar-hide transition-transform duration-300 transform md:translate-x-0">
       {/* Nút đóng */}
@@ -44,6 +46,24 @@ const Profile = ({ onClose }: { onClose: () => void }) => {
             </div>
           )
         )}
+      </div>
+      <div className="mt-4 space-y-3">
+        <Link to={"/my/stories"}>
+          <div className="flex justify-between items-center bg-gray-800 p-3 rounded-lg cursor-pointer hover:bg-gray-700">
+            <p>My List</p>
+
+            <RiBookShelfLine className="text-2xl cursor-pointer text-white hover:text-primary-200 transition-colors duration-300" />
+          </div>
+        </Link>
+      </div>
+      <div className="mt-4 space-y-3">
+        <Link to={"/my/history"}>
+          <div className="flex justify-between items-center bg-gray-800 p-3 rounded-lg cursor-pointer hover:bg-gray-700">
+            <p>History reading</p>
+
+            <FaHistory className="text-2xl cursor-pointer text-white hover:text-primary-200 transition-colors duration-300" />
+          </div>
+        </Link>
       </div>
 
       {/* Nút Sign out */}

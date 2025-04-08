@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Pagination from "../../util/pagebar/page";
 import CardResult from "../../components/card/CardResult";
 import { useSelector } from "react-redux";
@@ -9,8 +9,6 @@ interface payload {
   data: Icard[];
 }
 const ResultDetail: React.FC<payload> = ({ data }) => {
-  const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(10);
   useEffect(() => window.scrollTo(0, 0), []);
   const selectedCategory = useSelector(
     (state: RootState) => state.category.selectedCategory
@@ -30,13 +28,7 @@ const ResultDetail: React.FC<payload> = ({ data }) => {
           <CardResult data={e} key={_i} />
         ))}
       </div>
-      <Pagination
-        limit={limit}
-        page={page}
-        total={30}
-        setPage={setPage}
-        setLimit={setLimit}
-      />
+      <Pagination initialLimit={10} initialPage={1} totalItem={10} />
     </div>
   );
 };
