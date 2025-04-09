@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Danh sách các theme
 export const themeList = [
@@ -80,11 +80,12 @@ const themeSlice = createSlice({
 
 // Selector
 // Selector
-export const selectTheme = (state: { theme: ThemeState }) => ({
-  ...themeList[state.theme.index],
-  index: state.theme.index, // 👈 thêm index để dùng trong UI
-});
+const selectThemeIndex = (state: { theme: ThemeState }) => state.theme.index;
 
+export const selectTheme = createSelector([selectThemeIndex], (index) => ({
+  ...themeList[index],
+  index,
+}));
 // Export action và reducer
 export const { setTheme } = themeSlice.actions;
 export default themeSlice.reducer;

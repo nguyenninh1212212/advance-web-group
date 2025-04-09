@@ -6,8 +6,18 @@ import ComicNew from "../Comic/ComicNew";
 import { RootState } from "../../redux/store";
 import ResultDetail from "../Result/ResultDetail";
 import { fakedatadetail } from "../../FakeData/FakedataDetail";
+import { useQuery } from "@tanstack/react-query";
+import { getStories } from "../../api/stories";
 
 const HomePage = () => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["home"],
+    queryFn: () => getStories(1, 10),
+  });
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  console.log("🚀 ~ HomePage ~ data:", data);
+
   return (
     <>
       <CardTitle title={"Truyện mới cập nhật"} />
