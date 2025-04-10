@@ -15,5 +15,13 @@ export default defineConfig(() => {
         },
       },
     },
+    optimizeDeps: {
+      exclude: ["html-docx-js"],
+    },
+    build: {
+      commonjsOptions: {
+        include: [/html-docx-js/, /node_modules/],
+      },
+    },
   };
 });

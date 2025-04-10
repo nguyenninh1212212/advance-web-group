@@ -12,7 +12,7 @@ import { getStories } from "../../api/stories";
 const HomePage = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["home"],
-    queryFn: () => getStories(1, 10),
+    queryFn: () => getStories(0, 10),
   });
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;

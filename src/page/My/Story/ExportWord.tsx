@@ -1,50 +1,73 @@
-// components/ExportWord.tsx
-import React from "react";
-import { Document, Packer, Paragraph, TextRun } from "docx";
+import React, { useState } from "react";
 import { saveAs } from "file-saver";
-import { FaFileWord } from "react-icons/fa";
+import { Document, Packer, Paragraph, TextRun } from "docx";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // Cần import style của Quill
 
-interface Props {
+interface ExportWordProps {
   title: string;
-  description: string;
 }
 
-const ExportWord: React.FC<Props> = ({ title, description }) => {
-  const exportToWord = async () => {
+const ExportWord: React.FC<ExportWordProps> = ({ title }) => {
+  const [description, setDescription] = useState<string>("");
+
+  // Hàm để loại bỏ thẻ HTML và chỉ lấy văn bản thuần
+  const getTextWithoutHTML = (html: string) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  };
+
+  const handleExport = () => {
+    const cleanDescription = getTextWithoutHTML(description); // Lấy nội dung mà không có thẻ HTML
+
     const doc = new Document({
       sections: [
         {
           properties: {},
           children: [
             new Paragraph({
-              children: [new TextRun({ text: title, bold: true, size: 32 })],
-              spacing: { after: 300 },
+              children: [new TextRun({ text: title, bold: true })],
             }),
-            ...description.split("\n").map(
-              (line) =>
-                new Paragraph({
-                  children: [new TextRun({ text: line, size: 24 })],
-                  spacing: { after: 200 },
-                })
-            ),
+            new Paragraph({
+              children: [new TextRun(cleanDescription)], // Dùng nội dung đã được làm sạch
+            }),
           ],
         },
       ],
     });
 
-    const blob = await Packer.toBlob(doc);
-    saveAs(blob, `${title || "chuong"}.docx`);
+    Packer.toBlob(doc).then((blob) => {
+      saveAs(blob, `${title}.docx`);
+    });
   };
 
   return (
-    <button
-      type="button"
-      onClick={exportToWord}
-      className="mt-3 flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition"
-    >
-      <FaFileWord />
-      Xuất file Word
-    </button>
+    <div className="mt-4">
+      {/* Quill Editor */}
+      <ReactQuill
+        value={description}
+        onChange={setDescription}
+        theme="snow"
+        placeholder="Nhập nội dung tại đây..."
+        modules={{
+          toolbar: [
+            [{ header: "1" }, { header: "2" }, { font: [] }],
+            [{ list: "ordered" }, { list: "bullet" }],
+            ["bold", "italic", "strike"],
+            ["link"],
+            [{ align: [] }],
+            ["clean"],
+          ],
+        }}
+        className="h-2/3 bg-white text-black "
+      />
+      <button
+        onClick={handleExport}
+        className="bg-blue-600 text-white py-2 px-4 rounded-lg mt-4"
+      >
+        Xuất Word
+      </button>
+    </div>
   );
 };
 

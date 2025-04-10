@@ -105,13 +105,7 @@ const CreateChapter = () => {
               <label className="block text-sm font-medium text-gray-300 mb-1">
                 Nội dung chương
               </label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-black min-h-52 "
-                placeholder="Nhập nội dung chương..."
-                required
-              />
+
               <ExportWord title={title} description={description} />
             </div>
           )}

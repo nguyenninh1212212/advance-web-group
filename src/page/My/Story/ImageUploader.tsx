@@ -1,61 +1,58 @@
-// components/ImageUpload.tsx
 import React from "react";
-import { FaUpload, FaTrash } from "react-icons/fa";
+import { FaCamera } from "react-icons/fa"; // Import icon camera từ react-icons
 
-interface Props {
+interface ImageUploadProps {
   previews: string[];
   onImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   removeImage: (index: number) => void;
 }
 
-const ImageUpload: React.FC<Props> = ({
+const ImageUpload: React.FC<ImageUploadProps> = ({
   previews,
   onImageChange,
   removeImage,
 }) => {
   return (
-    <>
-      <label className="block text-sm font-medium text-gray-300">
-        Ảnh chương
-      </label>
-      <label className="flex items-center gap-2 cursor-pointer bg-indigo-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-indigo-700 transition justify-center">
-        <FaUpload />
-        <span>Chọn ảnh</span>
+    <div>
+      <label className="block text-sm font-medium text-gray-300">Ảnh bìa</label>
+
+      {/* Cải tiến nút upload */}
+      <div className="flex items-center justify-center w-full">
+        <label
+          htmlFor="file-upload"
+          className="cursor-pointer py-3 px-6 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200"
+        >
+          <FaCamera className="inline mr-2" />
+          Chọn ảnh
+        </label>
         <input
+          id="file-upload"
           type="file"
-          accept="image/*"
           multiple
+          accept="image/*"
           onChange={onImageChange}
           className="hidden"
         />
-      </label>
-
-      <div className="flex flex-col gap-4 max-h-[500px] overflow-y-auto">
-        {previews.length === 0 ? (
-          <div className="relative w-full h-40 border-dashed border-2 border-gray-400 rounded-lg flex items-center justify-center text-gray-500">
-            <span>Chưa chọn ảnh</span>
-          </div>
-        ) : (
-          previews.map((src, index) => (
-            <div key={index} className="relative w-full h-60">
-              <img
-                src={src}
-                alt={`preview-${index}`}
-                className="rounded-lg w-full h-full object-cover border"
-              />
-              <button
-                type="button"
-                onClick={() => removeImage(index)}
-                className="absolute top-0 right-0 bg-red-500 text-white text-xs px-2 py-1 rounded-bl-lg hover:bg-red-600 transition"
-              >
-                <FaTrash className="inline-block mr-1" />
-                Xoá
-              </button>
-            </div>
-          ))
-        )}
       </div>
-    </>
+
+      <div className="mt-4">
+        {previews.map((preview, index) => (
+          <div key={index} className="relative inline-block mr-4 mb-4">
+            <img
+              src={preview}
+              alt="preview"
+              className="w-20 h-20 object-cover rounded-lg"
+            />
+            <button
+              onClick={() => removeImage(index)}
+              className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+            >
+              X
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 
