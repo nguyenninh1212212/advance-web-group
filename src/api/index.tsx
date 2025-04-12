@@ -1,8 +1,9 @@
 import axios from "axios";
 
+const BASE_URL = "http://localhost:8080"; // Địa chỉ API backend
 // Tạo một instance của axios
-const api = axios.create({
-  baseURL: "http://localhost:8080", // Địa chỉ API backend
+export const api = axios.create({
+  baseURL: `${BASE_URL}`, // Địa chỉ API backend
   timeout: 5000, // Thời gian timeout
   headers: {
     "Content-Type": "application/json",
@@ -35,7 +36,7 @@ api.interceptors.response.use(
       try {
         // Gửi yêu cầu làm mới token
         const res = await axios.post(
-          "http://localhost:8080/auth/refresh",
+          `${BASE_URL}/auth/refresh`,
           {},
           { withCredentials: true } // Gửi cookie khi làm mới token
         );
@@ -52,5 +53,3 @@ api.interceptors.response.use(
     return Promise.reject(err); // Nếu không phải lỗi 401, reject promise với lỗi gốc
   }
 );
-
-export default api;

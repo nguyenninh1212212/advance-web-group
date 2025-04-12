@@ -1,4 +1,5 @@
-import api from "./index";
+import axios from "axios";
+import { api } from "./index";
 
 interface LoginRequest {
   email: string;
