@@ -4,6 +4,8 @@ import RoutesConfig from "./router/index";
 import "./App.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import PrivateRoute from "./router/PrivateRouter";
+import { useSelector } from "react-redux";
+import { selectTheme } from "./redux/slices/themeSlice";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,6 +26,8 @@ interface RouteType {
 
 const App: React.FC = () => {
   const { publicRoutes, privateRoutes } = RoutesConfig();
+  const theme = useSelector(selectTheme);
+
   const renderRoutes = (routes: RouteType[], isPrivate: boolean) => {
     return routes.map((route, index) => {
       const Page = route.component;
@@ -64,9 +68,11 @@ const App: React.FC = () => {
   return (
     <Router>
       <QueryClientProvider client={queryClient}>
-        <div className="App bg-gray-800 text-white">
+        <div
+          className={`${theme.background} ${theme.border_bottom} ${theme.text}`}
+        >
           <Routes>
-            {renderRoutes(publicRoutes, false)}{" "}
+            {renderRoutes(publicRoutes, false)}
             {renderRoutes(privateRoutes, true)}
           </Routes>
         </div>

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import usePagination from "./pageHook";
+import useTheme from "../theme/theme";
 
 interface PaginationProps {
   initialPage: number;
@@ -17,6 +18,8 @@ const Pagination: React.FC<PaginationProps> = ({
     initialLimit,
     totalItem
   );
+
+  const theme = useTheme();
 
   const [inputPage, setInputPage] = useState(page);
 
@@ -49,7 +52,9 @@ const Pagination: React.FC<PaginationProps> = ({
   }
 
   return (
-    <div className="flex max-md:flex-col items-center justify-center bg-primary-400 w-full max-w-2xl mx-auto rounded-lg p-3 my-4 space-y-3 md:space-y-0 md:justify-between">
+    <div
+      className={`flex max-md:flex-col items-center justify-center ${theme.background_card} w-full max-w-2xl mx-auto rounded-lg p-3 my-4 space-y-3 md:space-y-0 md:justify-between`}
+    >
       {/* Page navigation */}
       <div className="w-1/4"></div>
       <div className="flex items-center justify-center flex-wrap space-x-1 w-1/2">
@@ -59,7 +64,7 @@ const Pagination: React.FC<PaginationProps> = ({
             onClick={() => typeof p === "number" && handleClick(p)}
             className={`px-3 py-1 rounded transition-all ${
               p === page
-                ? "bg-white text-primary-400 font-bold"
+                ? `text-black bg-white  font-bold`
                 : "bg-primary-500 text-white"
             }`}
             disabled={p === "..."}

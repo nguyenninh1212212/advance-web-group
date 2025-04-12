@@ -9,8 +9,9 @@ import { GiAngularSpider } from "react-icons/gi";
 import { fakedatadetail } from "../FakeData/FakedataDetail";
 import CardSearchResult from "../components/card/CardSearchResult";
 import { LiaSlidersHSolid } from "react-icons/lia";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCategory } from "../redux/slices/categorySlice";
+import { selectTheme } from "../redux/slices/themeSlice";
 
 const Header: React.FC<LayoutRouteProps> = ({ children }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -19,6 +20,7 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const location = useLocation();
+  const theme = useSelector(selectTheme);
 
   // Đóng lại khi điều hướng trang khác
   useEffect(() => {
@@ -47,12 +49,14 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen overflow-auto scrollbar-hide">
       {/* Navbar cố định */}
-      <header className="fixed w-screen bg-gray-800 flex justify-center z-50 border-b pb-1 border-primary-200 ">
+      <header
+        className={`fixed w-screen  flex justify-center z-50 border-b pb-1  ${theme.border_bottom} ${theme.header} `}
+      >
         <div className="md:w-[1200px] w-full h-[70px] flex justify-between items-center p-3">
           {/* Logo */}
           <Link
             to="/"
-            className="w-fit flex items-center text-white font-bold gap-2"
+            className="w-fit flex items-center font-bold gap-2"
             onClick={() => dispatch(setCategory("Home"))}
           >
             <GiAngularSpider className="text-5xl" />
@@ -113,7 +117,7 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
             {/* User Profile */}
             <div className="relative">
               <FaUser
-                className="text-2xl cursor-pointer hover:text-primary-200 transition-colors duration-300"
+                className="text-2xl text-white cursor-pointer hover:text-primary-200 transition-colors duration-300"
                 onClick={() => setIsOpen(!isOpen)}
               />
               {isOpen && <Profile onClose={() => setIsOpen(!isOpen)} />}
@@ -128,7 +132,9 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
       </main>
 
       {/* Footer cố định */}
-      <footer className="bg-gray-800 w-full border-t-2 border-primary-200 h-40 flex items-center justify-center mt-auto">
+      <footer
+        className={` w-full border-t-2  h-40 flex items-center justify-center mt-auto ${theme.header} ${theme.text} ${theme.border} `}
+      >
         <p className="text-white">© 2025 Tư Bản Truyện. All rights reserved.</p>
       </footer>
     </div>
