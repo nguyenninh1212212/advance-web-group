@@ -11,3 +11,8 @@ export const getStories = async (page: number, limit: number) => {
   });
   return result.data;
 };
+
+export const getStoryById = async (id: string) => {
+  const result = await api.get(`/story/detail/${id}`);
+  return result.data.result;
+};

@@ -1,9 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaComment, FaEye, FaHeart, FaStar } from "react-icons/fa";
-import { formatNumber } from "../../util/format/formatNumber";
-import { IChapter, IComicDetail } from "../../type/comic";
-import { fakedata } from "../../FakeData/FakeDataComic";
+import { ICategory, IChapter, IComicDetail } from "../../type/comic";
 import Popup from "../../components/popup/Popup";
 import Purchase from "../../components/popup/Purchase";
 import CardCategoryDetail from "../../components/card/CardCategoryDetail";
@@ -11,16 +9,16 @@ import { VscDebugStart } from "react-icons/vsc";
 
 import ComicContainer from "./ComicContainer";
 import Rate from "../../components/popup/Rate";
-import useTheme from "../../util/theme/theme";
+import { useTheme, statusTheme, typeTheme } from "../../util/theme/theme";
+import { useQuery } from "@tanstack/react-query";
+import { getStoryById } from "../../api/stories";
 
 const ComicDetail: React.FC<IComicDetail> = () => {
-  const { id } = useParams();
+  const { id } = useParams<string>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenRate, setIsOpenRate] = useState<boolean>(false);
-  const data = fakedata.find((comic) => comic.id == id);
   const [seeMore, setSeeMore] = useState<boolean>(false);
   const navigate = useNavigate();
-  const datamemo = useMemo(() => data, [data]);
   const [chapter, setChapter] = useState<IChapter>();
   const theme = useTheme();
 
@@ -32,33 +30,58 @@ const ComicDetail: React.FC<IComicDetail> = () => {
       navigate(`/${chapter.title}/chapter/${id}/${chapter.images}`);
     }
   };
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["comicDetail", id],
+    queryFn: () => getStoryById(id as string),
+    enabled: !!id,
+  });
+
+  console.log("🚀 ~ story detail:", data, error, isLoading);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
 
-  if (!data)
-    return (
-      <p className="text-center text-lg">
-        Truyện không tồn tại "Chỉ có chainsaw man có dữ liệu"
-      </p>
-    );
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex flex-col gap-4 min-h-screen ">
       <div className="flex md:flex-row flex-col gap-4">
-        <div className="md:w-1/3 w-full  md:pr-5 flex flex-col md:items-start items-center">
+        <div className="md:w-1/3 w-full  md:pr-5 flex flex-col md:items-start ">
           <img
-            className="md:h-96 md:w-72 w-5/6 h-1/2  rounded-xl object-cover "
-            src={data.image}
+            className="md:h-96 md:w-72 w-5/6 h-1/2  rounded-xl object-cover self-center"
+            src={data.coverImage}
             alt={data.title}
           />
           <div>
             <ul className={`mt-2  flex flex-col gap-1 ${theme.text}`}>
               <li className={`font-medium text-3xl ${theme.text}`}>
-                {datamemo?.title}
+                {data.title}
               </li>
               <li>
-                Tác giả: <span className={`${theme.text}`}>David Grayson</span>
+                Tác giả:{" "}
+                <span className={`${theme.text}`}>{data.author.fullName}</span>
+              </li>
+              <li>
+                Trạng thái:{" "}
+                <span
+                  className={`${theme.text} p-[2x] px-1 rounded-md ${
+                    statusTheme[data.status]
+                  }`}
+                >
+                  {data.status}
+                </span>
+              </li>
+              <li>
+                Kiểu truyện:{" "}
+                <span
+                  className={`${theme.text} p-[2x] px-1 rounded-md ${
+                    typeTheme[data.type]
+                  }`}
+                >
+                  {data.type}
+                </span>
               </li>
               <li
                 className="cursor-pointer"
@@ -66,23 +89,19 @@ const ComicDetail: React.FC<IComicDetail> = () => {
               >
                 <p className={`${theme.text} ${seeMore ? "" : "line-clamp-2"}`}>
                   <span>Mô tả: </span>
-                  Lucia là một cô gái bình thường nhưng cô có thể nhìn thấy
-                  tương lai qua những giấc mơ của mình Lucia là một cô gái bình
-                  thường nhưng cô có thể nhìn thấy tương lai qua những giấc mơ
-                  của mình Lucia là một cô gái bình thường nhưng cô có thể nhìn
-                  thấy tương lai qua những giấc mơ của mình
+                  {data.description}
                 </p>
               </li>
               <li className="flex gap-1 ">
                 Lượt xem:{" "}
                 <span className={` flex items-center gap-1 ${theme.text}`}>
-                  {formatNumber(data.view)} <FaEye />
+                  {data.views} <FaEye />
                 </span>
               </li>
               <li className="flex gap-1">
                 Đánh giá:{" "}
                 <span className={` flex items-center gap-1 ${theme.text}`}>
-                  {formatNumber(data.cmt)} <FaStar />
+                  {data.rate} <FaStar />
                 </span>
               </li>
               <li className="flex p-2">
@@ -120,7 +139,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
           <div className="border-b-2 border-stone-500 w-auto pb-2">
             <section className="flex flex-wrap gap-2  mt-2">
               <span className={`${theme.text}`}>Tag :</span>
-              {datamemo?.categoties.map((category) => (
+              {data?.categories.map((category: ICategory) => (
                 <CardCategoryDetail key={category.id} name={category.name} />
               ))}
             </section>
@@ -153,7 +172,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
           )}
         </div>
       </div>
-      <ComicContainer />
+      {/* <ComicContainer data={""} /> */}
       <Popup
         isOpen={isOpen}
         setIsOpen={setIsOpen}

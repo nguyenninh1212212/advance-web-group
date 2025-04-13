@@ -9,10 +9,11 @@ import { fakedatadetail } from "../../FakeData/FakedataDetail";
 import { useQuery } from "@tanstack/react-query";
 import { getHomepage } from "../../api/stories";
 import CardCategory from "../../components/card/CardCategory";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Popup from "../../components/popup/Popup";
 import { MdOutlineMoreHoriz } from "react-icons/md";
 import { IStoriesResponse, IStory } from "../../type/comic";
+import { useIsMobile } from "./../../util/Mobile";
 
 interface IHomepagePayload {
   getStoriesComingSoon: IStoriesResponse;
@@ -55,22 +56,7 @@ const Home = () => {
   );
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth <= 768);
-
-  // Theo dõi thay đổi kích thước màn hình
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    // Clean up
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
+  const isMobile = useIsMobile();
   const { data, isLoading, error } = useQuery({
     queryKey: ["home"],
     queryFn: () => getHomepage(),

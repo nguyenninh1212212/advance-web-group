@@ -1,6 +1,6 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import usePagination from "./pageHook";
-import useTheme from "../theme/theme";
+import { useTheme } from "../theme/theme";
 
 interface PaginationProps {
   initialPage: number;

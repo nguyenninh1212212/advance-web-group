@@ -1,11 +1,11 @@
-import useTheme from "../../util/theme/theme";
+import { useTheme } from "../../util/theme/theme";
 
 const CardTitle = ({
   title,
   font = "font-bold",
 }: {
   title: string;
-  font?: string;  
+  font?: string;
 }) => {
   const theme = useTheme();
   return (

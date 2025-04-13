@@ -2,14 +2,17 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import CardComichorizontal from "../../components/card/CardComichorizontal";
 import { groupDataIntoFour } from "../../util/group/groupdata";
 import { IStoriesResponse } from "../../type/comic";
+import { useIsMobile } from "../../util/Mobile";
 
 const ComicLastest = ({ data }: { data: IStoriesResponse }) => {
-  console.log("🚀 ~ ComicLastest ~ data:", data?.data.length);
-  const groupdata = useMemo(() => groupDataIntoFour(data?.data, 4), [data]);
+  const isMobile = useIsMobile(768);
+  const groupdata = useMemo(
+    () => groupDataIntoFour(data?.data, isMobile ? 1 : 4),
+    [data]
+  );
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Xử lý sự kiện cuộn ngang
   const handleScroll = () => {
     if (scrollRef.current) {
       const scrollLeft = scrollRef.current.scrollLeft;
@@ -40,7 +43,7 @@ const ComicLastest = ({ data }: { data: IStoriesResponse }) => {
       >
         {groupdata.map((group, _i) => (
           <div
-            className="w-[30%] md:min-w-[200px] h-[500px] rounded-lg bg-gray-400 p-2 flex flex-col"
+            className="w-[100%] md:min-w-[200px] h-[500px] rounded-lg bg-gray-400 p-2 flex flex-col"
             key={_i}
           >
             {group.map((e, index) => (

@@ -3,7 +3,7 @@ import { IoChevronBackOutline, IoAddOutline } from "react-icons/io5";
 import CardCreateStory from "../../../components/card/CardCreateStory";
 import { fakedatadetail } from "../../../FakeData/FakedataDetail";
 import { Link } from "react-router-dom";
-import useTheme from "../../../util/theme/theme";
+import { useTheme } from "../../../util/theme/theme";
 
 const List = () => {
   const theme = useTheme();
