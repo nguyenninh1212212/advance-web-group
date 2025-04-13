@@ -65,3 +65,31 @@ export interface IHistory {
   title: string;
   chapter: IChapter[];
 }
+
+// Interface cho từng item
+export interface ICategory {
+  id: string;
+  name: string;
+}
+
+export type StoryType = "NOVEL" | "COMIC"; // Nếu có thể có nhiều loại, thêm vào đây
+export type StoryStatus = "UPDATING" | "COMPLETED" | "PAUSED"; // Cập nhật theo hệ thống bạn dùng
+
+export interface IStory {
+  id: string;
+  title: string;
+  type: StoryType;
+  status: StoryStatus;
+  view: number;
+  updatedAt: string;
+  createdAt: string;
+  coverImage: string;
+  categories: ICategory[];
+}
+// Interface cho phản hồi toàn bộ từ API
+export interface IStoriesResponse {
+  data: IStory[];
+  limit: number;
+  page: number;
+  total: number;
+}

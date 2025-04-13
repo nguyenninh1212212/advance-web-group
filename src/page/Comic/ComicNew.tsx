@@ -2,8 +2,14 @@ import CardComicDetail from "../../components/card/CardComicDetail";
 import { fakedatadetail } from "../../FakeData/FakedataDetail";
 import CardTitle from "../../components/card/CardTitle";
 import Pagination from "../../util/pagebar/page";
+import { IStoriesResponse } from "../../type/comic";
 
-const ComicNew = () => {
+interface IPayload {
+  data: IStoriesResponse;
+}
+
+const ComicNew: React.FC<IPayload> = ({ data }) => {
+  console.log("🚀 ~ data:", data);
   return (
     <>
       <div className="flex justify-between items-center mt-2 relative ">
@@ -14,9 +20,9 @@ const ComicNew = () => {
 
       {/* Comic list */}
       <div className="w-full h-auto  rounded-lg grid md:grid-cols-5  gap-4 pt-4 grid-cols-2">
-        {fakedatadetail.map((e, _i) => (
+        {data?.data.map((e, _i) => (
           <div key={_i} className="snap-start flex justify-center items-center">
-            <CardComicDetail data={e} message="" />
+            <CardComicDetail data={e} />
           </div>
         ))}
       </div>

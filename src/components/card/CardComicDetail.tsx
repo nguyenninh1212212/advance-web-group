@@ -1,27 +1,50 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaEye, FaComment, FaHeart } from "react-icons/fa";
-import { formatNumber } from "../../util/format/formatNumber";
-import { payload } from "../../type/comic";
+import { FaEye, FaComment } from "react-icons/fa";
+import { IStory } from "../../type/comic";
 import { useSelector } from "react-redux";
 import { selectTheme } from "../../redux/slices/themeSlice";
 
-const CardComicDetail: React.FC<payload> = ({ data }) => {
+interface IPayload {
+  data: IStory;
+}
+
+const CardComicDetail: React.FC<IPayload> = ({
+  data: { id, title, coverImage, view, type, status, categories },
+}) => {
   const navigate = useNavigate();
-  const { id, title, image, view, cmt, like } = data;
   const theme = useSelector(selectTheme);
+  const statusTheme = useMemo(
+    () =>
+      ({
+        COMING_SOON: "bg-yellow-500",
+        UPDATING: "bg-primary-200",
+        COMPLETED: "bg-blue-500",
+      } as Record<string, string>),
+    []
+  );
 
   return (
-    <div className="w-[220px] md:h-[350px] h-[300px] max-md:w-[180px]  px-1  relative group rounded-md">
+    <div className="w-[220px] md:h-full h-[300px] max-md:w-[200px]  px-1  relative group rounded-md">
       <Link
         to={`/${title}/detail/${id}`}
-        state={{ data }}
         className="block w-full h-full overflow-hidden"
       >
+        <div
+          className={`items-center absolute flex justify-end  z-10 w-[97%] -mt-[1px]`}
+        >
+          <p
+            className={`text-white text-xs rounded-sm  ${
+              statusTheme[status] || "bg-gray-500"
+            } px-2 py-1`}
+          >
+            {status}
+          </p>
+        </div>
         {/* Hình ảnh với hiệu ứng hover */}
         <div className="relative overflow-hidden rounded-md">
           <img
-            src={`${image}`}
+            src={`${coverImage}`}
             alt={title}
             className="w-full md:h-[300px] h-64 object-cover  transition-transform duration-300 group-hover:scale-110"
           />
@@ -29,18 +52,26 @@ const CardComicDetail: React.FC<payload> = ({ data }) => {
           <div
             className={`absolute inset-0 md:[300px] rounded-md text-white bg-black bg-opacity-70  flex flex-col justify-center items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100`}
           >
-            <div className="flex gap-2 mt-2">
+            <div className="flex gap-2 mt-2 flex-col">
               <div className="flex items-center">
                 <FaEye className="text-white h-4 w-4 mr-1" />
-                <p className="text-xs">{formatNumber(view)}</p>
+                <p className="text-xs">{view}</p>
               </div>
               <div className="flex items-center">
                 <FaComment className="text-white h-4 w-4 mr-1" />
-                <p className="text-xs">{formatNumber(cmt)}</p>
+                <p className="text-xs">{type}</p>
               </div>
-              <div className="flex items-center">
-                <FaHeart className="text-white h-4 w-4 mr-1" />
-                <p className="text-xs">{formatNumber(like)}</p>
+
+              <div className="flex items-center gap-1">
+                {categories &&
+                  categories.slice(0, 3).map((category, index) => (
+                    <p
+                      key={index}
+                      className={`text-xs bg-gray-500 rounded-lg px-2 py-1`}
+                    >
+                      {category.name}
+                    </p>
+                  ))}
               </div>
             </div>
 

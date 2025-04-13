@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080"; // Địa chỉ API backend
+const BASE_URL = "/api"; // Địa chỉ API backend
 // Tạo một instance của axios
 export const api = axios.create({
   baseURL: `${BASE_URL}`, // Địa chỉ API backend
@@ -13,7 +13,7 @@ export const api = axios.create({
 
 // Thêm interceptor cho yêu cầu
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
+  const token = localStorage.getItem("token"); // Lấy token từ localStorage
   if (token) {
     config.headers.Authorization = `Bearer ${token}`; // Gắn token vào header Authorization
   }

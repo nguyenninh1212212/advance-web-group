@@ -1,4 +1,3 @@
-import axios from "axios";
 import { api } from "./index";
 
 interface LoginRequest {
@@ -15,7 +14,9 @@ interface LoginResponse {
   };
 }
 
-export const login = async (credentials: LoginRequest): Promise<LoginResponse> => {
+export const login = async (
+  credentials: LoginRequest
+): Promise<LoginResponse> => {
   const response = await api.post<LoginResponse>("/auth/token", credentials, {
     withCredentials: true,
   });
