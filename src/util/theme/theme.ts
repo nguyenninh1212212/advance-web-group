@@ -14,6 +14,6 @@ export const statusTheme = {
 } as Record<string, string>;
 
 export const typeTheme = {
-  NOVEl: "bg-orange-400",
+  NOVEL: "bg-orange-400",
   COMIC: "bg-blue-400",
 } as Record<string, string>;

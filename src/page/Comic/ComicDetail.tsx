@@ -7,7 +7,6 @@ import Purchase from "../../components/popup/Purchase";
 import CardCategoryDetail from "../../components/card/CardCategoryDetail";
 import { VscDebugStart } from "react-icons/vsc";
 
-import ComicContainer from "./ComicContainer";
 import Rate from "../../components/popup/Rate";
 import { useTheme, statusTheme, typeTheme } from "../../util/theme/theme";
 import { useQuery } from "@tanstack/react-query";
@@ -76,7 +75,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
               <li>
                 Kiểu truyện:{" "}
                 <span
-                  className={`${theme.text} p-[2x] px-1 rounded-md ${
+                  className={`text-white p-[2x] px-1 rounded-md ${
                     typeTheme[data.type]
                   }`}
                 >

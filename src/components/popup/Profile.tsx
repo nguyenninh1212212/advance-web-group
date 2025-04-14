@@ -5,43 +5,41 @@ import { RiBookShelfLine } from "react-icons/ri";
 import { BsCardChecklist } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import ThemeSwitcher from "../ThemeSwitcher";
+import { useTheme } from "../../util/theme/theme";
 
 const Profile = ({ onClose }: { onClose: () => void }) => {
   const navigator = useNavigate();
-
+  const theme = useTheme();
+  const iconst = {
+    st: `text-2xl  hover:${theme.hover} transition-colors duration-300 ${theme.text}`,
+  };
   const navigationItems = [
     {
       label: "Subscription",
       to: "/subscription-plan",
-      icon: (
-        <BsCardChecklist className="text-2xl text-white hover:text-primary-200 transition-colors duration-300" />
-      ),
+      icon: <BsCardChecklist className={iconst.st} />,
     },
     {
       label: "Payment history",
       to: "/my/payment-history",
-      icon: (
-        <FaWallet className="text-2xl text-white hover:text-primary-200 transition-colors duration-300" />
-      ),
+      icon: <FaWallet className={iconst.st} />,
     },
     {
       label: "My List",
       to: "/my/stories",
-      icon: (
-        <RiBookShelfLine className="text-2xl text-white hover:text-primary-200 transition-colors duration-300" />
-      ),
+      icon: <RiBookShelfLine className={iconst.st} />,
     },
     {
       label: "History reading",
       to: "/my/history",
-      icon: (
-        <FaHistory className="text-2xl text-white hover:text-primary-200 transition-colors duration-300" />
-      ),
+      icon: <FaHistory className={iconst.st} />,
     },
   ];
 
   return (
-    <div className="fixed top-3 max-md:top-0 max-md:right-0 w-screen h-screen bg-gray-900 text-white z-50 md:w-[350px] md:h-auto md:rounded-lg md:mt-16 md:-ml-80 md:border border-stone-600 p-4 overflow-y-auto scrollbar-hide transition-transform duration-300 transform md:translate-x-0">
+    <div
+      className={`fixed top-3 max-md:top-0 max-md:right-0 w-screen h-screen ${theme.header} text-white z-50 md:w-[350px] md:h-auto md:rounded-lg md:mt-16 md:-ml-80 md:border border-stone-600 p-4 overflow-y-auto scrollbar-hide transition-transform duration-300 transform md:translate-x-0`}
+    >
       {/* Nút đóng */}
       <div className="w-full flex justify-end">
         <button
@@ -53,7 +51,9 @@ const Profile = ({ onClose }: { onClose: () => void }) => {
       </div>
 
       {/* Số dư và nút nạp tiền */}
-      <div className="bg-gray-800 p-3 mt-1 rounded-lg flex justify-between items-center">
+      <div
+        className={` p-3 mt-1 rounded-lg flex justify-between items-center ${theme.card} ${theme.text}`}
+      >
         <div className="flex items-center space-x-2">
           <p className="flex items-center gap-2">
             <FaMoneyBill className="text-green-400" /> 0
@@ -69,9 +69,11 @@ const Profile = ({ onClose }: { onClose: () => void }) => {
       {/* Navigation Items */}
       {navigationItems.map((item, index) => (
         <Link to={item.to} key={index} onClick={onClose}>
-          <div className="flex justify-between items-center bg-gray-800 p-3 rounded-lg cursor-pointer hover:bg-primary-700 transition-all duration-300 mt-2">
-            <p className="text-sm font-medium">{item.label}</p>
-            {item.icon}
+          <div
+            className={`flex justify-between items-center ${theme.card} p-3 rounded-lg cursor-pointer hover:bg-primary-700 transition-all duration-300 mt-2 ${theme.text} `}
+          >
+            <p className="text-sm font-medium ">{item.label}</p>
+            <p className={`${theme.text}`}> {item.icon}</p>
           </div>
         </Link>
       ))}

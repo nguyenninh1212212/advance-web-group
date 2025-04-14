@@ -57,7 +57,7 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
           <Link
             to="/"
             className="w-fit flex items-center font-bold gap-2"
-            onClick={() => dispatch(setCategory("Home"))}
+            onClick={() => dispatch(setCategory({ id: "Home", name: "Home" }))}
           >
             <GiAngularSpider className="text-5xl" />
             <p className="font-semibold font-sans md:text-3xl whitespace-nowrap">

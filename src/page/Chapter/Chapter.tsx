@@ -1,6 +1,8 @@
 import React from "react";
+import { useTheme } from "../../util/theme/theme";
 
 const Chapter: React.FC = () => {
+  const theme = useTheme();
   return (
     <div className="text-black flex flex-col justify-between">
       <div className="max-w-5xl mx-auto flex-grow">
@@ -16,7 +18,9 @@ const Chapter: React.FC = () => {
 
       {/* Nút Trang kế tiếp */}
       <div className="w-full p-4">
-        <button className="py-2 text-white bg-primary-200 w-full rounded-lg">
+        <button
+          className={`py-2 text-white ${theme.background_card} w-full rounded-lg`}
+        >
           Trang kế tiếp
         </button>
       </div>

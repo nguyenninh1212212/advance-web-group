@@ -5,16 +5,18 @@ import { RootState } from "../../redux/store";
 
 interface Props {
   name: string;
+  id: string;
 }
 
-const CardCategory: React.FC<Props> = ({ name }) => {
+const CardCategory: React.FC<Props> = ({ name, id }) => {
   const dispatch = useDispatch();
-  const selectedCategory = useSelector(
-    (state: RootState) => state.category.selectedCategory
-  );
+  const { selectedCategory } = useSelector((state: RootState) => ({
+    selectedCategory: state.category.selectedCategory,
+    selectedCategoryId: state.category.selectedCategoryId,
+  }));
 
   const handleClick = () => {
-    dispatch(setCategory(name));
+    dispatch(setCategory({ name, id }));
   };
 
   return (

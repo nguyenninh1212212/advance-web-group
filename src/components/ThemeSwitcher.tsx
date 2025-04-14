@@ -13,11 +13,11 @@ const ThemeDropdown = () => {
   ];
 
   return (
-    <div className={`mt-2 w-full  rounded-lg `}>
+    <div className={`mt-2  w-full  rounded-lg `}>
       <select
         value={theme.index} // 👈 dùng index, không phải name
         onChange={(e) => dispatch(setTheme(parseInt(e.target.value)))}
-        className="p-3 rounded w-full bg-gray-800"
+        className={`p-4 rounded w-full ${theme.text}   ${theme.card} `}
       >
         {themes.map((t) => (
           <option key={t.index} value={t.index}>

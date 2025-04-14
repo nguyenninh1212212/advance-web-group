@@ -4,9 +4,34 @@ import CardCreateStory from "../../../components/card/CardCreateStory";
 import { fakedatadetail } from "../../../FakeData/FakedataDetail";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../../util/theme/theme";
+import { useQuery } from "@tanstack/react-query";
+import { getMyList } from "../../../api/stories";
+import ClipLoader from "react-spinners/ClipLoader";
+import { IStory } from "../../../type/comic";
 
 const List = () => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["list"],
+    queryFn: () => getMyList(),
+  });
+  console.log("🚀 ~ List ~ data:", data);
   const theme = useTheme();
+
+  if (isLoading)
+    return (
+      <div>
+        {" "}
+        <ClipLoader
+          color={"gray"}
+          cssOverride={{ display: "block", margin: "0 auto" }}
+          loading={isLoading}
+          size={50}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  if (error) return <div>Error: {error.message}</div>;
   return (
     <div className={`min-h-screen   my-2 ${theme.background}`}>
       {/* Header Section */}
@@ -31,8 +56,8 @@ const List = () => {
           <span> Thêm truyện</span>
         </Link>
       </div>
-      {fakedatadetail.slice(0, 3).map((item, index) => (
-        <CardCreateStory key={index} data={item} />
+      {data?.data.map((item: IStory) => (
+        <CardCreateStory key={item.id} data={item} />
       ))}
 
       {/* MDList Items */}

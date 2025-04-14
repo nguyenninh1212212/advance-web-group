@@ -2,6 +2,7 @@ import React from "react";
 import { FaMoneyBillWave } from "react-icons/fa";
 import CardTitle from "../../../components/card/CardTitle";
 import { BiSort } from "react-icons/bi";
+import { useTheme } from "../../../util/theme/theme";
 
 const transactions = [
   {
@@ -31,8 +32,9 @@ const transactions = [
 ];
 
 const PaymentHistory = () => {
+  const theme = useTheme();
   return (
-    <div className="p-6  text-white min-h-screen mb-2">
+    <div className={`p-6   min-h-screen mb-2 ${theme.text}`}>
       <div className="flex justify-between items-center mb-6">
         <CardTitle title="Payment History" />
         <div className="flex items-center gap-3">
@@ -56,7 +58,7 @@ const PaymentHistory = () => {
       {transactions.map((t, index) => (
         <div
           key={index}
-          className="grid grid-cols-4 py-4 items-center border-b border-gray-800 hover:bg-gray-800"
+          className={`grid grid-cols-4 py-4 items-center border-b border-gray-800 ${theme.hover}`}
         >
           <div className="flex items-center gap-2">
             <FaMoneyBillWave className="text-yellow-400" />

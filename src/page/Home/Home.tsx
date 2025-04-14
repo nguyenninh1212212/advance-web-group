@@ -14,6 +14,7 @@ import Popup from "../../components/popup/Popup";
 import { MdOutlineMoreHoriz } from "react-icons/md";
 import { IStoriesResponse, IStory } from "../../type/comic";
 import { useIsMobile } from "./../../util/Mobile";
+import ClipLoader from "react-spinners/ClipLoader";
 
 interface IHomepagePayload {
   getStoriesComingSoon: IStoriesResponse;
@@ -57,14 +58,27 @@ const Home = () => {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const isMobile = useIsMobile();
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["home"],
     queryFn: () => getHomepage(),
   });
-  console.log("🚀 ~ Home ~ data:", data);
   const category = useMemo(() => data?.categories?.categories || [], [data]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div>
+        {" "}
+        <ClipLoader
+          color={"gray"}
+          cssOverride={{ display: "block", margin: "0 auto" }}
+          loading={isLoading}
+          size={50}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
   if (error) return <div>Error: {error.message}</div>;
 
   const categoriesToShow = isMobile ? category.slice(0, 6) : category;
@@ -79,12 +93,12 @@ const Home = () => {
       <div className="pb-4 flex flex-wrap gap-2 w-full h-auto">
         {[
           { name: "Home", value: "Home" },
-          { name: "All", value: "All" },
+          { name: "All", value: "all" },
         ].map((e, index) => (
-          <CardCategory key={index} name={e.name} />
+          <CardCategory key={index} name={e.name} id={e.value} />
         ))}
         {categoriesToShow.map((e: { id: string; name: string }) => (
-          <CardCategory key={e.id} name={e.name} />
+          <CardCategory key={e.id} name={e.name} id={e.id} />
         ))}
 
         {isMobile && category.length > 5 && (
@@ -107,7 +121,7 @@ const Home = () => {
           getStoriesUpdating={data?.getStoriesUpdating}
         />
       ) : (
-        <ResultDetail data={fakedatadetail} />
+        <ResultDetail />
       )}
       {isMobile && isOpen && (
         <Popup
@@ -117,7 +131,7 @@ const Home = () => {
         >
           <div className="gap-2 flex flex-wrap w-full h-auto">
             {category.map((e: { id: string; name: string }) => (
-              <CardCategory key={e.id} name={e.name} />
+              <CardCategory key={e.id} name={e.name} id={e.id} />
             ))}
           </div>
         </Popup>

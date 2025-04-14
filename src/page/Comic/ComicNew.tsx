@@ -1,7 +1,5 @@
 import CardComicDetail from "../../components/card/CardComicDetail";
-import { fakedatadetail } from "../../FakeData/FakedataDetail";
 import CardTitle from "../../components/card/CardTitle";
-import Pagination from "../../util/pagebar/page";
 import { IStoriesResponse } from "../../type/comic";
 
 interface IPayload {
@@ -9,7 +7,6 @@ interface IPayload {
 }
 
 const ComicNew: React.FC<IPayload> = ({ data }) => {
-  console.log("🚀 ~ data:", data);
   return (
     <>
       <div className="flex justify-between items-center mt-2 relative ">
@@ -26,9 +23,6 @@ const ComicNew: React.FC<IPayload> = ({ data }) => {
           </div>
         ))}
       </div>
-      <center>
-        <Pagination initialPage={1} initialLimit={10} totalItem={100} />
-      </center>
     </>
   );
 };
