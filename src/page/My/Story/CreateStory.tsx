@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { FaPlus, FaUpload } from "react-icons/fa";
-import { category } from "../../../util/category";
 import CardTitle from "../../../components/card/CardTitle";
+import { useQuery } from "@tanstack/react-query";
+import { getCategory } from "../../../api/category";
+import { ICategory } from "../../../type/comic";
 
 const CreateStory = () => {
   const [title, setTitle] = useState("");
@@ -10,6 +12,18 @@ const CreateStory = () => {
   const [type, setType] = useState<"COMIC" | "NOVEL">("COMIC");
   const [cover, setCover] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["category"],
+    queryFn: () => getCategory(),
+  });
+  console.log("🚀 ~ CreateStory ~ isLoading:", isLoading);
+
+  if (error) {
+    return (
+      <p>Error : {error instanceof Error ? error.message : String(error)}</p>
+    );
+  }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -127,8 +141,8 @@ const CreateStory = () => {
               Thể loại
             </label>
             <div className="flex flex-wrap gap-2">
-              {category.map((cat) => {
-                const isSelected = categories.includes(cat.value);
+              {data?.categories.map((cat: ICategory) => {
+                const isSelected = categories.includes(cat.id);
                 return (
                   <button
                     key={cat.name}
@@ -136,8 +150,8 @@ const CreateStory = () => {
                     onClick={() =>
                       setCategories((prev) =>
                         isSelected
-                          ? prev.filter((c) => c !== cat.value)
-                          : [...prev, cat.value]
+                          ? prev.filter((c) => c !== cat.id)
+                          : [...prev, cat.id]
                       )
                     }
                     className={`px-3 py-1 rounded-full text-sm border transition ${
@@ -146,7 +160,7 @@ const CreateStory = () => {
                         : "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700"
                     }`}
                   >
-                    {cat.value}
+                    {cat.name}
                   </button>
                 );
               })}

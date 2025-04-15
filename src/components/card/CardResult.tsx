@@ -17,7 +17,7 @@ const CardResult: React.FC<Payload> = ({ data }) => {
       className="flex flex-wrap bg-gray-900 md:p-4 max-md:flex-col rounded-md w-full hover:scale-95 transition-all gap-1 md:gap-4 overflow-hidden relative"
     >
       {/* Ảnh */}
-      <section className="md:w-[20%] min-w-[80px] max-md:h-full h-40 flex">
+      <section className="md:w-[20%] min-w-[80px] max-md:h-[300px] h-40 flex">
         <img
           src={coverImage}
           alt={title}

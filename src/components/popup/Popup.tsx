@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
+import { useTheme } from "../../util/theme/theme";
 
 interface Payload {
   isOpen: boolean;
@@ -13,6 +14,8 @@ const Popup: React.FC<Payload> = ({
   children,
   backgroundColor,
 }) => {
+  const theme = useTheme();
+
   if (!isOpen) return null;
 
   return (
@@ -21,7 +24,7 @@ const Popup: React.FC<Payload> = ({
       onClick={() => setIsOpen(false)}
     >
       <div
-        className={`bg-black p-3 gap-2 flex-col flex rounded-lg shadow-lg mx-4   overflow-y-auto scrollbar-hide ${backgroundColor} `}
+        className={` p-3 gap-2 flex-col flex rounded-lg shadow-lg mx-4   overflow-y-auto scrollbar-hide ${theme.header} `}
         onClick={(e) => e.stopPropagation()}
       >
         <button className="self-end" onClick={() => setIsOpen(!isOpen)}>

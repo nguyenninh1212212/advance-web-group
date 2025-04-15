@@ -27,6 +27,11 @@ export const getStoriesByCate = async (
   page: number,
   limit: number
 ) => {
-  const result = await api.get(`/search/story_cate/${id}?page=0&limit=10`);
+  const result = await api.get(`/search/story_cate/${id}`, {
+    params: {
+      page,
+      limit,
+    },
+  });
   return result?.data?.result;
 };

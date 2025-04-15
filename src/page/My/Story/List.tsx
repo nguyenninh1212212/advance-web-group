@@ -1,7 +1,6 @@
 import React from "react";
 import { IoChevronBackOutline, IoAddOutline } from "react-icons/io5";
 import CardCreateStory from "../../../components/card/CardCreateStory";
-import { fakedatadetail } from "../../../FakeData/FakedataDetail";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../../util/theme/theme";
 import { useQuery } from "@tanstack/react-query";
@@ -14,7 +13,6 @@ const List = () => {
     queryKey: ["list"],
     queryFn: () => getMyList(),
   });
-  console.log("🚀 ~ List ~ data:", data);
   const theme = useTheme();
 
   if (isLoading)

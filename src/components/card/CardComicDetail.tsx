@@ -42,7 +42,7 @@ const CardComicDetail: React.FC<IPayload> = ({
           </p>
         </div>
         {/* Hình ảnh với hiệu ứng hover */}
-        <div className="relative overflow-hidden rounded-md">
+        <div className="relative overflow-hidden rounded-md md:h-[300px] h-64 ">
           <img
             src={`${coverImage}`}
             alt={title}

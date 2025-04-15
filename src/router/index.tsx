@@ -40,7 +40,7 @@ const RoutesConfig = () => {
       layout: Header,
     },
     {
-      path: "/:name/chapter/:id/:number",
+      path: "/:name/chapter/:id",
       component: Chapter,
       layout: Header,
     },

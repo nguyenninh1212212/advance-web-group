@@ -11,6 +11,7 @@ import Rate from "../../components/popup/Rate";
 import { useTheme, statusTheme, typeTheme } from "../../util/theme/theme";
 import { useQuery } from "@tanstack/react-query";
 import { getStoryById } from "../../api/stories";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const ComicDetail: React.FC<IComicDetail> = () => {
   const { id } = useParams<string>();
@@ -21,29 +22,43 @@ const ComicDetail: React.FC<IComicDetail> = () => {
   const [chapter, setChapter] = useState<IChapter>();
   const theme = useTheme();
 
-  const isPurchase = (chapter: IChapter) => {
-    if (chapter.price > 0) {
-      setIsOpen(!isOpen);
-      setChapter(chapter);
-    } else {
-      navigate(`/${chapter.title}/chapter/${id}/${chapter.images}`);
-    }
-  };
   const { data, isLoading, error } = useQuery({
     queryKey: ["comicDetail", id],
     queryFn: () => getStoryById(id as string),
     enabled: !!id,
   });
 
-  console.log("🚀 ~ story detail:", data, error, isLoading);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
+  const isPurchase = (chapter: IChapter) => {
+    if (chapter.price > 0) {
+      setIsOpen(!isOpen);
+      setChapter(chapter);
+    } else {
+      navigate(`/${data?.title}/chapter/${chapter.id}`);
+    }
+  };
+  if (isLoading)
+    return (
+      <div>
+        {" "}
+        <ClipLoader
+          color={"gray"}
+          cssOverride={{ display: "block", margin: "0 auto" }}
+          loading={isLoading}
+          size={50}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  if (error) return <div>Error: {error.message}</div>;
+  if (data.chapter.length > 0) {
+    console.log("🚀 ~ data:", data);
+    localStorage.setItem("id_story", data.id);
+    localStorage.setItem("title", data.title);
   }
-
   return (
     <div className="flex flex-col gap-4 min-h-screen ">
       <div className="flex md:flex-row flex-col gap-4">
@@ -65,7 +80,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
               <li>
                 Trạng thái:{" "}
                 <span
-                  className={`${theme.text} p-[2x] px-1 rounded-md ${
+                  className={`text-white p-[2x] px-1 rounded-md ${
                     statusTheme[data.status]
                   }`}
                 >
@@ -139,32 +154,40 @@ const ComicDetail: React.FC<IComicDetail> = () => {
             <section className="flex flex-wrap gap-2  mt-2">
               <span className={`${theme.text}`}>Tag :</span>
               {data?.categories.map((category: ICategory) => (
-                <CardCategoryDetail key={category.id} name={category.name} />
+                <CardCategoryDetail
+                  key={category.id}
+                  name={category.name}
+                  id={category.id}
+                />
               ))}
             </section>
           </div>
           <div className=" h-auto overflow-y-auto scrollbar-hide p-3">
-            {data.chapter.map((chap: IChapter) => (
-              <div
-                key={chap.id}
-                className={`flex justify-between items-center hover:bg-stone-400 rounded-lg p-2 cursor-pointer"`}
-                onClick={() => isPurchase(chap)}
-              >
-                <div className="flex items-center gap-2 my-3">
-                  <div>
-                    <p>{chap.title}</p>
-                    <p className={`${theme.text}`}>{chap.createdAt}</p>
-                  </div>
-                </div>
-                <p
-                  className={`font-bold ${
-                    chap.price > 0 ? "text-orange-500" : "text-green-500"
-                  }`}
+            {data.chapter.length > 0 ? (
+              data.chapter.map((chap: IChapter) => (
+                <div
+                  key={chap.id}
+                  className={`flex justify-between items-center hover:bg-stone-400 rounded-lg p-2 cursor-pointer`}
+                  onClick={() => isPurchase(chap)}
                 >
-                  {chap.price > 0 ? `${chap.price} $` : "FREE"}
-                </p>
-              </div>
-            ))}
+                  <div className="flex items-center gap-2 my-3">
+                    <div>
+                      <p>{chap.title}</p>
+                      <p className={`${theme.text}`}>{chap.createdAt}</p>
+                    </div>
+                  </div>
+                  <p
+                    className={`font-bold ${
+                      chap.price > 0 ? "text-orange-500" : "text-green-500"
+                    }`}
+                  >
+                    {chap.price > 0 ? `${chap.price} $` : "FREE"}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p>Truyện chưa có chapter nào</p>
+            )}
           </div>
           {data.chapter.length > 4 && (
             <p className="text-center text-sm text-gray-500">Xem thêm</p>

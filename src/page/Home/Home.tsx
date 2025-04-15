@@ -5,7 +5,6 @@ import ComicLastest from "../Comic/ComicLastest";
 import ComicNew from "../Comic/ComicNew";
 import { RootState } from "../../redux/store";
 import ResultDetail from "../Result/ResultDetail";
-import { fakedatadetail } from "../../FakeData/FakedataDetail";
 import { useQuery } from "@tanstack/react-query";
 import { getHomepage } from "../../api/stories";
 import CardCategory from "../../components/card/CardCategory";
@@ -31,7 +30,6 @@ const HomePage: React.FC<IHomepagePayload> = ({
   getStoriesRecommend,
   getStoriesUpdating,
 }) => {
-  console.log("🚀 ~ HomePage ~ getStories:", getStoriesUpdating);
   return (
     <>
       <CardTitle title={"Truyện mới cập nhật"} />
@@ -82,10 +80,14 @@ const Home = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   const categoriesToShow = isMobile ? category.slice(0, 6) : category;
-  console.log("🚀 ~ Home ~ categoriesToShow:", categoriesToShow);
   const isMoreCate = category
     .slice(0, 6)
-    .find((e: { name: string }) => e.name === selectedCategory)
+    .find(
+      (e: { name: string }) =>
+        e.name === selectedCategory ||
+        selectedCategory === "Home" ||
+        selectedCategory == "All"
+    )
     ? false
     : true;
   return (

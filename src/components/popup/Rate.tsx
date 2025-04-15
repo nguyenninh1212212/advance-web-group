@@ -38,10 +38,9 @@ const StarRating = ({
 
 const Rate = () => {
   const [rating, setRating] = useState<number>(0); // Lưu trữ giá trị đánh giá sao
-
   return (
     <div className="flex flex-col items-center p-4 space-y-3">
-      <h2 className="text-xl font-semibold">Đánh giá của bạn</h2>
+      <h2 className="text-xl font-semibold text-white">Đánh giá của bạn</h2>
 
       {/* Hiển thị giao diện sao */}
       <StarRating rating={rating} setRating={setRating} />

@@ -3,12 +3,12 @@ import Pagination from "../../util/pagebar/page";
 import CardResult from "../../components/card/CardResult";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { Icard, IStoriesResponse, IStory } from "../../type/comic";
+import { IStory } from "../../type/comic";
 import { useQuery } from "@tanstack/react-query";
 import { getStoriesByCate } from "../../api/stories";
 import ClipLoader from "react-spinners/ClipLoader";
 
-const ResultDetail: React.FC<IStoriesResponse> = () => {
+const ResultDetail = () => {
   useEffect(() => window.scrollTo(0, 0), []);
   const selectedCategory = useSelector(
     (state: RootState) => state.category.selectedCategoryId
@@ -21,7 +21,6 @@ const ResultDetail: React.FC<IStoriesResponse> = () => {
     queryKey: ["cateStory", selectedCategory],
     queryFn: () => getStoriesByCate(selectedCategory, 0, 10),
   });
-  console.log("🚀 ~ data:", data);
 
   if (isLoading)
     return (
@@ -47,7 +46,7 @@ const ResultDetail: React.FC<IStoriesResponse> = () => {
         </h1>
       </div>
       <div className="w-full grid grid-cols-2 gap-3">
-        {data?.data.lenght == 0 ? (
+        {data?.data.length == 0 ? (
           <p>No stories</p>
         ) : (
           data?.data.map((e: IStory) => <CardResult data={e} key={e.id} />)

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { FaUser, FaLock } from "react-icons/fa";
 import { GiAngularSpider } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/login";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -10,10 +10,13 @@ const Login = () => {
   const [errors, setErrors] = useState({ email: "", password: "" });
   const navigate = useNavigate();
 
+  const queryClient = useQueryClient();
+
   const validateInputs = () => {
     const newErrors = { email: "", password: "" };
     if (!email) newErrors.email = "Email is required.";
-    else if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = "Invalid email format.";
+    else if (!/\S+@\S+\.\S+/.test(email))
+      newErrors.email = "Invalid email format.";
     if (!password) newErrors.password = "Password is required.";
     setErrors(newErrors);
     return !newErrors.email && !newErrors.password;
@@ -25,7 +28,8 @@ const Login = () => {
       const data = await login({ email, password });
       localStorage.setItem("accessToken", data.result.accessToken);
       localStorage.setItem("role", JSON.stringify(data.result.role));
-      console.log(data);
+      await login({ email, password });
+      queryClient.invalidateQueries({ queryKey: ["list"] });
       navigate("/");
     } catch (error) {
       console.error("Login failed:", error);
@@ -61,15 +65,17 @@ const Login = () => {
               }`}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              onFocus={(e) => e.target.placeholder = ""}
-              onBlur={(e) => e.target.placeholder = "Email"}
+              onFocus={(e) => (e.target.placeholder = "")}
+              onBlur={(e) => (e.target.placeholder = "Email")}
             />
             <label
               className={`absolute left-3 top-2 text-gray-400 text-sm transition-all opacity-0 peer-focus:opacity-100 peer-focus:top-[-10px] peer-focus:text-primary-200`}
             >
               Email
             </label>
-            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+            {errors.email && (
+              <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+            )}
           </div>
           <div className="relative">
             <input
@@ -80,8 +86,8 @@ const Login = () => {
               }`}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              onFocus={(e) => e.target.placeholder = ""}
-              onBlur={(e) => e.target.placeholder = "Password"}
+              onFocus={(e) => (e.target.placeholder = "")}
+              onBlur={(e) => (e.target.placeholder = "Password")}
             />
             <label
               className={`absolute left-3 top-2 text-gray-400 text-sm transition-all opacity-0 peer-focus:opacity-100 peer-focus:top-[-10px] peer-focus:text-primary-200`}

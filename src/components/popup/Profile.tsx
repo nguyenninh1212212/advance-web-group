@@ -1,18 +1,30 @@
-import { FaHistory, FaMoneyBill, FaWallet } from "react-icons/fa";
+import { FaHistory, FaMoneyBill, FaSignOutAlt, FaWallet } from "react-icons/fa";
 import { FiAtSign, FiLogIn } from "react-icons/fi";
 import { IoIosAddCircle } from "react-icons/io";
 import { RiBookShelfLine } from "react-icons/ri";
 import { BsCardChecklist } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import ThemeSwitcher from "../ThemeSwitcher";
 import { useTheme } from "../../util/theme/theme";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Profile = ({ onClose }: { onClose: () => void }) => {
   const navigator = useNavigate();
+  const queryClient = useQueryClient();
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.clear(); // hoặc chỉ xóa các key cụ thể bạn lưu
+    queryClient.clear();
+    onClose();
+    navigator("/auth/login");
+  };
+
   const theme = useTheme();
   const iconst = {
     st: `text-2xl  hover:${theme.hover} transition-colors duration-300 ${theme.text}`,
   };
+  const token = localStorage.getItem("accessToken");
   const navigationItems = [
     {
       label: "Subscription",
@@ -79,26 +91,37 @@ const Profile = ({ onClose }: { onClose: () => void }) => {
       ))}
 
       {/* Nút Sign in / Sign up */}
-      <div className="flex gap-2 w-full">
-        <button
-          className="w-full mt-4 bg-gray-800 p-3 rounded-lg flex items-center justify-center hover:bg-indigo-500 transition"
-          onClick={() => {
-            onClose();
-            navigator("/auth/login");
-          }}
-        >
-          <FiLogIn className="mr-2" /> Sign in
-        </button>
-        <button
-          className="w-full mt-4 bg-gray-800 p-3 rounded-lg flex items-center justify-center hover:bg-indigo-500 transition"
-          onClick={() => {
-            onClose();
-            navigator("/auth/register");
-          }}
-        >
-          <FiAtSign className="mr-2" /> Sign up
-        </button>
-      </div>
+      {token == null ? (
+        <div className="flex gap-2 w-full">
+          <button
+            className={`w-full mt-4 ${theme.background_card} ${theme.text} p-3 rounded-lg flex items-center justify-center  transition`}
+            onClick={() => {
+              onClose();
+              navigator("/auth/login");
+            }}
+          >
+            <FiLogIn className="mr-2" /> Sign in
+          </button>
+          <button
+            className={`w-full mt-4 ${theme.background_card} ${theme.text} p-3 rounded-lg flex items-center justify-center  transition`}
+            onClick={() => {
+              onClose();
+              navigator("/auth/register");
+            }}
+          >
+            <FiAtSign className="mr-2" /> Sign up
+          </button>
+        </div>
+      ) : (
+        <>
+          <button
+            className={`w-full mt-4 ${theme.background_card} ${theme.text} p-3 rounded-lg flex items-center justify-center  transition`}
+            onClick={handleLogout}
+          >
+            <FaSignOutAlt className="mr-2" /> Sign out
+          </button>
+        </>
+      )}
     </div>
   );
 };
