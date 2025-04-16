@@ -9,8 +9,8 @@ import { VscDebugStart } from "react-icons/vsc";
 
 import Rate from "../../components/popup/Rate";
 import { useTheme, statusTheme, typeTheme } from "../../util/theme/theme";
-import { useQuery } from "@tanstack/react-query";
-import { getStoryById } from "../../api/stories";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getStoryById, postStory } from "../../api/stories";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const ComicDetail: React.FC<IComicDetail> = () => {
@@ -55,10 +55,9 @@ const ComicDetail: React.FC<IComicDetail> = () => {
     );
   if (error) return <div>Error: {error.message}</div>;
   if (data.chapter.length > 0) {
-    console.log("🚀 ~ data:", data);
     localStorage.setItem("id_story", data.id);
-    localStorage.setItem("title", data.title);
   }
+
   return (
     <div className="flex flex-col gap-4 min-h-screen ">
       <div className="flex md:flex-row flex-col gap-4">

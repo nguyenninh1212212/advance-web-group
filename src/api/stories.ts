@@ -35,3 +35,12 @@ export const getStoriesByCate = async (
   });
   return result?.data?.result;
 };
+
+export const postStory = async (formData: FormData) => {
+  const response = await api.post("/story/create", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};
