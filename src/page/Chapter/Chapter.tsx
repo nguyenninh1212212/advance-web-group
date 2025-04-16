@@ -1,24 +1,30 @@
-import React, { useState } from "react";
-import { useTheme } from "../../util/theme/theme";
-import { useQuery } from "@tanstack/react-query";
-import { getChapterDetail, getChapterProxy } from "../../api/chapter";
-import { useNavigate, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
+import ImageReader from "./ImageReader";
+import { getChapterDetail, getChapterProxy } from "../../api/chapter";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useTheme } from "../../util/theme/theme";
+import Popup from "../../components/popup/Popup";
+import Purchase from "../../components/popup/Purchase";
+import DocxReader from "./DocxReader";
 
 const Chapter: React.FC = () => {
   const theme = useTheme();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [loaded, setLoaded] = useState<{ [key: number]: boolean }>({});
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+
   const {
     data: chapterData,
     isLoading,
-    error,
+    error: errorChapter,
   } = useQuery({
     queryKey: ["chapter", id],
     queryFn: () => getChapterDetail(id as string),
   });
-  console.log("🚀 ~ chapterData:", chapterData);
+
   const proxyData = useQuery({
     queryKey: ["proxy", id],
     queryFn: () => {
@@ -29,11 +35,17 @@ const Chapter: React.FC = () => {
     enabled:
       !!chapterData?.result?.id && Array.isArray(chapterData?.result?.files),
   });
+  console.log("🚀 ~ proxyData:", proxyData?.data);
+
+  if (errorChapter) {
+    return errorChapter.message;
+  }
 
   const handleNextChapter = () => {
     const title = localStorage.getItem("title");
     navigate(`/${title}/chapter/${chapterData?.result.next}`);
   };
+
   const handlePrevChapter = () => {
     const title = localStorage.getItem("title");
     navigate(`/${title}/chapter/${chapterData?.result.prev}`);
@@ -42,7 +54,6 @@ const Chapter: React.FC = () => {
   if (isLoading || proxyData?.isLoading)
     return (
       <div>
-        {" "}
         <ClipLoader
           color={"gray"}
           cssOverride={{ display: "block", margin: "0 auto" }}
@@ -54,14 +65,11 @@ const Chapter: React.FC = () => {
       </div>
     );
 
-  if (error || proxyData?.error) {
-    return <p>error</p>;
-  }
-
+  const isPrev = chapterData?.result.prev == null ? true : false;
+  const isNext = chapterData?.result.next == null ? true : false;
   return (
     <div className="text-black flex flex-col justify-between">
       <div className="max-w-5xl mx-auto flex-grow">
-        {/* Hình ảnh chương */}
         <div className={`${theme.text} grid grid-cols-3 justify-center`}>
           <p className={`p-2 text-center ${theme.background_card} w-3/4`}>
             {chapterData?.result.title}
@@ -69,53 +77,64 @@ const Chapter: React.FC = () => {
           <p className={`p-2 text-center text-wrap`}>
             Nội dung chương: {chapterData?.result.content}
           </p>
-          <p className={``}></p>
         </div>
         <div className="flex justify-center mt-4">
           <div>
-            {Object.values(proxyData?.data?.result).map((src, index) => (
-              <div key={index} className="relative w-full mb-4">
-                {!loaded[index] && (
-                  <ClipLoader
-                    color={"gray"}
-                    cssOverride={{ display: "block", margin: "0 auto" }}
-                    loading={loaded[index]}
-                    size={50}
-                    aria-label="Loading Spinner"
-                    data-testid="loader"
-                  />
-                )}
-                <img
-                  src={src as string}
-                  alt={`img-${index}`}
-                  onLoad={() =>
-                    setLoaded((prev: any) => ({ ...prev, [index]: true }))
-                  }
-                  className={`w-full transition-opacity duration-500 ${
-                    loaded[index] ? "opacity-100" : "opacity-0"
-                  }`}
-                />
-              </div>
-            ))}
+            {proxyData?.data?.result &&
+              Object.values(proxyData?.data?.result).map((src, index) => {
+                // Kiểm tra nếu src là chuỗi base64 hình ảnh
+                if (
+                  typeof src === "string" &&
+                  (src.startsWith("data:image/jpeg") ||
+                    src.startsWith("data:image/png"))
+                ) {
+                  return (
+                    <ImageReader
+                      key={index}
+                      src={src}
+                      index={index}
+                      onLoad={(index) =>
+                        setLoaded((prev: any) => ({ ...prev, [index]: true }))
+                      }
+                      loaded={loaded}
+                    />
+                  );
+                } else {
+                  return <DocxReader base64String={src as string} />;
+                }
+              })}
           </div>
         </div>
       </div>
 
-      {/* Nút Trang kế tiếp */}
       <div className="w-full p-4 flex gap-2">
         <button
-          className={`py-2 text-white ${theme.background_card} w-full rounded-lg`}
+          disabled={isPrev}
+          className={`py-2 text-white w-full rounded-lg ${
+            isPrev ? "bg-stone-500" : `${theme.background_card}`
+          }`}
           onClick={handlePrevChapter}
         >
           Trang trước
         </button>
         <button
-          className={`py-2 text-white ${theme.background_card} w-full rounded-lg`}
+          disabled={isNext}
+          className={`py-2 text-white w-full rounded-lg ${
+            isNext ? "bg-stone-500" : `${theme.background_card}`
+          }`}
           onClick={handleNextChapter}
         >
           Trang kế tiếp
         </button>
       </div>
+      {/* Only show Popup when showPopup is true */}
+      <Popup
+        isOpen={showPopup}
+        setIsOpen={setShowPopup}
+        children={
+          <Purchase chap={chapterData?.result} key={chapterData?.result.id} />
+        }
+      />
     </div>
   );
 };

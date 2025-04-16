@@ -13,7 +13,7 @@ export const api = axios.create({
 
 // Thêm interceptor cho yêu cầu
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token"); // Lấy token từ localStorage
+  const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
   if (token) {
     config.headers.Authorization = `Bearer ${token}`; // Gắn token vào header Authorization
   }

@@ -44,3 +44,11 @@ export const postStory = async (formData: FormData) => {
   });
   return response.data;
 };
+export const postChapter = async (formData: FormData) => {
+  const response = await api.post("/chapter/add", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};

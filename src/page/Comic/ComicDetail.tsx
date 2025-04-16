@@ -9,8 +9,8 @@ import { VscDebugStart } from "react-icons/vsc";
 
 import Rate from "../../components/popup/Rate";
 import { useTheme, statusTheme, typeTheme } from "../../util/theme/theme";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getStoryById, postStory } from "../../api/stories";
+import { useQuery } from "@tanstack/react-query";
+import { getStoryById } from "../../api/stories";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const ComicDetail: React.FC<IComicDetail> = () => {
@@ -31,6 +31,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
+  console.log("🚀 ~ useEffect ~ data:", data);
   const isPurchase = (chapter: IChapter) => {
     if (chapter.price > 0) {
       setIsOpen(!isOpen);

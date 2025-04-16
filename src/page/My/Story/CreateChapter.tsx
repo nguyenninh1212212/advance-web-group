@@ -1,57 +1,44 @@
-// pages/chapters/CreateChapter.tsx
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import CardTitle from "../../../components/card/CardTitle";
-import ImageUpload from "./ImageUploader";
 import ExportWord from "./ExportWord";
+import ImageUpload from "./ImageUploader";
+import { useMutation } from "@tanstack/react-query";
+import { postChapter } from "../../../api/stories";
+import { useToast } from "../../../util/ToastContext";
 
 const CreateChapter = () => {
   const [title, setTitle] = useState("");
+  const [price, setPrice] = useState(0.0);
   const [description, setDescription] = useState("");
-  const [type, setType] = useState<"COMIC" | "NOVEL">("COMIC");
-  const [covers, setCovers] = useState<File[]>([]);
-  const [previews, setPreviews] = useState<string[]>([]);
+  const [file, setFile] = useState<File[]>([]);
+  const { showToast } = useToast();
+  const mutation = useMutation({
+    mutationKey: ["add chapter"],
+    mutationFn: (formData: FormData) => postChapter(formData),
+    onSuccess: (data) => {
+      return showToast(data as unknown as string, "success");
+    },
+    onError: (error) => {
+      console.log("🚀 ~ CreateChapter ~ error:", error);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-      const newFiles: File[] = [];
-      const newPreviews: string[] = [];
+      return showToast(error.message, "error");
+    },
+  });
 
-      Array.from(files).forEach((file) => {
-        if (file.size <= 2 * 1024 * 1024) {
-          newFiles.push(file);
-          newPreviews.push(URL.createObjectURL(file));
-        } else {
-          alert(`Ảnh "${file.name}" phải nhỏ hơn 2MB!`);
-        }
-      });
-
-      setCovers((prev) => [...prev, ...newFiles]);
-      setPreviews((prev) => [...prev, ...newPreviews]);
-    }
-  };
-
-  const removeImage = (index: number) => {
-    const updatedCovers = [...covers];
-    const updatedPreviews = [...previews];
-    updatedCovers.splice(index, 1);
-    updatedPreviews.splice(index, 1);
-    setCovers(updatedCovers);
-    setPreviews(updatedPreviews);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newChapter = {
-      title,
-      description: type === "NOVEL" ? description : null,
-      images: type === "COMIC" ? covers : null,
-      type,
+    const formData = new FormData();
+    const chapterJson = {
+      story_id: localStorage.getItem("id_story"),
+      content: title,
+      price: price,
     };
-    console.log("Chapter submitted:", newChapter);
+    formData.append("chapterJson", JSON.stringify(chapterJson));
+    file.forEach((f) => formData.append("files", f));
+    console.log("🚀 ~ handleSubmit ~ formData:", formData);
 
-    // TODO: Gửi dữ liệu lên server tại đây
+    await mutation.mutate(formData);
   };
 
   return (
@@ -59,31 +46,8 @@ const CreateChapter = () => {
       <CardTitle title="Thêm chương" />
       <form
         onSubmit={handleSubmit}
-        className="flex gap-6 flex-wrap md:flex-nowrap m-3"
+        className="flex gap-6 flex-wrap md:flex-nowrap m-3 justify-center"
       >
-        {/* LEFT */}
-        <div className="flex flex-col space-y-4 w-full md:w-1/3 h-full">
-          <label className="block text-sm font-medium text-gray-300 mb-1">
-            Loại truyện
-          </label>
-          <select
-            value={type}
-            onChange={(e) => setType(e.target.value as "COMIC" | "NOVEL")}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-black"
-          >
-            <option value="COMIC">Truyện tranh (Comic)</option>
-            <option value="NOVEL">Truyện chữ (Novel)</option>
-          </select>
-
-          {type === "COMIC" && (
-            <ImageUpload
-              previews={previews}
-              onImageChange={handleImageChange}
-              removeImage={removeImage}
-            />
-          )}
-        </div>
-
         {/* RIGHT */}
         <div className="w-full md:w-2/3 space-y-4">
           <div>
@@ -100,13 +64,39 @@ const CreateChapter = () => {
             />
           </div>
 
-          {type === "NOVEL" && (
+          {/* Thêm trường giá trị */}
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1">
+              Giá
+            </label>
+            <input
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(parseFloat(e.target.value))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-black"
+              placeholder="Nhập giá chương"
+              required
+            />
+          </div>
+
+          {localStorage.getItem("type") === "NOVEL" ? (
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1">
                 Nội dung chương
               </label>
 
-              <ExportWord title={title} description={description} />
+              <ExportWord
+                title={title}
+                description={description}
+                setDescription={setDescription}
+                setFile={setFile}
+              />
+            </div>
+          ) : (
+            <div>
+              <h2>Upload Images</h2>
+              <ImageUpload setFile={setFile} />{" "}
+              {/* Truyền setFile vào ImageUpload */}
             </div>
           )}
 

@@ -6,7 +6,7 @@ import { getCategory } from "../../../api/category";
 import { ICategory } from "../../../type/comic";
 import { postStory } from "../../../api/stories";
 import ClipLoader from "react-spinners/ClipLoader";
-import { useToast } from "../../../util/toastContext";
+import { useToast } from "../../../util/ToastContext";
 
 const CreateStory = () => {
   const [title, setTitle] = useState("");
@@ -31,7 +31,7 @@ const CreateStory = () => {
       setSuccess(!success);
       setTimeout(() => {
         window.location.reload();
-      }, 2000);
+      }, 1000);
     },
     onError: () => {
       setSuccess(true);

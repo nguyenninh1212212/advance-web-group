@@ -7,23 +7,15 @@ interface payload {
 }
 
 const CardCreateStory: React.FC<payload> = ({ data }) => {
-  const {
-    categories,
-    coverImage,
-    createdAt,
-    id,
-    status,
-    type,
-    updatedAt,
-    view,
-    title,
-  } = data;
+  const { categories, coverImage, createdAt, id, type, title } = data;
   const [showMore, setShowMore] = useState(false);
 
   const toggleShowMore = () => setShowMore(!showMore);
   const navigate = useNavigate();
 
   const handleAddChapter = () => {
+    localStorage.setItem("id_story", id);
+    localStorage.setItem("type", type);
     navigate(`/my/stories/${title}/chapter/add`);
   };
 
