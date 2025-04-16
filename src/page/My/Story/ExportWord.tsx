@@ -89,10 +89,11 @@ const ExportWord: React.FC<ExportWordProps> = ({
           </button>
         ) : (
           <button
+            type="button"
             onClick={() => handleExport()}
             className="bg-blue-600 text-white py-2 px-4 rounded-lg"
           >
-            Xuất Word và lưu vào máy
+            Xuất file để gửi
           </button>
         )}
       </div>
@@ -108,6 +109,7 @@ const ExportWord: React.FC<ExportWordProps> = ({
 
           <div className="flex gap-3">
             <button
+              type="button"
               onClick={() => {
                 const url = URL.createObjectURL(createdFile);
                 window.open(url);

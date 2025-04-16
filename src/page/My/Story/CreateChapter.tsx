@@ -14,14 +14,14 @@ const CreateChapter = () => {
   const [file, setFile] = useState<File[]>([]);
   const { showToast } = useToast();
   const mutation = useMutation({
-    mutationKey: ["add chapter"],
+    mutationKey: ["addchapter"],
     mutationFn: (formData: FormData) => postChapter(formData),
-    onSuccess: (data) => {
-      return showToast(data as unknown as string, "success");
+    onSuccess: () => {
+      showToast("Thêm chương thành công", "success");
+      window.location.reload(); //
     },
     onError: (error) => {
       console.log("🚀 ~ CreateChapter ~ error:", error);
-
       return showToast(error.message, "error");
     },
   });
