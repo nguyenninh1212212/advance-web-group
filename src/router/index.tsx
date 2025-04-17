@@ -4,6 +4,8 @@ import ComicDetail from "../page/Comic/ComicDetail";
 import Chapter from "../page/Chapter/Chapter";
 import Login from "../page/Auth/Login";
 import Register from "../page/Auth/Register";
+import ForgotPassword from "../page/Auth/ForgotPassword";
+import ResetPassword from "../page/Auth/ResetPassword";
 import HomeLayout from "../layout/HomeLayout";
 import ResultSearch from "../page/Result/ResultSearch";
 import Favorite from "../page/My/Favorite";
@@ -19,6 +21,14 @@ const RoutesConfig = () => {
     {
       path: "/auth/login",
       component: Login,
+    },
+    {
+      path: "/auth/forgot-password",
+      component: ForgotPassword,
+    },
+    {
+      path: "/auth/reset-password",
+      component: ResetPassword,
     },
     {
       path: "/auth/register",
