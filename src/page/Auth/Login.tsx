@@ -115,6 +115,14 @@ const Login = () => {
             />
           </button>
           <p className="text-center text-gray-400 text-sm">
+            <a
+              href="/auth/forgot-password"
+              className="text-primary-200 hover:underline"
+            >
+              Forgot Password?
+            </a>
+          </p>
+          <p className="text-center text-gray-400 text-sm">
             New user?{" "}
             <a
               href="/auth/register"
