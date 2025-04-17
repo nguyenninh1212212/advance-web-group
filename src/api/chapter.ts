@@ -19,3 +19,11 @@ export const getChapterNext = async (chapter_id: string) => {
   const res = await api.get(`/chapter/${chapter_id}/next`);
   return res.data;
 };
+export const postChapter = async (formData: FormData) => {
+  const response = await api.post("/chapter/add", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};

@@ -4,7 +4,7 @@ import CardTitle from "../../../components/card/CardTitle";
 import ExportWord from "./ExportWord";
 import ImageUpload from "./ImageUploader";
 import { useMutation } from "@tanstack/react-query";
-import { postChapter } from "../../../api/stories";
+import { postChapter } from "../../../api/chapter";
 import { useToast } from "../../../util/ToastContext";
 
 const CreateChapter = () => {

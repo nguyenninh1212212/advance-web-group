@@ -44,11 +44,21 @@ export const postStory = async (formData: FormData) => {
   });
   return response.data;
 };
-export const postChapter = async (formData: FormData) => {
-  const response = await api.post("/chapter/add", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
+
+export const filterStory = async (
+  filterFields: Map<string, string>,
+  page: number,
+  limit: number
+) => {
+  const filterObject = Object.fromEntries(filterFields);
+
+  const response = await api.get("/search", {
+    params: {
+      page: page,
+      limit: limit,
+      ...filterObject,
     },
   });
+
   return response.data;
 };
