@@ -21,6 +21,21 @@ export const getMyList = async () => {
   const result = await api.get("/my/list");
   return result?.data.result;
 };
+export const getMyTrashList = async () => {
+  const result = await api.get("/my/list/trash");
+  return result?.data.result;
+};
+export const deleteSoftStory = async (id: string) => {
+  await api.put("/story/remove", { id });
+};
+export const restoreStory = async (id: string) => {
+  await api.put("/story/restore", { id });
+};
+export const deleteStory = async (id: string) => {
+  await api.delete("/story/delete", {
+    data: { id },
+  });
+};
 
 export const getStoriesByCate = async (
   id: string,

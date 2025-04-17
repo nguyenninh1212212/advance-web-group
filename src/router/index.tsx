@@ -13,6 +13,7 @@ import CreateStory from "../page/My/Story/CreateStory";
 import CreateChapter from "../page/My/Story/CreateChapter";
 import SubscriptionPlan from "../page/Subscription/SubscriptionPlan";
 import PaymentHistory from "../page/My/Payment/PaymentHistory";
+import TrashList from "../page/My/Story/TrashList";
 
 const RoutesConfig = () => {
   const publicRoutes = [
@@ -55,17 +56,22 @@ const RoutesConfig = () => {
       layout: Header,
     },
     {
-      path: "/my/stories",
+      path: "/my/list",
       component: List,
+      layout: Header,
+    },  
+    {
+      path: "/my/list/trash",
+      component: TrashList,
       layout: Header,
     },
     {
-      path: "/my/stories/create",
+      path: "/my/list/create",
       component: CreateStory,
       layout: Header,
     },
     {
-      path: "/my/stories/:name/chapter/add",
+      path: "/my/list/:name/chapter/add",
       component: CreateChapter,
       layout: Header,
     },

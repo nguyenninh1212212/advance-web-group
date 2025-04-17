@@ -38,7 +38,7 @@ const Profile = ({ onClose }: { onClose: () => void }) => {
     },
     {
       label: "My List",
-      to: "/my/stories",
+      to: "/my/list",
       icon: <RiBookShelfLine className={iconst.st} />,
     },
     {

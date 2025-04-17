@@ -91,7 +91,7 @@ const Home = () => {
     ? false
     : true;
   return (
-    <div>
+    <div className="pb-10">
       <div className="pb-4 flex flex-wrap gap-2 w-full h-auto">
         {[
           { name: "Home", value: "Home" },
