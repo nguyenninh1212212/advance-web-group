@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { requestOtp, resetPassword } from "../../api/forgotpassword";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -9,7 +10,7 @@ const ForgotPassword = () => {
   const [otpError, setOtpError] = useState("");
   const navigate = useNavigate();
 
-  const handleForgotPassword = () => {
+  const handleForgotPassword = async () => {
     if (!email) {
       setError("Email is required.");
       return;
@@ -19,17 +20,25 @@ const ForgotPassword = () => {
       return;
     }
     setError("");
-    // Simulate sending OTP
-    console.log("Forgot password request sent for:", email);
-    alert("Password reset OTP sent to your email.");
-    setShowOtpPopup(true);
+    try {
+      await requestOtp(email);
+      alert("Password reset OTP sent to your email.");
+      setShowOtpPopup(true);
+    } catch (err: any) {
+      setError(err.message);
+    }
   };
 
-  const handleValidateOtp = () => {
-    if (otp === "123456") {
+  const handleValidateOtp = async () => {
+    if (!otp) {
+      setOtpError("OTP is required.");
+      return;
+    }
+    try {
+      await resetPassword(email, otp, "newPassword", "newPassword"); // Replace with actual password inputs
       navigate("/auth/reset-password");
-    } else {
-      setOtpError("Invalid OTP. Please try again.");
+    } catch (err: any) {
+      setOtpError(err.message);
       setShowOtpPopup(false);
     }
   };
