@@ -13,6 +13,7 @@ import CreateStory from "../page/My/Story/CreateStory";
 import CreateChapter from "../page/My/Story/CreateChapter";
 import SubscriptionPlan from "../page/Subscription/SubscriptionPlan";
 import PaymentHistory from "../page/My/Payment/PaymentHistory";
+import AuthorDetail from "../page/Comic/AuthorDetail";
 
 const RoutesConfig = () => {
   const publicRoutes = [
@@ -38,6 +39,10 @@ const RoutesConfig = () => {
       path: "/:name/detail/:id",
       component: ComicDetail,
       layout: Header,
+    },
+    {
+      path: "/author-detail/:id",
+      conponent: AuthorDetail,
     },
     {
       path: "/:name/chapter/:id",
