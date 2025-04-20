@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { requestOtp, resetPassword } from "../../api/forgotpassword";
+import { requestOtp, validateOtp } from "../../api/forgotpassword"; // ✅ Import API validateOtp
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -20,10 +20,11 @@ const ForgotPassword = () => {
       return;
     }
     setError("");
+  
     try {
-      await requestOtp(email);
-      alert("Password reset OTP sent to your email.");
-      setShowOtpPopup(true);
+      await requestOtp(email); // ✅ Gọi API OTP
+      alert("OTP has been sent to your email.");
+      setShowOtpPopup(true); // ✅ Hiển thị popup OTP
     } catch (err: any) {
       setError(err.message);
     }
@@ -34,12 +35,18 @@ const ForgotPassword = () => {
       setOtpError("OTP is required.");
       return;
     }
+    setOtpError("");
+
     try {
-      await resetPassword(email, otp, "newPassword", "newPassword"); // Replace with actual password inputs
-      navigate("/auth/reset-password");
+      const isValid = await validateOtp(email, otp); // ✅ Kiểm tra OTP với API
+      if (isValid) {
+        alert("OTP is valid! Redirecting...");
+        navigate("/auth/reset-password", { state: { email } }); // ✅ Chuyển sang ResetPassword và truyền email
+      } else {
+        setOtpError("Invalid OTP!");
+      }
     } catch (err: any) {
-      setOtpError(err.message);
-      setShowOtpPopup(false);
+      setOtpError(err.message || "Error validating OTP");
     }
   };
 
@@ -55,11 +62,12 @@ const ForgotPassword = () => {
           </p>
         </div>
         <div className="space-y-6">
+          {/* Email input */}
           <div className="relative">
             <input
               type="text"
               placeholder="Email"
-              className={`w-full pl-3 pr-3 py-2 bg-gray-700 text-white rounded-md focus:outline-none peer ${
+              className={`w-full pl-3 pr-3 py-2 bg-gray-700 text-white rounded-md focus:outline-none ${
                 error ? "border-red-500" : "border-gray-700"
               }`}
               value={email}
@@ -73,14 +81,6 @@ const ForgotPassword = () => {
           >
             Reset Password
           </button>
-          <p className="text-center text-gray-400 text-sm">
-            <a
-              href="/auth/login"
-              className="text-primary-200 hover:underline"
-            >
-              Back to Login
-            </a>
-          </p>
         </div>
       </div>
 
@@ -110,20 +110,8 @@ const ForgotPassword = () => {
                 Validate OTP
               </button>
               <p className="text-center text-gray-400 text-sm">
-                <a
-                  href="#"
-                  onClick={() => alert("OTP resent to your email.")}
-                  className="text-primary-200 hover:underline"
-                >
+                <a href="#" onClick={() => alert("OTP resent to your email.")} className="text-primary-200 hover:underline">
                   Resend OTP
-                </a>
-              </p>
-              <p className="text-center text-gray-400 text-sm">
-                <a
-                  href="/auth/login"
-                  className="text-primary-200 hover:underline"
-                >
-                  Back to Login
                 </a>
               </p>
             </div>
