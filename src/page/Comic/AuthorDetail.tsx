@@ -1,23 +1,37 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getStoryOfAuthor } from "../../api/stories";
+import CardTitle from "../../components/card/CardTitle";
+import ComicContainer from "./ComicContainer";
 
-const AuthorDetail = () => {
-  const { id } = useParams();
-  const [author, setAuthor] = useState(null);
+const AuthorDetail: React.FC = () => {
+  const { id } = useParams<string>();
 
-  useEffect(() => {
-    // Gọi API để lấy thông tin tác giả
-    fetch(`/api/authors/${id}`)
-      .then((res) => res.json())
-      .then((data) => setAuthor(data));
-  }, [id]);
+  // Fetch thông tin tác giả và danh sách truyện của tác giả
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["authorDetail", id],
+    queryFn: () => getStoryOfAuthor(id as string),
+    enabled: !!id,
+  });
 
-  if (!author) return <p>Đang tải...</p>;
+  if (isLoading) {
+    return <div className="text-center text-white">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500">Error: {error.message}</div>;
+  }
+
+  if (!data) {
+    return <div className="text-center text-gray-400">No data found.</div>;
+  }
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold"></h1>
-      {/* hiển thị truyện, mô tả, v.v. */}
+    <div className="flex flex-col gap-3 ">
+      <div>
+        <CardTitle title="Truyện của tác giả" />
+        <ComicContainer data={data} />
+      </div>
     </div>
   );
 };

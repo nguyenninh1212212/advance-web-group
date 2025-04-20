@@ -6,28 +6,37 @@ import ImageUpload from "./ImageUploader";
 import { useMutation } from "@tanstack/react-query";
 import { postChapter } from "../../../api/chapter";
 import { useToast } from "../../../util/ToastContext";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const CreateChapter = () => {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState(0.0);
   const [description, setDescription] = useState("");
+  const [success, setSuccess] = useState<boolean>(true);
   const [file, setFile] = useState<File[]>([]);
   const { showToast } = useToast();
+
   const mutation = useMutation({
     mutationKey: ["addchapter"],
     mutationFn: (formData: FormData) => postChapter(formData),
     onSuccess: () => {
       showToast("Thêm chương thành công", "success");
-      window.location.reload(); //
+      setTitle("");
+      setPrice(0.0);
+      setFile([]);
+      setDescription("");
+      setSuccess(true); // Enable submit button again
     },
-    onError: (error) => {
-      console.log("🚀 ~ CreateChapter ~ error:", error);
-      return showToast(error.message, "error");
+
+    onError: (error: any) => {
+      showToast(error.message, "error");
+      setSuccess(true); // Enable submit button again
     },
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSuccess(false); // Disable button during the mutation
     const formData = new FormData();
     const chapterJson = {
       story_id: localStorage.getItem("id_story"),
@@ -36,8 +45,6 @@ const CreateChapter = () => {
     };
     formData.append("chapterJson", JSON.stringify(chapterJson));
     file.forEach((f) => formData.append("files", f));
-    console.log("🚀 ~ handleSubmit ~ formData:", formData);
-
     await mutation.mutate(formData);
   };
 
@@ -101,11 +108,34 @@ const CreateChapter = () => {
           )}
 
           <button
+            disabled={!success || file.length === 0} // Kiểm tra nếu không có file
             type="submit"
-            className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white py-2 px-4 rounded-xl hover:bg-indigo-700 transition"
+            className={`w-full flex items-center justify-center gap-2 cursor-pointer ${
+              success && file.length > 0
+                ? "bg-indigo-600"
+                : "bg-stone-500 cursor-not-allowed"
+            } text-white py-2 px-4 rounded-xl transition`}
           >
-            <FaPlus />
-            Thêm chương
+            {!success ? (
+              <ClipLoader
+                color={"white"}
+                cssOverride={{ display: "block", margin: "0 auto" }}
+                loading={!success}
+                size={30}
+                aria-label="Loading Spinner"
+              />
+            ) : (
+              <>
+                {file.length <= 0 ? (
+                  <p>Chưa có file nào</p>
+                ) : (
+                  <>
+                    <FaPlus />
+                    Thêm chương
+                  </>
+                )}
+              </>
+            )}
           </button>
         </div>
       </form>

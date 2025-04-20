@@ -76,7 +76,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
               <li>
                 Tác giả:{" "}
                 <span 
-                  onClick={() => navigate(`/author-detail/${data.author.id}`)}
+                  onClick={() => navigate(`/author/detail/${id}`)}
                   className={`${theme.text}`}
                 >
                   {data.author.fullName}

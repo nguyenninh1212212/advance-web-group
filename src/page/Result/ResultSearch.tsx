@@ -92,9 +92,9 @@ const ResultSearch = () => {
     setPage(0); // Reset về trang đầu tiên
   };
 
-  // if (error || errorFilter) {
-  //   return <div>Error: {error?.message || errorFilter?.message}</div>;
-  // }
+  if (error || errorFilter) {
+    return <div>Error: {error?.message || errorFilter?.message}</div>;
+  }
 
   if (isLoading || isLoadingFilter) {
     return (

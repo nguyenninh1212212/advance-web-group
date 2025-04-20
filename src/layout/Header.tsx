@@ -12,6 +12,7 @@ import { LiaSlidersHSolid } from "react-icons/lia";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategory } from "../redux/slices/categorySlice";
 import { selectTheme } from "../redux/slices/themeSlice";
+import { useTheme } from "../util/theme/theme";
 
 const Header: React.FC<LayoutRouteProps> = ({ children }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -68,13 +69,15 @@ const Header: React.FC<LayoutRouteProps> = ({ children }) => {
           {/* Ô tìm kiếm */}
           <div className="flex items-center gap-3 ">
             <section className="flex flex-col" ref={searchContainerRef}>
-              <div className="hidden md:flex bg-gray-700 rounded-md items-center px-2 gap-2 overflow-hidden transition-all duration-300 border-2 border-transparent hover:border-gray-600 focus-within:border-primary-200 w-[400px]">
+              <div
+                className={`hidden md:flex bg-gray-700 rounded-md items-center px-2 gap-2 overflow-hidden transition-all duration-300 border-2 border-transparent hover:border-gray-600 focus-within:${theme.background_card}w-[400px]`}
+              >
                 <input
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onFocus={() => setIsFocused(true)}
-                  className="md:w-[400px] h-10 bg-gray-700 text-white outline-none px-2 placeholder-gray-400 transition-all duration-500 ease-in-out focus:bg-gray-600"
+                  className={`md:w-[400px] h-10 bg-gray-700 text-white outline-none px-2 placeholder-gray-400 transition-all duration-500 ease-in-out focus:${theme.background}`}
                   placeholder="Tìm kiếm truyện..."
                 />
 
