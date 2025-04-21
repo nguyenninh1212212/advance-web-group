@@ -27,6 +27,7 @@ const ForgotPassword = () => {
       setShowOtpPopup(true); // ✅ Hiển thị popup OTP
     } catch (err: any) {
       setError(err.message);
+      alert(err.message || "Error requesting OTP");
     }
   };
 
