@@ -20,18 +20,18 @@ const ComicDetail: React.FC<IComicDetail> = () => {
   const [seeMore, setSeeMore] = useState<boolean>(false);
   const navigate = useNavigate();
   const [chapter, setChapter] = useState<IChapter>();
+  const [limit, setLimit] = useState<number>(10);
   const theme = useTheme();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["comicDetail", id],
-    queryFn: () => getStoryById(id as string),
+    queryFn: () => getStoryById(id as string, 0, limit),
     enabled: !!id,
   });
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
-  console.log("🚀 ~ useEffect ~ data:", data);
   const isPurchase = (chapter: IChapter) => {
     if (chapter.price > 0) {
       setIsOpen(!isOpen);
@@ -190,7 +190,15 @@ const ComicDetail: React.FC<IComicDetail> = () => {
             )}
           </div>
           {data.chapter.length > 4 && (
-            <p className="text-center text-sm text-gray-500">Xem thêm</p>
+            <p
+              className="text-center text-sm text-gray-500 cursor-pointer"
+              onClick={() => {
+                setLimit(limit + 10);
+                console.log(data);
+              }}
+            >
+              Xem thêm
+            </p>
           )}
         </div>
       </div>
