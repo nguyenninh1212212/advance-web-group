@@ -1,26 +1,40 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { resetPassword } from "../../api/forgotpassword";
 
 const ResetPassword = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // ✅ Nhận email từ `location.state`
+  const email = location.state?.email || "";
   const [password, setPassword] = useState("");
   const [retypePassword, setRetypePassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const handleResetPassword = () => {
+  const handleResetPassword = async () => {
     if (!password || !retypePassword) {
-      setError("Both fields are required.");
+      setError("All fields are required.");
       return;
     }
     if (password !== retypePassword) {
       setError("Passwords do not match.");
       return;
     }
+    
     setError("");
-    // Add logic to reset the password (e.g., API call)
-    console.log("Password reset successfully.");
-    alert("Password reset successfully.");
-    navigate("/auth/login");
+    setLoading(true);
+
+    try {
+      await resetPassword(email, "otp_placeholder", password, retypePassword); // Gọi API
+      alert("Password reset successfully.");
+      navigate("/auth/login"); // ✅ Chuyển hướng sau khi đặt lại mật khẩu
+    } catch (err: any) {
+      setError(err.message || "Failed to reset password.");
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -32,6 +46,7 @@ const ResetPassword = () => {
           </h2>
         </div>
         <div className="space-y-6">
+          {/* Password input */}
           <div className="relative">
             <input
               type="password"
@@ -41,6 +56,7 @@ const ResetPassword = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+          {/* Retype Password input */}
           <div className="relative">
             <input
               type="password"
@@ -50,18 +66,20 @@ const ResetPassword = () => {
               onChange={(e) => setRetypePassword(e.target.value)}
             />
           </div>
+
+          {/* Hiển thị lỗi nếu có */}
           {error && <p className="text-red-500 text-xs">{error}</p>}
+          
+          {/* Nút Reset Password */}
           <button
             onClick={handleResetPassword}
-            className="w-full bg-primary-200 hover:bg-white hover:text-primary-200 text-white py-2 rounded-md font-semibold"
+            disabled={loading}
+            className={`w-full py-2 rounded-md font-semibold ${loading ? "bg-gray-500" : "bg-primary-200 hover:bg-white hover:text-primary-200 text-white"}`}
           >
-            Reset Password
+            {loading ? "Processing..." : "Reset Password"}
           </button>
           <p className="text-center text-gray-400 text-sm mt-4">
-            <a
-              href="/auth/login"
-              className="text-primary-200 hover:underline"
-            >
+            <a href="/auth/login" className="text-primary-200 hover:underline">
               Back to Login
             </a>
           </p>

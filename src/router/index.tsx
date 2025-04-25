@@ -16,6 +16,7 @@ import CreateChapter from "../page/My/Story/CreateChapter";
 import SubscriptionPlan from "../page/Subscription/SubscriptionPlan";
 import PaymentHistory from "../page/My/Payment/PaymentHistory";
 import TrashList from "../page/My/Story/TrashList";
+import AuthorDetail from "../page/Comic/AuthorDetail";
 
 const RoutesConfig = () => {
   const publicRoutes = [
@@ -48,6 +49,11 @@ const RoutesConfig = () => {
     {
       path: "/:name/detail/:id",
       component: ComicDetail,
+      layout: Header,
+    },
+    {
+      path: "/author/detail/:id",
+      component: AuthorDetail,
       layout: Header,
     },
     {

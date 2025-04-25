@@ -12,6 +12,7 @@ import { useTheme, statusTheme, typeTheme } from "../../util/theme/theme";
 import { useQuery } from "@tanstack/react-query";
 import { getStoryById } from "../../api/stories";
 import ClipLoader from "react-spinners/ClipLoader";
+import CommentSection from "./CommentSection";
 
 const ComicDetail: React.FC<IComicDetail> = () => {
   const { id } = useParams<string>();
@@ -75,7 +76,12 @@ const ComicDetail: React.FC<IComicDetail> = () => {
               </li>
               <li>
                 Tác giả:{" "}
-                <span className={`${theme.text}`}>{data.author.fullName}</span>
+                <span 
+                  onClick={() => navigate(`/author/detail/${id}`)}
+                  className={`${theme.text}`}
+                >
+                  {data.author.fullName}
+                </span>
               </li>
               <li>
                 Trạng thái:{" "}
@@ -218,8 +224,13 @@ const ComicDetail: React.FC<IComicDetail> = () => {
       />
       {/* Thể loại */}
       <div className="flex w-full rounded-lg "></div>
+
+      <div className="flex flex-col gap-3 ">
+        <div className="flex flex-col gap-2">
+          <CommentSection comicId={id as string} />
+        </div>
+      </div>
     </div>
   );
 };
-
 export default ComicDetail;

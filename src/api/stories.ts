@@ -19,6 +19,11 @@ export const getStoryById = async (id: string, page: number, limit: number) => {
   return result.data.result;
 };
 
+export const getStoryOfAuthor = async (id: string) => {
+  const result = await api.get(`/story/author/${id}`);
+  return result.data.result;
+};
+
 export const getMyList = async () => {
   const result = await api.get("/my/list");
   return result?.data.result;
@@ -79,3 +84,4 @@ export const filterStory = async (
 
   return response.data;
 };
+
