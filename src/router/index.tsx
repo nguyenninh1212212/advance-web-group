@@ -18,6 +18,8 @@ import PaymentHistory from "../page/My/Payment/PaymentHistory";
 import TrashList from "../page/My/Story/TrashList";
 import AuthorDetail from "../page/Comic/AuthorDetail";
 import OAuth2RedirectHandler from "../page/Auth/OAuth2RedirectHandler";
+import TopUpPage from "../page/My/Payment/TopUpPage";
+import VnpayReturn from "../page/My/Payment/VNPayReturn";
 
 const RoutesConfig = () => {
   const publicRoutes = [
@@ -119,6 +121,16 @@ const RoutesConfig = () => {
       component: () => <div>Settings Page</div>,
       layout: Header,
     },
+    {
+      path: "/payment/to-up",
+      component: TopUpPage,
+      layout: Header,
+    },
+    {
+      path: "payment/vnpay-return",
+      component: VnpayReturn,
+      layout: Header,
+    }
   ];
 
   return { publicRoutes, privateRoutes };

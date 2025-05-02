@@ -4,21 +4,27 @@ import { IoIosAddCircle } from "react-icons/io";
 import { RiBookShelfLine } from "react-icons/ri";
 import { BsCardChecklist } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import ThemeSwitcher from "../ThemeSwitcher";
 import { useTheme } from "../../util/theme/theme";
 import { useQueryClient } from "@tanstack/react-query";
+import { logout } from "../../api/login";
 
 const Profile = ({ onClose }: { onClose: () => void }) => {
   const navigator = useNavigate();
   const queryClient = useQueryClient();
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.clear(); // hoặc chỉ xóa các key cụ thể bạn lưu
-    queryClient.clear();
-    onClose();
-    navigator("/auth/login");
+  const handleLogout = async () => {
+    try {
+      await logout(); // Gọi hàm logout bất đồng bộ nếu có
+      localStorage.removeItem("accessToken"); // Xóa token khỏi localStorage
+      localStorage.clear(); // Xóa toàn bộ localStorage nếu cần
+      queryClient.clear(); // Xóa tất cả dữ liệu cache của React Query
+      onClose(); // Đóng giao diện (nếu cần)
+      navigator("/auth/login"); // Chuyển hướng tới trang login
+    } catch (error) {
+      console.error("Error during logout:", error); // Log lỗi nếu có sự cố trong quá trình logout
+    }
   };
+  
 
   const theme = useTheme();
   const iconst = {
@@ -48,6 +54,10 @@ const Profile = ({ onClose }: { onClose: () => void }) => {
     },
   ];
 
+  const handleTopUpClick = () => {
+    navigator("/payment/to-up");
+  };
+
   return (
     <div
       className={`fixed top-3 max-md:top-0 max-md:right-0 w-screen h-screen ${theme.header} text-white z-50 md:w-[350px] md:h-auto md:rounded-lg md:mt-16 md:-ml-80 md:border border-stone-600 p-4 overflow-y-auto scrollbar-hide transition-transform duration-300 transform md:translate-x-0`}
@@ -72,7 +82,10 @@ const Profile = ({ onClose }: { onClose: () => void }) => {
           </p>
         </div>
         <div title="Nạp tiền">
-          <IoIosAddCircle className="text-xl text-purple-400 cursor-pointer hover:scale-110 transition-transform duration-200" />
+          <IoIosAddCircle
+            onClick={handleTopUpClick}
+            className="text-xl text-purple-400 cursor-pointer hover:scale-110 transition-transform duration-200"
+          />
         </div>
       </div>
 

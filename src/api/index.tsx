@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "/"; // Địa chỉ API backend
+const BASE_URL = "http://localhost:8080";
 // Tạo một instance của axios
 export const api = axios.create({
   baseURL: `${BASE_URL}`, // Địa chỉ API backend
@@ -17,6 +17,7 @@ api.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`; // Gắn token vào header Authorization
   }
+  console.log("Request config:", config); // In cấu hình yêu cầu ra console để kiểm tra
   return config;
 });
 

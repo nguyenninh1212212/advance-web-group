@@ -22,3 +22,7 @@ export const login = async (
   });
   return response.data;
 };
+
+export const logout = async (): Promise<void> => {
+  await api.post("/auth/logout", {}, { withCredentials: true });
+};
