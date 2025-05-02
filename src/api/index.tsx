@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "/api"; // Địa chỉ API backend
+const BASE_URL = "/"; // Địa chỉ API backend
 // Tạo một instance của axios
 export const api = axios.create({
   baseURL: `${BASE_URL}`, // Địa chỉ API backend

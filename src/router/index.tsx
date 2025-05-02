@@ -17,6 +17,7 @@ import SubscriptionPlan from "../page/Subscription/SubscriptionPlan";
 import PaymentHistory from "../page/My/Payment/PaymentHistory";
 import TrashList from "../page/My/Story/TrashList";
 import AuthorDetail from "../page/Comic/AuthorDetail";
+import OAuth2RedirectHandler from "../page/Auth/OAuth2RedirectHandler";
 
 const RoutesConfig = () => {
   const publicRoutes = [
@@ -100,6 +101,10 @@ const RoutesConfig = () => {
       path: "/my/payment-history",
       component: PaymentHistory,
       layout: Header,
+    },
+    {
+      path: "/oauth2/redirect",
+      component: OAuth2RedirectHandler,
     },
   ];
 
