@@ -9,8 +9,19 @@ export const useTheme = () => {
 };
 export const statusTheme = {
   COMING_SOON: "bg-yellow-500",
-  UPDATING: "bg-primary-200",
+  UPDATING: "bg-blue-500",
   COMPLETED: "bg-blue-500",
+} as Record<string, string>;
+
+export const availbleTheme = {
+  ACCEPTED: "bg-blue-500",
+  REJECTED: "bg-red-500",
+  PENDING: "bg-orange-500",
+} as Record<string, string>;
+
+export const visibilityTheme = {
+  true: "bg-green-500",
+  false: "bg-orange-500",
 } as Record<string, string>;
 
 export const typeTheme = {

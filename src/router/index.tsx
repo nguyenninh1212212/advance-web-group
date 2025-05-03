@@ -17,6 +17,7 @@ import SubscriptionPlan from "../page/Subscription/SubscriptionPlan";
 import PaymentHistory from "../page/My/Payment/PaymentHistory";
 import TrashList from "../page/My/Story/TrashList";
 import AuthorDetail from "../page/Comic/AuthorDetail";
+import { Profile } from "../page/My/Profile";
 
 const RoutesConfig = () => {
   const publicRoutes = [
@@ -75,7 +76,7 @@ const RoutesConfig = () => {
       path: "/my/list",
       component: List,
       layout: Header,
-    },  
+    },
     {
       path: "/my/list/trash",
       component: TrashList,
@@ -105,8 +106,8 @@ const RoutesConfig = () => {
 
   const privateRoutes = [
     {
-      path: "/user/profile",
-      component: () => <div>Profile Page</div>,
+      path: "/my/profile",
+      component: Profile,
       layout: Header,
     },
     {

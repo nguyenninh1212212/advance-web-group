@@ -1,10 +1,9 @@
 import { FaHistory, FaMoneyBill, FaSignOutAlt, FaWallet } from "react-icons/fa";
 import { FiAtSign, FiLogIn } from "react-icons/fi";
 import { IoIosAddCircle } from "react-icons/io";
-import { RiBookShelfLine } from "react-icons/ri";
+import { RiBookShelfLine, RiProfileFill } from "react-icons/ri";
 import { BsCardChecklist } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import ThemeSwitcher from "../ThemeSwitcher";
 import { useTheme } from "../../util/theme/theme";
 import { useQueryClient } from "@tanstack/react-query";
@@ -26,6 +25,11 @@ const Profile = ({ onClose }: { onClose: () => void }) => {
   };
   const token = localStorage.getItem("accessToken");
   const navigationItems = [
+    {
+      label: "Profile",
+      to: "/my/profile",
+      icon: <RiProfileFill className={iconst.st} />,
+    },
     {
       label: "Subscription",
       to: "/subscription-plan",

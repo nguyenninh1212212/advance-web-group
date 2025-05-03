@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App.tsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.tsx";
-import { ToastProvider } from "./util/toastContext.tsx";
+import { ToastProvider } from "./util/ToastContext.tsx";
 // main.tsx
 import { getInitialThemeIndex, themeList } from "./redux/slices/themeSlice";
 const index = getInitialThemeIndex();

@@ -81,6 +81,9 @@ export interface IStory {
   type: StoryType;
   status: StoryStatus;
   view: number;
+  visibility: boolean;
+  isAvailble: string;
+  email: string;
   updatedAt: string;
   createdAt: string;
   coverImage: string;

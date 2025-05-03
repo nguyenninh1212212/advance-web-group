@@ -85,3 +85,11 @@ export const filterStory = async (
   return response.data;
 };
 
+export const toggleVisibility = async (isVisibility: boolean, id: string) => {
+  await api.patch("/story/visibility", null, {
+    params: {
+      isVisibility,
+      id,
+    },
+  });
+};

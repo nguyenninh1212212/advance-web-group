@@ -2,10 +2,16 @@ import React, { useState } from "react";
 import { IStory } from "../../type/comic";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteSoftStory } from "../../api/stories";
+import { deleteSoftStory, toggleVisibility } from "../../api/stories";
 import { useToast } from "../../util/ToastContext";
 import Popup from "../popup/Popup";
-import { useTheme } from "../../util/theme/theme";
+import {
+  availbleTheme,
+  useTheme,
+  visibilityTheme,
+} from "../../util/theme/theme";
+import { BiLock, BiLockOpen, BiTrash } from "react-icons/bi";
+import { IoAdd } from "react-icons/io5";
 
 interface payload {
   data: IStory;
@@ -14,7 +20,16 @@ interface payload {
 const CardCreateStory: React.FC<payload> = ({ data }) => {
   const { card_cate, card_comic, text } = useTheme();
 
-  const { categories, coverImage, createdAt, id, type, title } = data;
+  const {
+    categories,
+    coverImage,
+    createdAt,
+    id,
+    type,
+    title,
+    isAvailble,
+    visibility,
+  } = data;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [showMore, setShowMore] = useState(false);
   const toggleShowMore = () => setShowMore(!showMore);
@@ -33,6 +48,18 @@ const CardCreateStory: React.FC<payload> = ({ data }) => {
       showToast(error as unknown as string, "error");
     },
   });
+  const { mutate: handleVisibility } = useMutation({
+    mutationFn: ({ visibility, id }: { visibility: boolean; id: string }) =>
+      toggleVisibility(visibility, id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["list"] });
+      showToast(`${visibility == true ? "Ẩn" : "Hiển thị công khai"}`, "info");
+    },
+    onError: (error) => {
+      console.log("🚀 ~ error:", error);
+      showToast(error as unknown as string, "error");
+    },
+  });
 
   const handleAddChapter = () => {
     localStorage.setItem("id_story", id);
@@ -44,7 +71,7 @@ const CardCreateStory: React.FC<payload> = ({ data }) => {
     <div
       className={`${card_comic} rounded-lg flex my-4 overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out h-auto`}
     >
-      <img src={coverImage} alt="" className="w-[150px] h-50 object-cover" />
+      <img src={coverImage} alt="" className="w-[150px] h-60" />
 
       <div className="flex-1 p-4 flex flex-col justify-between">
         <div>
@@ -58,6 +85,11 @@ const CardCreateStory: React.FC<payload> = ({ data }) => {
             }`}
           >
             {createdAt}
+          </p>
+          <p
+            className={`text-white p-1 w-fit rounded-lg md:text-sm text-xs mt-2 ${availbleTheme[isAvailble]} `}
+          >
+            {isAvailble}
           </p>
 
           <button
@@ -79,18 +111,32 @@ const CardCreateStory: React.FC<payload> = ({ data }) => {
           ))}
         </div>
 
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 ">
           <button
             onClick={handleAddChapter}
             className="bg-indigo-500 hover:bg-blue-700 text-white px-3 py-1 rounded-lg text-sm transition"
           >
-            + Thêm Chapter
+            <IoAdd className="text-2xl" />
           </button>
           <button
             onClick={() => setIsOpen(true)}
             className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm transition"
           >
-            Chuyển vào thùng rác
+            <BiTrash className="text-2xl" />
+          </button>
+          <button
+            onClick={() =>
+              handleVisibility({ visibility: !visibility, id: id })
+            }
+            className={`${
+              visibilityTheme[visibility.toString()]
+            } text-white px-3 py-1 rounded-lg text-sm transition`}
+          >
+            {visibility ? (
+              <BiLockOpen className="text-2xl" />
+            ) : (
+              <BiLock className="text-2xl" />
+            )}
           </button>
         </div>
       </div>

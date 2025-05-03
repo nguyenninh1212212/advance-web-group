@@ -1,49 +1,72 @@
-import React from "react";
-import { FaGem } from "react-icons/fa";
-import { MdLibraryBooks } from "react-icons/md";
 import CardTitle from "../../components/card/CardTitle";
-
-const plans = [
-  {
-    name: "PREMIUM",
-    tag: "BEST VALUE",
-    duration: "1 Month +",
-    highlight: "125 Gems SAVE 60%",
-    oldPrice: "$17.49",
-    price: "$9.99",
-    perMonth: "$9.99/mo",
-    benefits: [
-      "Instant & full access to 300+ titles in subscription library",
-      "Save 30% on Gems with monthly offer",
-      "125 Gems added every month (no expiration)",
-    ],
-    buttonText: "Subscribe & get 125 Gems now",
-    subText: "For US$9.99, billed every 1 month",
-    color: "bg-pink-500",
-    badgeColor: "bg-green-600",
-  },
-  {
-    name: "STANDARD",
-    tag: null,
-    duration: "1 Month",
-    price: "$4.99",
-    perMonth: "$4.99/mo",
-    benefits: [
-      "Instant & full access to 300+ titles in subscription library",
-      "Save 30% on Gems with monthly offer",
-    ],
-    buttonText: "Subscribe now",
-    subText: "For US$4.99, billed every 1 month",
-    color: "bg-indigo-500",
-  },
-];
+import { getSubsctiption, TakeSubscriptionPlan } from "../../api/subscription";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useToast } from "../../util/ToastContext";
+import { useTheme } from "../../util/theme/theme";
 
 const SubscriptionPlan = () => {
+  const { background_card } = useTheme();
+
+  const { showToast } = useToast();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["subscription"],
+    queryFn: () => getSubsctiption(),
+  });
+  console.log("🚀 ~ SubscriptionPlan ~ data:", data);
+
+  const mutation = useMutation({
+    mutationFn: (id: string) => TakeSubscriptionPlan(id),
+    onSuccess: () => {
+      showToast("Đăng ký thành công", "success");
+    },
+    onError: (error) => {
+      showToast("Đăng ký thất bại" + error, "error");
+    },
+  });
+
+  if (isLoading)
+    return <div className="text-white text-center">Loading...</div>;
+  if (error)
+    return <div className="text-red-500 text-center">Lỗi khi tải dữ liệu</div>;
+
+  interface Plan {
+    id: string;
+    name: string;
+    duration: string;
+    highlight: string;
+    price: string;
+    perMonth: string;
+    buttonText: string;
+    color: string;
+    badgeColor: string;
+    tag: string | null;
+    subText?: string;
+    active: boolean;
+  }
+
+  const dynamicPlans: Plan[] = data?.result?.map((item: any) => {
+    return {
+      id: item.id,
+      name: item.type,
+      duration: item.expired + " days",
+      highlight: `${item.price} Coins SAVE 60%`, // Giả sử thêm thông tin tuỳ biến
+      price: `$${item.price.toFixed(2)}`,
+      perMonth: `$${item.price.toFixed(2)}/mo`,
+      buttonText: "Subscribe now",
+      color: background_card,
+      badgeColor: "bg-green-600",
+      tag: item.type === "PREMIUM" ? "BEST VALUE" : null,
+      active: item.active,
+    };
+  });
+
+  const hasActivePlan = dynamicPlans.some((plan) => plan.active);
+
   return (
     <>
       <CardTitle title="Gói nâng cấp" />
-      <div className=" p-6 text-white flex justify-center items-start gap-8 flex-wrap">
-        {plans.map((plan, index) => (
+      <div className="p-6 text-white flex justify-center items-start gap-8 flex-wrap">
+        {dynamicPlans.map((plan, index) => (
           <div
             key={index}
             className="bg-gray-900 w-full md:w-80 p-6 rounded-2xl shadow-lg flex flex-col justify-between"
@@ -65,32 +88,28 @@ const SubscriptionPlan = () => {
                   {plan.highlight}
                 </div>
               )}
-              {plan.oldPrice && (
-                <div className="line-through text-gray-400">
-                  {plan.oldPrice}
-                </div>
-              )}
               <div className="text-3xl font-bold">{plan.price}</div>
               <div className="text-sm text-gray-400">{plan.perMonth}</div>
               <hr className="my-4 border-gray-600" />
-              <ul className="space-y-2 text-sm">
-                {plan.benefits.map((benefit, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    {benefit.includes("access") ? (
-                      <MdLibraryBooks className="text-indigo-400 mt-1" />
-                    ) : (
-                      <FaGem className="text-pink-400 mt-1" />
-                    )}
-                    <span>{benefit}</span>
-                  </li>
-                ))}
-              </ul>
             </div>
             <button
-              className={`mt-4 w-full ${plan.color} py-2 rounded-xl font-semibold hover:opacity-90 transition`}
+              disabled={plan.active || hasActivePlan}
+              className={`mt-4 w-full ${
+                plan.active
+                  ? "bg-stone-500"
+                  : hasActivePlan
+                  ? "bg-gray-700 cursor-not-allowed"
+                  : `${plan.color} hover:opacity-90`
+              } py-2 rounded-xl font-semibold transition`}
+              onClick={() => mutation.mutate(plan.id)}
             >
-              {plan.buttonText}
+              {plan.active
+                ? "Đã đăng ký"
+                : hasActivePlan
+                ? "Chỉ được chọn 1 gói"
+                : plan.buttonText}
             </button>
+
             <p className="text-xs text-center text-gray-300 mt-2">
               {plan.subText}
             </p>

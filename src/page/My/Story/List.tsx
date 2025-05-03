@@ -14,6 +14,8 @@ const List = () => {
     queryKey: ["list"],
     queryFn: () => getMyList(),
   });
+  console.log("🚀 ~ List ~ error:", error);
+  console.log("🚀 ~ List ~ data:", data);
   const theme = useTheme();
   const navigate = useNavigate();
   if (isLoading)
