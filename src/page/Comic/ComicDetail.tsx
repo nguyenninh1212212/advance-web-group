@@ -13,12 +13,16 @@ import { useQuery } from "@tanstack/react-query";
 import { getStoryById } from "../../api/stories";
 import ClipLoader from "react-spinners/ClipLoader";
 import CommentSection from "./CommentSection";
+import { isFollowComic, toggleFollowComic } from "../../api/favorites";
+import { useToast } from "../../util/ToastContext";
 
 const ComicDetail: React.FC<IComicDetail> = () => {
   const { id } = useParams<string>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenRate, setIsOpenRate] = useState<boolean>(false);
   const [seeMore, setSeeMore] = useState<boolean>(false);
+  const [isFollowed, setIsFollowed] = useState<boolean>(false);
+  const { showToast } = useToast();
   const navigate = useNavigate();
   const [chapter, setChapter] = useState<IChapter>();
   const [limit, setLimit] = useState<number>(10);
@@ -31,7 +35,21 @@ const ComicDetail: React.FC<IComicDetail> = () => {
   });
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const checkFollowStatus = async () => {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        setIsFollowed(false); // hoặc bỏ qua nếu chưa login
+        return;
+      }
+
+      try {
+        const response = await isFollowComic(id as string);
+        setIsFollowed(response); // Cập nhật trạng thái theo dõi
+
+      } catch (error) {
+      }
+    };
+    checkFollowStatus();
   }, [id]);
   const isPurchase = (chapter: IChapter) => {
     if (chapter.price > 0) {
@@ -59,6 +77,22 @@ const ComicDetail: React.FC<IComicDetail> = () => {
   if (data.chapter.length > 0) {
     localStorage.setItem("id_story", data.id);
   }
+
+  const handleFollow = async () => {
+    try {
+      const response = await toggleFollowComic(id as string); // Gọi API toggle
+      if (response) {
+        setIsFollowed(true); // Cập nhật trạng thái thành "đã theo dõi"
+        showToast("Bạn đã theo dõi truyện thành công!", "success");
+      } else {
+        setIsFollowed(false); // Cập nhật trạng thái thành "chưa theo dõi"
+        showToast("Bạn đã bỏ theo dõi truyện!", "info");
+      }
+    } catch (error) {
+      console.error("Follow/Unfollow failed:", error);
+      showToast("Có lỗi xảy ra khi thay đổi trạng thái theo dõi!", "error");
+    }
+  };
 
   return (
     <div className="flex flex-col gap-4 min-h-screen ">
@@ -126,9 +160,19 @@ const ComicDetail: React.FC<IComicDetail> = () => {
               </li>
               <li className="flex p-2">
                 <ul className="flex gap-4 text-2xl mt-2">
-                  <li className="flex flex-col items-center">
-                    <FaHeart className="cursor-pointer" />
-                    <p className="text-sm text-zinc-400">Theo dõi</p>
+                <li className="flex flex-col items-center">
+                    <FaHeart
+                      className={`cursor-pointer ${
+                        isFollowed ? "text-red-500" : "text-gray-400"
+                      }`}
+                      onClick={handleFollow}
+                    />
+                    <p
+                      className="text-sm text-zinc-400 cursor-pointer"
+                      onClick={handleFollow}
+                    >
+                      {isFollowed ? "Bỏ theo dõi" : "Theo dõi"}
+                    </p>
                   </li>
                   <li className="flex flex-col items-center">
                     <VscDebugStart className="cursor-pointer " />

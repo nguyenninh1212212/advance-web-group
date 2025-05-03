@@ -34,7 +34,6 @@ const CommentSection: React.FC<CommentProps> = ({ comicId }) => {
   const comments = commentsData?.content || [];
   const totalPages = commentsData?.totalPages || 1;
 
-  console.log("comments", commentsData);
   const postCommentMutation = useMutation({
     mutationFn: ({ content, parentCommentId }: { content: string; parentCommentId: string | null }) =>
       postComment(comicId, content, parentCommentId),

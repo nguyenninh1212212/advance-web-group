@@ -20,8 +20,13 @@ const Favorite = () => {
         {/* {fakedatadetail.slice(0, 5).map((item) => (
           <CardResult data={item} />
         ))} */}
+        {data?.content?.map((item: any) => <CardResult data={item} />)}
       </div>
-      <Pagination initialPage={1} initialLimit={10} totalItem={100} />
+      <Pagination
+  initialPage={data?.number}
+  initialLimit={data?.size}
+  totalItem={data?.totalPages}
+/>
     </div>
   );
 };
