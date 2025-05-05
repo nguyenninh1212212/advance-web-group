@@ -3,7 +3,7 @@ import ImageReader from "./ImageReader";
 import { getChapterDetail, getChapterProxy } from "../../api/chapter";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTheme } from "../../util/theme/theme";
 import Popup from "../../components/popup/Popup";
 import Purchase from "../../components/popup/Purchase";

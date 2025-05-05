@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const BASE_URL = "http://localhost:8080";
-// Tạo một instance của axios
 export const api = axios.create({
   baseURL: `${BASE_URL}`, // Địa chỉ API backend
   timeout: 5000, // Thời gian timeout

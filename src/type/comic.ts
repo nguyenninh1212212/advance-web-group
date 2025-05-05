@@ -1,14 +1,8 @@
 import { Page } from "./page";
 
 export interface Icard {
-  id: string;
-  title: string;
-  chapter: string[];
-  image: string;
-  time: string[];
-  view: number;
-  cmt: number;
-  like: number;
+  chapters: IChapter[];
+  story: IStoryHistory;
 }
 
 export interface IChapterDetail {
@@ -31,6 +25,7 @@ export interface IChapter {
   price: number;
   images: IImage;
   createdAt: string;
+  read: boolean;
 }
 export interface IChapterDetail {
   id: string;
@@ -88,6 +83,13 @@ export interface IStory {
   createdAt: string;
   coverImage: string;
   categories: ICategory[];
+}
+export interface IStoryHistory {
+  id: string;
+  title: string;
+  status: StoryStatus;
+  visibility: boolean;
+  coverImage: string;
 }
 // Interface cho phản hồi toàn bộ từ API
 export interface IStoriesResponse {

@@ -93,3 +93,17 @@ export const toggleVisibility = async (isVisibility: boolean, id: string) => {
     },
   });
 };
+
+export const getLatestChapter = async (storyId: string) => {
+  const response = await api.get("/my/continue-reading", {
+    params: {
+      story_id: storyId,
+    },
+  });
+
+  return response.data;
+};
+export const getHistory = async () => {
+  const response = await api.get("/my/history");
+  return response.data;
+};

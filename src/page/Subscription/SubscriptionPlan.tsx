@@ -12,6 +12,7 @@ const SubscriptionPlan = () => {
     queryKey: ["subscription"],
     queryFn: () => getSubsctiption(),
   });
+  console.log("🚀 ~ SubscriptionPlan ~ error:", error);
   console.log("🚀 ~ SubscriptionPlan ~ data:", data);
 
   const mutation = useMutation({

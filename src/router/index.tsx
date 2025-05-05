@@ -17,13 +17,10 @@ import SubscriptionPlan from "../page/Subscription/SubscriptionPlan";
 import PaymentHistory from "../page/My/Payment/PaymentHistory";
 import TrashList from "../page/My/Story/TrashList";
 import AuthorDetail from "../page/Comic/AuthorDetail";
-<<<<<<< HEAD
 import { Profile } from "../page/My/Profile";
-=======
 import OAuth2RedirectHandler from "../page/Auth/OAuth2RedirectHandler";
 import TopUpPage from "../page/My/Payment/TopUpPage";
 import VnpayReturn from "../page/My/Payment/VNPayReturn";
->>>>>>> 5b789ec0053bb2c0b9778d5508ab5b088b3668d7
 
 const RoutesConfig = () => {
   const publicRoutes = [
@@ -120,11 +117,7 @@ const RoutesConfig = () => {
       component: Profile,
       layout: Header,
     },
-    {
-      path: "/user/settings",
-      component: () => <div>Settings Page</div>,
-      layout: Header,
-    },
+
     {
       path: "/payment/to-up",
       component: TopUpPage,
@@ -134,7 +127,7 @@ const RoutesConfig = () => {
       path: "payment/vnpay-return",
       component: VnpayReturn,
       layout: Header,
-    }
+    },
   ];
 
   return { publicRoutes, privateRoutes };

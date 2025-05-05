@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Pagination from "../../util/pagebar/page";
 import CardResult from "../../components/card/CardResult";
 import { useSelector } from "react-redux";
@@ -10,6 +10,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 const ResultDetail = () => {
   useEffect(() => window.scrollTo(0, 0), []);
+  const [page, setPage] = useState(0);
   const selectedCategory = useSelector(
     (state: RootState) => state.category.selectedCategoryId
   );
@@ -18,9 +19,11 @@ const ResultDetail = () => {
   );
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["cateStory", selectedCategory],
-    queryFn: () => getStoriesByCate(selectedCategory, 0, 10),
+    queryKey: ["cateStory", selectedCategory, page], // ⬅️ thêm page
+    queryFn: () => getStoriesByCate(selectedCategory, page, 10),
   });
+
+  console.log("🚀 ~ ResultDetail ~ data:", data);
 
   if (isLoading)
     return (
@@ -52,7 +55,11 @@ const ResultDetail = () => {
           data?.data.map((e: IStory) => <CardResult data={e} key={e.id} />)
         )}
       </div>
-      <Pagination initialLimit={10} initialPage={1} totalItem={10} />
+      <Pagination
+        initialPage={page + 1}
+        totalPage={data?.total}
+        onPageChange={(newPage: number) => setPage(newPage - 1)} // newPage từ Pagination là 1-based
+      />
     </div>
   );
 };

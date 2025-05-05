@@ -33,6 +33,8 @@ const ComicDetail: React.FC<IComicDetail> = () => {
     queryFn: () => getStoryById(id as string, 0, limit),
     enabled: !!id,
   });
+  console.log("🚀 ~ error:", error);
+  console.log("🚀 ~ data:", data);
 
   useEffect(() => {
     const checkFollowStatus = async () => {
@@ -42,12 +44,8 @@ const ComicDetail: React.FC<IComicDetail> = () => {
         return;
       }
 
-      try {
-        const response = await isFollowComic(id as string);
-        setIsFollowed(response); // Cập nhật trạng thái theo dõi
-
-      } catch (error) {
-      }
+      const response = await isFollowComic(id as string);
+      setIsFollowed(response);
     };
     checkFollowStatus();
   }, [id]);
@@ -73,7 +71,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
         />
       </div>
     );
-  if (error) return <div>Error: {error.message}</div>;
+  if (error) return <div>Error</div>;
   if (data.chapter.length > 0) {
     localStorage.setItem("id_story", data.id);
   }
@@ -93,6 +91,9 @@ const ComicDetail: React.FC<IComicDetail> = () => {
       showToast("Có lỗi xảy ra khi thay đổi trạng thái theo dõi!", "error");
     }
   };
+  const handleCountinue = async () => {
+    navigate(`/${data?.title}/chapter/${data.continueReading}`);
+  };
 
   return (
     <div className="flex flex-col gap-4 min-h-screen ">
@@ -110,7 +111,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
               </li>
               <li>
                 Tác giả:{" "}
-                <span 
+                <span
                   onClick={() => navigate(`/author/detail/${id}`)}
                   className={`${theme.text}`}
                 >
@@ -160,7 +161,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
               </li>
               <li className="flex p-2">
                 <ul className="flex gap-4 text-2xl mt-2">
-                <li className="flex flex-col items-center">
+                  <li className="flex flex-col items-center">
                     <FaHeart
                       className={`cursor-pointer ${
                         isFollowed ? "text-red-500" : "text-gray-400"
@@ -174,7 +175,10 @@ const ComicDetail: React.FC<IComicDetail> = () => {
                       {isFollowed ? "Bỏ theo dõi" : "Theo dõi"}
                     </p>
                   </li>
-                  <li className="flex flex-col items-center">
+                  <li
+                    className="flex flex-col items-center"
+                    onClick={handleCountinue}
+                  >
                     <VscDebugStart className="cursor-pointer " />
                     <p className="text-sm text-zinc-400">Đọc từ đầu</p>
                   </li>
@@ -217,7 +221,9 @@ const ComicDetail: React.FC<IComicDetail> = () => {
               data.chapter.map((chap: IChapter) => (
                 <div
                   key={chap.id}
-                  className={`flex justify-between items-center hover:bg-stone-400 rounded-lg p-2 cursor-pointer`}
+                  className={`flex justify-between items-center my-1 hover:bg-stone-400 rounded-lg p-2 cursor-pointer ${
+                    chap.read ? `${theme.background_card}` : ""
+                  }`}
                   onClick={() => isPurchase(chap)}
                 >
                   <div className="flex items-center gap-2 my-3">

@@ -25,7 +25,6 @@ const ResultSearch = () => {
 
   const [appliedFilters, setAppliedFilters] = useState(new Map(filterFields));
   const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(10);
   const [filtersVisible, setFiltersVisible] = useState(true);
 
   // Lấy danh mục từ API
@@ -44,8 +43,8 @@ const ResultSearch = () => {
     isLoading: isLoadingFilter,
     error: errorFilter,
   } = useQuery({
-    queryKey: ["filter", Array.from(appliedFilters.entries()), page, limit],
-    queryFn: () => filterStory(appliedFilters, page, limit),
+    queryKey: ["filter", Array.from(appliedFilters.entries()), page],
+    queryFn: () => filterStory(appliedFilters, page, 10),
   });
 
   const filters = [
@@ -201,9 +200,9 @@ const ResultSearch = () => {
           ))}
         </div>
         <Pagination
-          initialLimit={limit}
-          initialPage={page}
-          totalItem={dataFilter?.result?.totalItems || 0}
+          initialPage={dataFilter?.result?.page + 1}
+          totalPage={dataFilter?.result?.total}
+          onPageChange={(newPage: number) => setPage(newPage - 1)} // newPage từ Pagination là 1-based
         />
       </section>
     </div>

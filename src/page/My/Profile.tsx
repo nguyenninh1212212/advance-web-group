@@ -4,12 +4,14 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { getMyList } from "../../api/stories";
 import { IStory } from "../../type/comic";
 import CardComicDetail from "../../components/card/CardComicDetail";
+import { FaMoneyBill } from "react-icons/fa";
 
 export const Profile = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["profile"],
     queryFn: () => getProfile(),
   });
+  console.log("🚀 ~ Profile ~ data:", data);
   const {
     data: st,
     isLoading: loading,
@@ -18,7 +20,6 @@ export const Profile = () => {
     queryKey: ["list"],
     queryFn: () => getMyList(),
   });
-  console.log("🚀 ~ Profile ~ st:", st);
 
   if (isLoading || loading) {
     return (
@@ -45,7 +46,10 @@ export const Profile = () => {
         {/* Avatar + Info */}
         <div className="flex items-center space-x-6 z-10">
           <img
-            src={data.result.imageUrl}
+            src={
+              data.result.imageUrl ||
+              "https://media.tenor.com/7JTQjJOqlfQAAAAM/cats-cat-animation.gif"
+            }
             alt="Avatar"
             className="w-32 h-32 rounded-full border-4 border-gray-800 bg-white z-10"
           />
@@ -53,12 +57,15 @@ export const Profile = () => {
             <h1 className="text-3xl font-bold">{data.result.fullName}</h1>
             <p className="text-sm text-gray-400">{data.result.dateOfBirth}</p>
             <p className="text-sm text-gray-400">{data.result.email}</p>
+            <p className="text-xl text-green-500 flex items-center gap-2">
+              {data.result.balance} <FaMoneyBill />
+            </p>
           </div>
         </div>
       </div>
       <div className="mt-10 px-4 max-w-5xl mx-auto mb-2">
         <h2 className="text-xl font-semibold mb-4">Danh sách truyện của bạn</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid flex sm:grid-cols-2 md:grid-cols-4 gap-4 items-center justify-center">
           {st?.data.map((item: IStory) => (
             <CardComicDetail key={item.id} data={item} />
           ))}

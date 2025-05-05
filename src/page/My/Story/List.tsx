@@ -8,14 +8,14 @@ import { getMyList } from "../../../api/stories";
 import ClipLoader from "react-spinners/ClipLoader";
 import { IStory } from "../../../type/comic";
 import { FaTrash } from "react-icons/fa6";
+import Pagination from "../../../util/pagebar/page";
 
 const List = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["list"],
     queryFn: () => getMyList(),
   });
-  console.log("🚀 ~ List ~ error:", error);
-  console.log("🚀 ~ List ~ data:", data);
+  console.log("🚀 ~ List ~ error:", data);
   const theme = useTheme();
   const navigate = useNavigate();
   if (isLoading)
@@ -71,6 +71,11 @@ const List = () => {
       ))}
 
       {/* MDList Items */}
+      <Pagination
+        initialPage={data?.total}
+        initialLimit={data?.limit}
+        totalPage={data?.limit}
+      />
     </div>
   );
 };
