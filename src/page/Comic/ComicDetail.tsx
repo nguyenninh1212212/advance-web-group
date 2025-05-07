@@ -33,8 +33,6 @@ const ComicDetail: React.FC<IComicDetail> = () => {
     queryFn: () => getStoryById(id as string, 0, limit),
     enabled: !!id,
   });
-  console.log("🚀 ~ error:", error);
-  console.log("🚀 ~ data:", data);
 
   useEffect(() => {
     const checkFollowStatus = async () => {
@@ -264,7 +262,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
         setIsOpen={setIsOpen}
         backgroundColor="bg-gray-800"
       >
-        {chapter ? <Purchase chap={chapter} /> : null}
+        {chapter ? <Purchase chap={chapter} id={id as string} /> : null}
       </Popup>
       <Popup
         isOpen={isOpenRate}

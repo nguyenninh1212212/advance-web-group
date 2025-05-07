@@ -61,7 +61,7 @@ const Home = () => {
     queryKey: ["home"],
     queryFn: () => getHomepage(),
   });
-  const category = useMemo(() => data?.categories?.categories || [], [data]);
+  const category = useMemo(() => data?.categories?.data || [], [data]);
 
   if (isLoading)
     return (

@@ -27,3 +27,7 @@ export const postChapter = async (formData: FormData) => {
   });
   return response.data;
 };
+
+export const buyChapter = async (id: string) => {
+  await api.post("/chapter/buy", { id });
+};

@@ -3,25 +3,33 @@ import { getSubsctiption, TakeSubscriptionPlan } from "../../api/subscription";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "../../util/ToastContext";
 import { useTheme } from "../../util/theme/theme";
+import { useState } from "react";
+import AreYouSure from "../../components/popup/AreYouSure";
 
 const SubscriptionPlan = () => {
   const { background_card } = useTheme();
+  const [open, setOpen] = useState(false);
 
   const { showToast } = useToast();
-  const { data, isLoading, error } = useQuery({
+  const {
+    data,
+    isLoading,
+    error,
+    refetch, // ✅ thêm refetch
+  } = useQuery({
     queryKey: ["subscription"],
     queryFn: () => getSubsctiption(),
   });
-  console.log("🚀 ~ SubscriptionPlan ~ error:", error);
-  console.log("🚀 ~ SubscriptionPlan ~ data:", data);
 
   const mutation = useMutation({
     mutationFn: (id: string) => TakeSubscriptionPlan(id),
     onSuccess: () => {
       showToast("Đăng ký thành công", "success");
+      refetch();
+      setOpen(false);
     },
     onError: (error) => {
-      showToast("Đăng ký thất bại" + error, "error");
+      showToast("Đăng ký thất bại: " + error, "error");
     },
   });
 
@@ -62,6 +70,10 @@ const SubscriptionPlan = () => {
   });
 
   const hasActivePlan = dynamicPlans.some((plan) => plan.active);
+  const handleBuy = (id: string) => {
+    mutation.mutate(id);
+    setOpen(!open);
+  };
 
   return (
     <>
@@ -102,7 +114,7 @@ const SubscriptionPlan = () => {
                   ? "bg-gray-700 cursor-not-allowed"
                   : `${plan.color} hover:opacity-90`
               } py-2 rounded-xl font-semibold transition`}
-              onClick={() => mutation.mutate(plan.id)}
+              onClick={() => setOpen(!open)}
             >
               {plan.active
                 ? "Đã đăng ký"
@@ -110,6 +122,12 @@ const SubscriptionPlan = () => {
                 ? "Chỉ được chọn 1 gói"
                 : plan.buttonText}
             </button>
+            <AreYouSure
+              onCancel={() => setOpen(!open)}
+              onConfirm={() => handleBuy(plan.id)}
+              visible={open}
+              message={"Bạn có chắc mua gói " + plan.name + "không ?"}
+            />
 
             <p className="text-xs text-center text-gray-300 mt-2">
               {plan.subText}
