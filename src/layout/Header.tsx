@@ -13,7 +13,7 @@ import CardSearchResult from "../components/card/CardSearchResult";
 
 import { setCategory } from "../redux/slices/categorySlice";
 import { selectTheme } from "../redux/slices/themeSlice";
-import { filterStory } from "../api/stories";
+import { elasticSearch } from "../api/stories";
 
 const Header: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ const Header: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
     isLoading: isSearching,
   } = useQuery({
     queryKey: ["search", searchTerm],
-    queryFn: () => filterStory(new Map([["keyword", searchTerm]]), 0, 10),
+    queryFn: () => elasticSearch(searchTerm, 0, 10),
     enabled: !!searchTerm,
   });
   console.log("🚀 ~ searchResults:", searchResults);
