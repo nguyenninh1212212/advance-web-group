@@ -6,6 +6,8 @@ export const getSubsctiption = async () => {
 };
 
 export const TakeSubscriptionPlan = async (id_plan: string) => {
-  const res = await api.post("/subscription/upgrade", { id_plan });
-  return res.data;
+  await api.post("/subscription/upgrade", { id_plan });
+};
+export const TakeSubscriptionPlanRole = async () => {
+  await api.post("/subscription/upgrade/role");
 };

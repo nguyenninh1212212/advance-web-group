@@ -1,5 +1,9 @@
 import CardTitle from "../../components/card/CardTitle";
-import { getSubsctiption, TakeSubscriptionPlan } from "../../api/subscription";
+import {
+  getSubsctiption,
+  TakeSubscriptionPlan,
+  TakeSubscriptionPlanRole,
+} from "../../api/subscription";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "../../util/ToastContext";
 import { useTheme } from "../../util/theme/theme";
@@ -9,6 +13,7 @@ import AreYouSure from "../../components/popup/AreYouSure";
 const SubscriptionPlan = () => {
   const { background_card } = useTheme();
   const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
 
   const { showToast } = useToast();
   const {
@@ -20,6 +25,7 @@ const SubscriptionPlan = () => {
     queryKey: ["subscription"],
     queryFn: () => getSubsctiption(),
   });
+  console.log("🚀 ~ SubscriptionPlan ~ data:", data);
 
   const mutation = useMutation({
     mutationFn: (id: string) => TakeSubscriptionPlan(id),
@@ -27,6 +33,17 @@ const SubscriptionPlan = () => {
       showToast("Đăng ký thành công", "success");
       refetch();
       setOpen(false);
+    },
+    onError: (error) => {
+      showToast("Đăng ký thất bại: " + error, "error");
+    },
+  });
+  const mutation2 = useMutation({
+    mutationFn: () => TakeSubscriptionPlanRole(),
+    onSuccess: () => {
+      showToast("Đăng ký thành công", "success");
+      refetch();
+      setOpen2(false);
     },
     onError: (error) => {
       showToast("Đăng ký thất bại: " + error, "error");
@@ -53,12 +70,11 @@ const SubscriptionPlan = () => {
     active: boolean;
   }
 
-  const dynamicPlans: Plan[] = data?.result?.map((item: any) => {
+  const dynamicPlans: Plan[] = data?.result?.plans.map((item: any) => {
     return {
       id: item.id,
       name: item.type,
       duration: item.expired + " days",
-      highlight: `${item.price} Coins SAVE 60%`, // Giả sử thêm thông tin tuỳ biến
       price: `$${item.price.toFixed(2)}`,
       perMonth: `$${item.price.toFixed(2)}/mo`,
       buttonText: "Subscribe now",
@@ -68,13 +84,15 @@ const SubscriptionPlan = () => {
       active: item.active,
     };
   });
+  const author = data?.result?.author_role;
 
   const hasActivePlan = dynamicPlans.some((plan) => plan.active);
   const handleBuy = (id: string) => {
-    mutation.mutate(id);
     setOpen(!open);
+    mutation.mutate(id);
   };
 
+  console.log("🚀 ~ SubscriptionPlan ~ author.author_role.price:", author);
   return (
     <>
       <CardTitle title="Gói nâng cấp" />
@@ -82,7 +100,7 @@ const SubscriptionPlan = () => {
         {dynamicPlans.map((plan, index) => (
           <div
             key={index}
-            className="bg-gray-900 w-full md:w-80 p-6 rounded-2xl shadow-lg flex flex-col justify-between"
+            className="bg-gray-900 w-full md:w-64 p-6 rounded-2xl shadow-lg flex flex-col justify-between"
           >
             <div className="mb-4">
               <div className="flex justify-between items-center mb-2">
@@ -96,11 +114,7 @@ const SubscriptionPlan = () => {
                 )}
               </div>
               <div className="text-sm text-gray-300 mb-1">{plan.duration}</div>
-              {plan.highlight && (
-                <div className="text-sm text-green-400 mb-2">
-                  {plan.highlight}
-                </div>
-              )}
+
               <div className="text-3xl font-bold">{plan.price}</div>
               <div className="text-sm text-gray-400">{plan.perMonth}</div>
               <hr className="my-4 border-gray-600" />
@@ -134,6 +148,40 @@ const SubscriptionPlan = () => {
             </p>
           </div>
         ))}
+
+        {
+          <div className="bg-gray-900 w-full md:w-64 p-6 rounded-2xl shadow-lg flex flex-col justify-between">
+            <div className="mb-4">
+              <div className="flex justify-between items-center mb-2">
+                <h2 className="text-xl font-bold">
+                  Đăng ký để trở thành nhà viết truyện
+                </h2>
+              </div>
+              <div className="text-3xl font-bold">${author.price}</div>
+              <div className="text-sm text-gray-400">Vĩnh viễn</div>
+              <hr className="my-4 border-gray-600" />
+            </div>
+            <button
+              disabled={author.author_role}
+              className={`mt-4 w-full ${
+                author.author_role
+                  ? "bg-stone-500"
+                  : `bg-red-500 hover:opacity-90`
+              } py-2 rounded-xl font-semibold transition`}
+              onClick={() => setOpen(!open)}
+            >
+              {author.author_role ? "Đã đăng ký" : "Đăng ký"}
+            </button>
+            <AreYouSure
+              onCancel={() => setOpen2(!open)}
+              onConfirm={() => {
+                mutation2.mutate();
+              }}
+              visible={open2}
+              message={"Bạn có chắc mua gói " + "không ?"}
+            />
+          </div>
+        }
       </div>
     </>
   );
