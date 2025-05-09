@@ -8,8 +8,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ email: "", password: "" });
+  const [loginError, setLoginError] = useState(""); // Thêm state để chứa lỗi đăng nhập
   const navigate = useNavigate();
-
   const queryClient = useQueryClient();
 
   const validateInputs = () => {
@@ -24,15 +24,17 @@ const Login = () => {
 
   const handleLogin = async () => {
     if (!validateInputs()) return;
+    setLoginError(""); // Reset lỗi cũ mỗi lần thử đăng nhập
+
     try {
       const data = await login({ email, password });
       localStorage.setItem("accessToken", data.result.accessToken);
       localStorage.setItem("role", JSON.stringify(data.result.role));
-      await login({ email, password });
       queryClient.invalidateQueries({ queryKey: ["list"] });
       navigate("/");
     } catch (error) {
       console.error("Login failed:", error);
+      setLoginError("Sai tài khoản hoặc mật khẩu."); // Hiển thị thông báo lỗi
     }
   };
 
@@ -98,6 +100,14 @@ const Login = () => {
               <p className="text-red-500 text-xs mt-1">{errors.password}</p>
             )}
           </div>
+
+          {/* Hiển thị thông báo lỗi đăng nhập nếu có */}
+          {loginError && (
+            <p className="text-red-500 text-center text-sm mt-2">
+              {loginError}
+            </p>
+          )}
+
           <button
             onClick={handleLogin}
             className="w-full bg-primary-200 hover:bg-white hover:text-primary-200 text-white py-2 rounded-md font-semibold"
