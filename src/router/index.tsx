@@ -21,6 +21,7 @@ import { Profile } from "../page/My/Profile";
 import OAuth2RedirectHandler from "../page/Auth/OAuth2RedirectHandler";
 import TopUpPage from "../page/My/Payment/TopUpPage";
 import VnpayReturn from "../page/My/Payment/VNPayReturn";
+import Withdraw from "../page/My/Payment/Withdraw";
 
 const RoutesConfig = () => {
   const publicRoutes = [
@@ -108,6 +109,11 @@ const RoutesConfig = () => {
     {
       path: "/oauth2/redirect",
       component: OAuth2RedirectHandler,
+    },
+    {
+      path: "/withdraw/post",
+      component: Withdraw,
+      layout: Header,
     },
   ];
 
