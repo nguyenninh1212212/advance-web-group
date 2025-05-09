@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { FaMoneyBillWave } from "react-icons/fa";
 import CardTitle from "../../../components/card/CardTitle";
 import { BiSort } from "react-icons/bi";
