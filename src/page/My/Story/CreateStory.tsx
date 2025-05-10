@@ -25,7 +25,7 @@ const CreateStory = () => {
   const mutation = useMutation({
     mutationKey: ["postStory"],
     mutationFn: (formData: FormData) => postStory(formData),
-    onSuccess: (data) => {
+    onSuccess: () => {
       showToast("Thành công khi tạo truyện!", "success");
       queryClient.invalidateQueries({ queryKey: ["list"] });
       setSuccess(!success);
@@ -205,7 +205,7 @@ const CreateStory = () => {
               Thể loại
             </label>
             <div className="flex flex-wrap gap-2">
-              {data?.categories.map((cat: ICategory) => {
+              {data?.data.map((cat: ICategory) => {
                 const isSelected = categories.some((c) => c.id === cat.id);
 
                 return (

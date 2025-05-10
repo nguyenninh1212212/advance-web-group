@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { requestOtp, validateOtp } from "../../api/forgotpassword"; // ✅ Import API validateOtp
 
@@ -20,14 +20,14 @@ const ForgotPassword = () => {
       return;
     }
     setError("");
-  
+
     try {
       await requestOtp(email); // ✅ Gọi API OTP
       alert("OTP has been sent to your email.");
       setShowOtpPopup(true); // ✅ Hiển thị popup OTP
-    } catch (err: any) {
-      setError(err.message);
-      alert(err.message || "Error requesting OTP");
+    } catch {
+      setError("ERROR");
+      alert("Error requesting OTP");
     }
   };
 
@@ -46,8 +46,8 @@ const ForgotPassword = () => {
       } else {
         setOtpError("Invalid OTP!");
       }
-    } catch (err: any) {
-      setOtpError(err.message || "Error validating OTP");
+    } catch {
+      setOtpError("Error validating OTP");
     }
   };
 
@@ -111,7 +111,11 @@ const ForgotPassword = () => {
                 Validate OTP
               </button>
               <p className="text-center text-gray-400 text-sm">
-                <a href="#" onClick={() => alert("OTP resent to your email.")} className="text-primary-200 hover:underline">
+                <a
+                  href="#"
+                  onClick={() => alert("OTP resent to your email.")}
+                  className="text-primary-200 hover:underline"
+                >
                   Resend OTP
                 </a>
               </p>

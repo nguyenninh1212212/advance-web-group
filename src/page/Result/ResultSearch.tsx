@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import { IoIosArrowUp } from "react-icons/io";
 import Pagination from "../../util/pagebar/page";

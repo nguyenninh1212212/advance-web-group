@@ -16,13 +16,13 @@ const Pagination: React.FC<PaginationProps> = ({
 
   const [page, setPage] = useState(initialPage);
   const [inputPage, setInputPage] = useState(initialPage);
-  
+
   useEffect(() => {
     if (inputPage >= 1 && inputPage <= totalPage) {
       setPage(inputPage);
       onPageChange(inputPage); // gọi callback khi nhập số trang
     }
-  }, [inputPage, totalPage]);
+  }, [inputPage, onPageChange, totalPage]);
 
   const handleClick = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPage) {

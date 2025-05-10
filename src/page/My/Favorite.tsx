@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import CardResult from "../../components/card/CardResult";
 import CardTitle from "../../components/card/CardTitle";
-import Pagination from "../../util/pagebar/page";
 import { getfavorites } from "../../api/favorites";
-import { useState } from "react";
+import { IStory } from "../../type/comic";
 
 const Favorite = () => {
   const { data, isLoading, error } = useQuery({
@@ -13,7 +12,6 @@ const Favorite = () => {
   console.log("🚀 ~ Favorite ~ error:", error);
   console.log("🚀 ~ Favorite ~ isLoading:", isLoading);
 
-  const [pagr, setPage] = useState<number>(0);
   console.log("🚀 ~ Favorite ~ data?.pageable.:", data?.pageable.pageSize);
 
   return (
@@ -25,15 +23,10 @@ const Favorite = () => {
         {/* {fakedatadetail.slice(0, 5).map((item) => (
           <CardResult data={item} />
         ))} */}
-        {data?.content?.map((item: any) => (
+        {data?.content?.map((item: IStory) => (
           <CardResult data={item} />
         ))}
       </div>
-      <Pagination
-        initialPage={data?.result?.page + 1}
-        totalPage={data?.result?.total}
-        onPageChange={(newPage: number) => setPage(newPage - 1)}
-      />
     </div>
   );
 };

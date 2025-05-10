@@ -62,7 +62,7 @@ const ComicDetail: React.FC<IComicDetail> = () => {
         setIsFollowed(false);
         showToast("Bạn đã bỏ theo dõi truyện!", "info");
       }
-    } catch (error) {
+    } catch {
       showToast("Có lỗi xảy ra khi thay đổi trạng thái theo dõi!", "error");
     }
   };

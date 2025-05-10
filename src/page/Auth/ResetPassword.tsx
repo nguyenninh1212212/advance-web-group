@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { resetPassword } from "../../api/forgotpassword";
 
@@ -22,16 +22,16 @@ const ResetPassword = () => {
       setError("Passwords do not match.");
       return;
     }
-    
+
     setError("");
     setLoading(true);
 
     try {
-      await resetPassword(email, "otp_placeholder", password, retypePassword); // Gọi API
+      await resetPassword(email, "otp_placeholder", password); // Gọi API
       alert("Password reset successfully.");
       navigate("/auth/login"); // ✅ Chuyển hướng sau khi đặt lại mật khẩu
-    } catch (err: any) {
-      setError(err.message || "Failed to reset password.");
+    } catch {
+      setError("Failed to reset password.");
     }
 
     setLoading(false);
@@ -69,12 +69,16 @@ const ResetPassword = () => {
 
           {/* Hiển thị lỗi nếu có */}
           {error && <p className="text-red-500 text-xs">{error}</p>}
-          
+
           {/* Nút Reset Password */}
           <button
             onClick={handleResetPassword}
             disabled={loading}
-            className={`w-full py-2 rounded-md font-semibold ${loading ? "bg-gray-500" : "bg-primary-200 hover:bg-white hover:text-primary-200 text-white"}`}
+            className={`w-full py-2 rounded-md font-semibold ${
+              loading
+                ? "bg-gray-500"
+                : "bg-primary-200 hover:bg-white hover:text-primary-200 text-white"
+            }`}
           >
             {loading ? "Processing..." : "Reset Password"}
           </button>

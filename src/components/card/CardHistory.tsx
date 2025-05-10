@@ -32,7 +32,7 @@ const CardHistory: React.FC<payload> = ({ data }) => {
           </h2>
         </div>
         <div className="text-sm backdrop-blur-md p-2">
-          {chapters.map((e, i) => (
+          {chapters.map((e) => (
             <p
               className={`w-full p-2 my-1 bg-black bg-opacity-50 rounded-lg text-white ${background_card}`}
             >

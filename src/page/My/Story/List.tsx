@@ -1,4 +1,3 @@
-import React from "react";
 import { IoChevronBackOutline, IoAddOutline } from "react-icons/io5";
 import CardCreateStory from "../../../components/card/CardCreateStory";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,8 +8,11 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { IStory } from "../../../type/comic";
 import { FaTrash } from "react-icons/fa6";
 import Pagination from "../../../util/pagebar/page";
+import { useState } from "react";
 
 const List = () => {
+  const [page, setPage] = useState(0);
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["list"],
     queryFn: () => getMyList(),
@@ -72,9 +74,9 @@ const List = () => {
 
       {/* MDList Items */}
       <Pagination
-        initialPage={data?.total}
-        initialLimit={data?.limit}
-        totalPage={data?.limit}
+        initialPage={page + 1}
+        totalPage={data?.total}
+        onPageChange={(newPage: number) => setPage(newPage - 1)} // newPage từ Pagination là 1-based
       />
     </div>
   );

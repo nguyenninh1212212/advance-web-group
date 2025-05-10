@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import React, { useState } from "react";
+import { useState } from "react";
 import { postWithdraw } from "../../../api/withdraw";
 import { BankRequest } from "../../../type/bank";
 import { useToast } from "../../../util/ToastContext";

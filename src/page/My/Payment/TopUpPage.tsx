@@ -37,31 +37,38 @@ const TopUpPage: React.FC = () => {
       } else {
         setError("Không nhận được liên kết thanh toán.");
       }
-    } catch (e: any) {
-      console.error(e);
-      if (e.response?.status === 401) {
-        window.location.href = "/auth/login"; // Redirect nếu bị 401
-      } else {
-        setError("Lỗi khi tạo yêu cầu thanh toán.");
-      }
+    } catch {
+      window.location.href = "/auth/login"; // Redirect nếu bị 401
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className={`min-h-screen ${theme.background} flex items-center justify-center px-4 py-8`}>
-      <div className={`${theme.card} ${theme.shadow} ${theme.rounded} p-6 w-full max-w-md`}>
-        <h1 className={`text-2xl font-bold text-center mb-6 ${theme.text}`}>Nạp tiền vào ví</h1>
+    <div
+      className={`min-h-screen ${theme.background} flex items-center justify-center px-4 py-8`}
+    >
+      <div
+        className={`${theme.card} ${theme.shadow} ${theme.rounded} p-6 w-full max-w-md`}
+      >
+        <h1 className={`text-2xl font-bold text-center mb-6 ${theme.text}`}>
+          Nạp tiền vào ví
+        </h1>
 
-        <label className={`block text-sm font-medium mb-1 ${theme.text}`}>Chọn mệnh giá nhanh:</label>
+        <label className={`block text-sm font-medium mb-1 ${theme.text}`}>
+          Chọn mệnh giá nhanh:
+        </label>
         <div className="grid grid-cols-3 gap-3 mb-4">
           {denominations.map((value) => (
             <button
               key={value}
               onClick={() => handleSelectAmount(value)}
-              className={`py-2 px-3 border ${theme.border} ${theme.rounded} text-sm ${
-                amount === value ? `${theme.background_card} ${theme.text}` : `${theme.hover}`
+              className={`py-2 px-3 border ${theme.border} ${
+                theme.rounded
+              } text-sm ${
+                amount === value
+                  ? `${theme.background_card} ${theme.text}`
+                  : `${theme.hover}`
               }`}
             >
               {formatCurrency(value)}
@@ -69,7 +76,9 @@ const TopUpPage: React.FC = () => {
           ))}
         </div>
 
-        {error && <p className="text-red-600 text-sm mb-3 text-center">{error}</p>}
+        {error && (
+          <p className="text-red-600 text-sm mb-3 text-center">{error}</p>
+        )}
 
         <button
           onClick={handleSubmit}

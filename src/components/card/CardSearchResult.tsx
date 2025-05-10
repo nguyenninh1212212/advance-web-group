@@ -1,5 +1,5 @@
 import React from "react";
-import { Icard, IStory } from "../../type/comic";
+import { IStory } from "../../type/comic";
 import { Link } from "react-router-dom";
 
 interface payload {

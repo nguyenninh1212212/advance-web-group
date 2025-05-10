@@ -1,10 +1,9 @@
-import React from "react";
-import { fakedatadetail } from "../../FakeData/FakedataDetail";
 import CardHistory from "../../components/card/CardHistory";
 import CardTitle from "../../components/card/CardTitle";
 import { useQuery } from "@tanstack/react-query";
 import { getHistory } from "../../api/stories";
 import Loading from "../../util/useLoading";
+import { Icard } from "../../type/comic";
 
 const History = () => {
   const { data, isLoading, error } = useQuery({
@@ -26,7 +25,7 @@ const History = () => {
       <div>
         <CardTitle title="Lịch sử xem" />
       </div>
-      {data?.result.data?.map((e) => (
+      {data?.result.data?.map((e: Icard) => (
         <CardHistory data={e} />
       ))}
     </div>

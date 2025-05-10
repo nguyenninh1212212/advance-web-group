@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaMoneyBillWave } from "react-icons/fa";
 import CardTitle from "../../../components/card/CardTitle";
 import { useNavigate } from "react-router-dom";
@@ -56,7 +56,8 @@ const PaymentHistory = () => {
 
       {/* Hiển thị danh sách giao dịch dưới dạng cards */}
       {transactions &&
-        transactions.data.result.data.map((t, index) => (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        transactions.data.result.data.map((t: any, index: number) => (
           <div
             key={index}
             className="my-4 p-6 bg-gray-800 rounded-lg shadow-lg text-white"

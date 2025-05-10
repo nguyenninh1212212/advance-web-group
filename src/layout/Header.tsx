@@ -14,6 +14,7 @@ import CardSearchResult from "../components/card/CardSearchResult";
 import { setCategory } from "../redux/slices/categorySlice";
 import { selectTheme } from "../redux/slices/themeSlice";
 import { elasticSearch } from "../api/stories";
+import { IStory } from "../type/comic";
 
 const Header: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const dispatch = useDispatch();
@@ -115,8 +116,8 @@ const Header: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
                         Kết quả tìm kiếm:
                       </p>
                       {searchResults?.result.data
-                        ?.slice(0, 4)
-                        .map((story: any, index: number) => (
+                        ?.slice(0, 10)
+                        .map((story: IStory, index: number) => (
                           <div key={index} className="flex-1 h-32">
                             <CardSearchResult data={story} />
                           </div>

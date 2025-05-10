@@ -8,6 +8,7 @@ const ComicLastest = ({ data }: { data: IStoriesResponse }) => {
   const isMobile = useIsMobile(768);
   const groupdata = useMemo(
     () => groupDataIntoFour(data?.data, isMobile ? 1 : 4),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [data]
   );
   const scrollRef = useRef<HTMLDivElement>(null);

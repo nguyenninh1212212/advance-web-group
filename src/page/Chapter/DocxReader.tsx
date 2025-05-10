@@ -1,7 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import mammoth from "mammoth";
 import { useTheme } from "../../util/theme/theme";
-import { htmlToText } from "html-to-text";
+import { htmlToText, HtmlToTextOptions } from "html-to-text";
+
+// Định nghĩa kiểu cho formatter
+type FormatterFn = (
+  elem: { children: any[] }, // Chứa các phần tử con
+  walk: (children: any[], builder: any) => void, // Hàm duyệt các phần tử con
+  builder: { addInline: (text: string) => void } // Hàm thêm inline text
+) => void;
 
 interface DocxReaderProps {
   base64String: string;
@@ -15,7 +24,6 @@ const DocxReader: React.FC<DocxReaderProps> = ({
   const theme = useTheme();
   const [htmlContent, setHtmlContent] = useState<string>("");
 
-  // Hàm chuyển base64 sang ArrayBuffer
   const base64ToArrayBuffer = (base64: string): ArrayBuffer => {
     const cleanedBase64 = base64.includes(",") ? base64.split(",")[1] : base64;
     const binaryString = window.atob(cleanedBase64);
@@ -30,26 +38,23 @@ const DocxReader: React.FC<DocxReaderProps> = ({
   const handleBase64ToDocx = (base64String: string) => {
     const arrayBuffer = base64ToArrayBuffer(base64String);
 
-    // Tùy chọn để bảo toàn thẻ HTML trong DOCX
     const options = {
       preserveEmbeddedHtml: preserveHtmlTags,
       styleMap: [
         "p[style-name='Heading 1'] => h1:fresh",
         "p[style-name='Heading 2'] => h2:fresh",
         "p[style-name='Heading 3'] => h3:fresh",
-        "p[style-name='Normal'] => p:fresh", // Đảm bảo ánh xạ kiểu "Normal" thành thẻ <p>
-        "p => p:fresh", // Ánh xạ mọi đoạn văn bản thành thẻ <p>
+        "p[style-name='Normal'] => p:fresh",
+        "p => p:fresh",
       ],
     };
 
-    // Chuyển đổi từ DOCX sang HTML
     mammoth
-      .convertToHtml({ arrayBuffer: arrayBuffer }, options)
+      .convertToHtml({ arrayBuffer }, options)
       .then((result) => {
         const convertedHtml = result.value;
 
-        // Chuyển đổi HTML thành plain text
-        const plainText = htmlToText(convertedHtml, {
+        const textOptions: HtmlToTextOptions = {
           wordwrap: 130,
           selectors: [
             { selector: "h1", format: "block" },
@@ -57,37 +62,40 @@ const DocxReader: React.FC<DocxReaderProps> = ({
             {
               selector: "p",
               format: "block",
-              options: { leadingLineBreaks: 1, trailingLineBreaks: 1 },
+              options: {
+                leadingLineBreaks: 1,
+                trailingLineBreaks: 1,
+              },
             },
             {
               selector: "strong",
               format: "inline",
               options: {
-                formatter: (elem, walk, builder) => {
-                  builder.addInline("**"); // Markdown-style bold
+                formatter: ((elem, walk, builder) => {
+                  builder.addInline("**");
                   walk(elem.children, builder);
                   builder.addInline("**");
-                },
+                }) as FormatterFn,
               },
             },
             {
               selector: "em",
               format: "inline",
               options: {
-                formatter: (elem, walk, builder) => {
-                  builder.addInline("_"); // Markdown-style italic
+                formatter: ((elem, walk, builder) => {
+                  builder.addInline("_");
                   walk(elem.children, builder);
                   builder.addInline("_");
-                },
+                }) as FormatterFn,
               },
             },
           ],
-        });
+        };
 
-        // Cập nhật nội dung plain text vào state
+        const plainText = htmlToText(convertedHtml, textOptions);
+
         setHtmlContent(plainText);
 
-        // Log các cảnh báo nếu có
         if (result.messages.length > 0) {
           console.log("Conversion warnings:", result.messages);
         }

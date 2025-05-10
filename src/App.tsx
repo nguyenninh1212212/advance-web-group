@@ -17,18 +17,22 @@ const queryClient = new QueryClient({
   },
 });
 
-interface RouteType {
+// Use a generic type parameter for component props instead of 'any'
+interface RouteType<P = unknown> {
   path: string;
-  component: React.ComponentType<any>;
+  component: React.ComponentType<P>;
   layout?: React.FC<{ children: React.ReactNode }> | null;
-  children?: RouteType[];
+  children?: RouteType<P>[];
 }
 
 const App: React.FC = () => {
   const { publicRoutes, privateRoutes } = RoutesConfig();
   const theme = useSelector(selectTheme);
 
-  const renderRoutes = (routes: RouteType[], isPrivate: boolean) => {
+  const renderRoutes = <P extends object>(
+    routes: RouteType<P>[],
+    isPrivate: boolean
+  ) => {
     return routes.map((route, index) => {
       const Page = route.component;
       const Layout = route.layout;
@@ -38,24 +42,28 @@ const App: React.FC = () => {
           key={index}
           path={route.path}
           element={
-            isPrivate == true ? (
+            isPrivate === true ? (
               <PrivateRoute>
                 {Layout ? (
                   <Layout>
-                    <Page />
+                    <Page {...({} as P)} />
                   </Layout>
                 ) : (
-                  <Page />
+                  <Page
+                    {...((route.children
+                      ? { children: route.children }
+                      : {}) as P)}
+                  />
                 )}
               </PrivateRoute>
             ) : Layout ? (
               <Layout>
-                <Page />
+                <Page {...({} as P)} />
                 {route.children && renderRoutes(route.children, isPrivate)}
               </Layout>
             ) : (
               <>
-                <Page />
+                <Page {...({} as P)} />
                 {route.children && renderRoutes(route.children, isPrivate)}
               </>
             )

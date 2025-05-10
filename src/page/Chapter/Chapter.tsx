@@ -29,7 +29,9 @@ const Chapter: React.FC = () => {
     queryKey: ["proxy", id],
     queryFn: () => {
       const chapterId = chapterData?.result?.id;
-      const fileIds = chapterData?.result?.files?.map((f) => f.id);
+      const fileIds = chapterData?.result?.files?.map(
+        (f: { id: string }) => f.id
+      );
       return getChapterProxy(chapterId, fileIds);
     },
     enabled:
@@ -94,7 +96,7 @@ const Chapter: React.FC = () => {
                       src={src}
                       index={index}
                       onLoad={(index) =>
-                        setLoaded((prev: any) => ({ ...prev, [index]: true }))
+                        setLoaded((prev) => ({ ...prev, [index]: true }))
                       }
                       loaded={loaded}
                     />
@@ -132,7 +134,11 @@ const Chapter: React.FC = () => {
         isOpen={showPopup}
         setIsOpen={setShowPopup}
         children={
-          <Purchase chap={chapterData?.result} key={chapterData?.result.id} />
+          <Purchase
+            chap={chapterData?.result}
+            key={chapterData?.result.id}
+            id={chapterData?.result.id}
+          />
         }
       />
     </div>

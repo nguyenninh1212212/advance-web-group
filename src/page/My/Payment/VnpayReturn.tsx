@@ -29,7 +29,7 @@ const VnpayReturn = () => {
     };
 
     handleVnPayReturn();
-  }, [searchParams]);
+  }, [navigate, searchParams]);
 
   return (
     <div className="p-4 text-center">

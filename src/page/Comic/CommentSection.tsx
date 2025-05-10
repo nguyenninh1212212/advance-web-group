@@ -5,7 +5,7 @@ import {
   postComment,
   deleteComment,
 } from "../../api/comment";
-import { IComment, CommentsResponse } from "../../type/comment";
+import { CommentsResponse } from "../../type/comment";
 
 interface CommentProps {
   comicId: string;
@@ -13,7 +13,9 @@ interface CommentProps {
 
 const CommentSection: React.FC<CommentProps> = ({ comicId }) => {
   const [newComment, setNewComment] = useState<string>("");
-  const [replyContent, setReplyContent] = useState<{ [key: string]: string }>({});
+  const [replyContent, setReplyContent] = useState<{ [key: string]: string }>(
+    {}
+  );
   const [currentPage, setCurrentPage] = useState<number>(0); // Quản lý trang hiện tại
   const queryClient = useQueryClient();
 
@@ -21,7 +23,7 @@ const CommentSection: React.FC<CommentProps> = ({ comicId }) => {
   const role = JSON.parse(localStorage.getItem("role") || "[]");
 
   // Fetch comments với phân trang
-  const { data: commentsData, isLoading, isFetching } = useQuery<CommentsResponse, Error>({
+  const { data: commentsData, isLoading } = useQuery<CommentsResponse, Error>({
     queryKey: ["comments", comicId, currentPage],
     queryFn: ({ queryKey }) => {
       const [, comicId, currentPage] = queryKey as [string, string, number];
@@ -35,8 +37,13 @@ const CommentSection: React.FC<CommentProps> = ({ comicId }) => {
   const totalPages = commentsData?.totalPages || 1;
 
   const postCommentMutation = useMutation({
-    mutationFn: ({ content, parentCommentId }: { content: string; parentCommentId: string | null }) =>
-      postComment(comicId, content, parentCommentId),
+    mutationFn: ({
+      content,
+      parentCommentId,
+    }: {
+      content: string;
+      parentCommentId: string | null;
+    }) => postComment(comicId, content, parentCommentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", comicId] });
       setNewComment("");
@@ -107,9 +114,11 @@ const CommentSection: React.FC<CommentProps> = ({ comicId }) => {
               />
 
               <div className="flex-1">
-                <p className="font-semibold text-white">{comment.fullUserName}</p>
+                <p className="font-semibold text-white">
+                  {comment.fullUserName}
+                </p>
                 <p className="text-gray-300 text-sm">{comment.content}</p>
-                
+
                 {/* Actions */}
                 <div className="mt-2 flex gap-3">
                   {(role.includes("ADMIN") || role.includes("AUTHOR")) && (
@@ -140,8 +149,11 @@ const CommentSection: React.FC<CommentProps> = ({ comicId }) => {
                           <p className="font-semibold text-white">
                             {reply.fullUserName}
                           </p>
-                          <p className="text-gray-300 text-sm">{reply.content}</p>
-                          {(role.includes("ADMIN") || role.includes("AUTHOR")) && (
+                          <p className="text-gray-300 text-sm">
+                            {reply.content}
+                          </p>
+                          {(role.includes("ADMIN") ||
+                            role.includes("AUTHOR")) && (
                             <button
                               onClick={() =>
                                 deleteCommentMutation.mutate(reply.id)
@@ -161,7 +173,9 @@ const CommentSection: React.FC<CommentProps> = ({ comicId }) => {
                 <div className="mt-4">
                   <textarea
                     value={replyContent[comment.id] || ""}
-                    onChange={(e) => handleReplyChange(comment.id, e.target.value)}
+                    onChange={(e) =>
+                      handleReplyChange(comment.id, e.target.value)
+                    }
                     placeholder="Viết trả lời..."
                     className="w-full p-2 bg-gray-700 text-white rounded-md"
                   />

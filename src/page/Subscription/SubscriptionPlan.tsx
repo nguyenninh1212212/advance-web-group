@@ -25,7 +25,6 @@ const SubscriptionPlan = () => {
     queryKey: ["subscription"],
     queryFn: () => getSubsctiption(),
   });
-  console.log("🚀 ~ SubscriptionPlan ~ data:", data);
 
   const mutation = useMutation({
     mutationFn: (id: string) => TakeSubscriptionPlan(id),
@@ -70,20 +69,29 @@ const SubscriptionPlan = () => {
     active: boolean;
   }
 
-  const dynamicPlans: Plan[] = data?.result?.plans.map((item: any) => {
-    return {
-      id: item.id,
-      name: item.type,
-      duration: item.expired + " days",
-      price: `$${item.price.toFixed(2)}`,
-      perMonth: `$${item.price.toFixed(2)}/mo`,
-      buttonText: "Subscribe now",
-      color: background_card,
-      badgeColor: "bg-green-600",
-      tag: item.type === "PREMIUM" ? "BEST VALUE" : null,
-      active: item.active,
-    };
-  });
+  const dynamicPlans: Plan[] = data?.result?.plans.map(
+    (item: {
+      id: string;
+      type: string;
+      expired: string;
+      price: number;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      active: any;
+    }) => {
+      return {
+        id: item.id,
+        name: item.type,
+        duration: item.expired + " days",
+        price: `$${item.price.toFixed(2)}`,
+        perMonth: `$${item.price.toFixed(2)}/mo`,
+        buttonText: "Subscribe now",
+        color: background_card,
+        badgeColor: "bg-green-600",
+        tag: item.type === "PREMIUM" ? "BEST VALUE" : null,
+        active: item.active,
+      };
+    }
+  );
   const author = data?.result?.author_role;
 
   const hasActivePlan = dynamicPlans.some((plan) => plan.active);

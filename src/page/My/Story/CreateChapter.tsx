@@ -28,7 +28,7 @@ const CreateChapter = () => {
       setSuccess(true); // Enable submit button again
     },
 
-    onError: (error: any) => {
+    onError: (error) => {
       showToast(error.message, "error");
       setSuccess(true); // Enable submit button again
     },
