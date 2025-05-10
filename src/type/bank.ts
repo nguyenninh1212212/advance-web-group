@@ -28,3 +28,14 @@ export interface TransactionDetails {
   type: TransactionType;
   createdAt: string; // Thường là chuỗi ISO Date
 }
+
+export interface IPurchaseChapter {
+  stories_id: string;
+  cover: string;
+  storyTitle: string;
+
+  chapter_id: string;
+  chapterTitle: string;
+  balance: number; // Hoặc string nếu dữ liệu được parse từ JSON
+  price: number; // Hoặc string nếu dữ liệu được parse từ JSON
+}

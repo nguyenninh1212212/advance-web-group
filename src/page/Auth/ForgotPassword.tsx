@@ -82,6 +82,14 @@ const ForgotPassword = () => {
           >
             Reset Password
           </button>
+                        <p className="text-center text-gray-400 text-sm">
+                <a
+                  href="/auth/login"
+                  className="text-primary-200 hover:underline"
+                >
+                  Back to Login
+                </a>
+              </p>
         </div>
       </div>
 
@@ -119,6 +127,7 @@ const ForgotPassword = () => {
                   Resend OTP
                 </a>
               </p>
+              
             </div>
           </div>
         </div>

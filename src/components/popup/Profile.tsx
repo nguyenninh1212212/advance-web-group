@@ -6,10 +6,20 @@ import { BsCardChecklist } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import ThemeSwitcher from "../ThemeSwitcher";
 import { useTheme } from "../../util/theme/theme";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { logout } from "../../api/login";
+import { getProfile } from "../../api/my";
 
 const Profile = ({ onClose }: { onClose: () => void }) => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["popUpProfile"],
+    queryFn: getProfile,
+  });
+  console.log("🚀 ~ data:", data?.result);
+  console.log("🚀 ~ isLoading:", isLoading);
+  console.log("🚀 ~ error:", error);
+
+  const pr = data?.result;
   const navigator = useNavigate();
   const queryClient = useQueryClient();
   const handleLogout = async () => {
@@ -24,7 +34,6 @@ const Profile = ({ onClose }: { onClose: () => void }) => {
       console.error("Error during logout:", error); // Log lỗi nếu có sự cố trong quá trình logout
     }
   };
-  
 
   const theme = useTheme();
   const iconst = {
@@ -78,12 +87,17 @@ const Profile = ({ onClose }: { onClose: () => void }) => {
       </div>
 
       {/* Số dư và nút nạp tiền */}
+
       <div
         className={` p-3 mt-1 rounded-lg flex justify-between items-center ${theme.card} ${theme.text}`}
       >
         <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-col">
+            <img src={`${pr.imageUrl}`} alt="" className="rounded-full" />
+            <div>{pr.fullName}</div>
+          </div>
           <p className="flex items-center gap-2">
-            <FaMoneyBill className="text-green-400" /> 0
+            <FaMoneyBill className="text-green-400" /> {pr.balance}
           </p>
         </div>
         <div title="Nạp tiền">
