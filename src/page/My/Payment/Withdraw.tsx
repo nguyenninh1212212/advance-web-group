@@ -15,8 +15,18 @@ const Withdraw = () => {
   const mutation = useMutation({
     mutationKey: ["withdrawPost"],
     mutationFn: (bankRequest: BankRequest) => postWithdraw(bankRequest),
-    onSuccess: () => showToast("Rut tien thanh cong", "success"),
-    onError: () => showToast("Rut tien that bai", "error"),
+    onSuccess: () => {
+      setAmountRequest(0);
+      setAccountHolder("");
+      setBankName("");
+      setAccountNumber("");
+      showToast("Rut tien thanh cong", "success");
+    },
+    onError: (error) => {
+      console.log("🚀 ~ Withdraw ~ error:", error);
+
+      showToast("Rut tien that bai", "error");
+    },
   });
 
   const handleWithdraw = () => {
@@ -30,6 +40,9 @@ const Withdraw = () => {
       accountName: accountHolder,
       amountRequest,
     };
+
+    console.log("Withdraw request body:", bankRequest);
+
     mutation.mutate(bankRequest);
   };
 
