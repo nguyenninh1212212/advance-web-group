@@ -11,6 +11,7 @@ const Login = () => {
   const [loginError, setLoginError] = useState(""); // Thêm state để chứa lỗi đăng nhập
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const BASE_URL = import.meta.env.VITE_API_URL;
 
   const validateInputs = () => {
     const newErrors = { email: "", password: "" };
@@ -39,7 +40,7 @@ const Login = () => {
   };
 
   const handleLoginWithGoogle = () => {
-    window.open("http://localhost:8080/oauth2/authorization/google", "_self");
+    window.open(`${BASE_URL}/oauth2/authorization/google`, "_self");
   };
 
   return (
