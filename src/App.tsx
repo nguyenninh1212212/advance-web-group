@@ -4,6 +4,8 @@ import RoutesConfig from "./router/index";
 import "./App.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import PrivateRoute from "./router/PrivateRouter";
+import { useSelector } from "react-redux";
+import { selectTheme } from "./redux/slices/themeSlice";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,16 +17,22 @@ const queryClient = new QueryClient({
   },
 });
 
-interface RouteType {
+// Use a generic type parameter for component props instead of 'any'
+interface RouteType<P = unknown> {
   path: string;
-  component: React.ComponentType<any>;
+  component: React.ComponentType<P>;
   layout?: React.FC<{ children: React.ReactNode }> | null;
-  children?: RouteType[];
+  children?: RouteType<P>[];
 }
 
 const App: React.FC = () => {
   const { publicRoutes, privateRoutes } = RoutesConfig();
-  const renderRoutes = (routes: RouteType[], isPrivate: boolean) => {
+  const theme = useSelector(selectTheme);
+
+  const renderRoutes = <P extends object>(
+    routes: RouteType<P>[],
+    isPrivate: boolean
+  ) => {
     return routes.map((route, index) => {
       const Page = route.component;
       const Layout = route.layout;
@@ -34,24 +42,28 @@ const App: React.FC = () => {
           key={index}
           path={route.path}
           element={
-            isPrivate == true ? (
+            isPrivate === true ? (
               <PrivateRoute>
                 {Layout ? (
                   <Layout>
-                    <Page />
+                    <Page {...({} as P)} />
                   </Layout>
                 ) : (
-                  <Page />
+                  <Page
+                    {...((route.children
+                      ? { children: route.children }
+                      : {}) as P)}
+                  />
                 )}
               </PrivateRoute>
             ) : Layout ? (
               <Layout>
-                <Page />
+                <Page {...({} as P)} />
                 {route.children && renderRoutes(route.children, isPrivate)}
               </Layout>
             ) : (
               <>
-                <Page />
+                <Page {...({} as P)} />
                 {route.children && renderRoutes(route.children, isPrivate)}
               </>
             )
@@ -64,9 +76,11 @@ const App: React.FC = () => {
   return (
     <Router>
       <QueryClientProvider client={queryClient}>
-        <div className="App bg-gray-800 text-white">
+        <div
+          className={`${theme.background} ${theme.border_bottom} ${theme.text}`}
+        >
           <Routes>
-            {renderRoutes(publicRoutes, false)}{" "}
+            {renderRoutes(publicRoutes, false)}
             {renderRoutes(privateRoutes, true)}
           </Routes>
         </div>

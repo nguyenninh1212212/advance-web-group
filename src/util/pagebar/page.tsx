@@ -1,68 +1,57 @@
 import React, { useState, useEffect } from "react";
-import usePagination from "./pageHook";
+import { useTheme } from "../theme/theme";
 
 interface PaginationProps {
   initialPage: number;
-  initialLimit: number;
-  totalItem: number;
+  totalPage: number;
+  onPageChange: (newPage: number) => void;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
   initialPage,
-  initialLimit,
-  totalItem,
+  totalPage,
+  onPageChange,
 }) => {
-  const { page, totalPage, handlePageChange } = usePagination(
-    initialPage,
-    initialLimit,
-    totalItem
-  );
+  const theme = useTheme();
 
-  const [inputPage, setInputPage] = useState(page);
+  const [page, setPage] = useState(initialPage);
+  const [inputPage, setInputPage] = useState(initialPage);
 
   useEffect(() => {
     if (inputPage >= 1 && inputPage <= totalPage) {
-      handlePageChange(inputPage);
+      setPage(inputPage);
+      onPageChange(inputPage); // gọi callback khi nhập số trang
     }
-  }, [inputPage]);
+  }, [inputPage, onPageChange, totalPage]);
 
   const handleClick = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPage) {
-      handlePageChange(newPage);
+      setPage(newPage);
       setInputPage(newPage);
+      onPageChange(newPage); // gọi callback
     }
   };
 
-  let pages: (number | string)[] = [];
-  if (totalPage <= 5) {
-    pages = Array.from({ length: totalPage }, (_, i) => i + 1);
-  } else {
-    pages = [1];
-    if (page > 3) pages.push("...");
-    const middlePages = Array.from(
-      { length: totalPage },
-      (_, i) => i + 1
-    ).filter((p) => p >= page - 1 && p <= page + 1 && p > 1 && p < totalPage);
-    pages.push(...middlePages);
-    if (page < totalPage - 2) pages.push("...");
-    pages.push(totalPage);
-  }
+  // Generate list of all pages from 1 to totalPage
+  const pages = Array.from({ length: totalPage }, (_, i) => i + 1);
 
   return (
-    <div className="flex max-md:flex-col items-center justify-center bg-primary-400 w-full max-w-2xl mx-auto rounded-lg p-3 my-4 space-y-3 md:space-y-0 md:justify-between">
+    <div
+      className={`flex max-md:flex-col items-center justify-center ${theme.background_card} w-full max-w-2xl mx-auto rounded-lg p-3 my-4 space-y-3 md:space-y-0 md:justify-between`}
+    >
       {/* Page navigation */}
       <div className="w-1/4"></div>
       <div className="flex items-center justify-center flex-wrap space-x-1 w-1/2">
-        {pages.map((p, index) => (
+        {pages.map((p) => (
           <button
-            key={index}
-            onClick={() => typeof p === "number" && handleClick(p)}
+            key={p}
+            onClick={() => handleClick(p)}
             className={`px-3 py-1 rounded transition-all ${
               p === page
-                ? "bg-white text-primary-400 font-bold"
+                ? `text-black bg-white font-bold`
                 : "bg-primary-500 text-white"
             }`}
-            disabled={p === "..."}
+            disabled={p === page}
           >
             {p}
           </button>

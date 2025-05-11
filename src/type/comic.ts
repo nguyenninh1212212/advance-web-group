@@ -1,14 +1,8 @@
 import { Page } from "./page";
 
 export interface Icard {
-  id: string;
-  title: string;
-  chapter: string[];
-  image: string;
-  time: string[];
-  view: number;
-  cmt: number;
-  like: number;
+  chapters: IChapter[];
+  story: IStoryHistory;
 }
 
 export interface IChapterDetail {
@@ -31,6 +25,7 @@ export interface IChapter {
   price: number;
   images: IImage;
   createdAt: string;
+  read: boolean;
 }
 export interface IChapterDetail {
   id: string;
@@ -64,4 +59,42 @@ export interface IHistory {
   id: string;
   title: string;
   chapter: IChapter[];
+}
+
+// Interface cho từng item
+export interface ICategory {
+  id: string;
+  name: string;
+}
+
+export type StoryType = "NOVEL" | "COMIC"; // Nếu có thể có nhiều loại, thêm vào đây
+export type StoryStatus = "UPDATING" | "COMPLETED" | "PAUSED"; // Cập nhật theo hệ thống bạn dùng
+
+export interface IStory {
+  id: string;
+  title: string;
+  type: StoryType;
+  status: StoryStatus;
+  view: number;
+  visibility: boolean;
+  isAvailble: string;
+  email: string;
+  updatedAt: string;
+  createdAt: string;
+  coverImage: string;
+  categories: ICategory[];
+}
+export interface IStoryHistory {
+  id: string;
+  title: string;
+  status: StoryStatus;
+  visibility: boolean;
+  coverImage: string;
+}
+// Interface cho phản hồi toàn bộ từ API
+export interface IStoriesResponse {
+  data: IStory[];
+  limit: number;
+  page: number;
+  total: number;
 }

@@ -1,9 +1,14 @@
-import { useRef } from "react";
-import { fakedatadetail } from "../../FakeData/FakedataDetail";
+import React, { useRef } from "react";
 import CardComicDetail from "../../components/card/CardComicDetail";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
+import { IStoriesResponse } from "../../type/comic";
 
-const ComicContainer = () => {
+interface IPayload {
+  data: IStoriesResponse;
+}
+
+const ComicContainer: React.FC<IPayload> = ({ data }) => {
+  console.log("🚀 ~ data:", data?.data);
   const containerRef = useRef<HTMLDivElement>(null);
   const itemRef = useRef<HTMLDivElement>(null);
 
@@ -52,13 +57,13 @@ const ComicContainer = () => {
           scrollMarginLeft: "10px",
         }}
       >
-        {fakedatadetail.map((e, index) => (
+        {data?.data.map((e, index) => (
           <div
             key={index}
             ref={index === 0 ? itemRef : null}
             className="snap-start flex-shrink-0"
           >
-            <CardComicDetail data={e} message={""} />
+            <CardComicDetail data={e} />
           </div>
         ))}
       </div>

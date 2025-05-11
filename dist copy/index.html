@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="module" crossorigin src="/assets/index-DnS1th87.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Dzg0uLGD.css">
+  </head>
+  <body>
+    <div id="root" ></div>
+    <script>
+      (function () {
+        const themeClasses = [
+          "bg-gray-800",     // default
+          "bg-white",        // white
+          "bg-[#282a36]",    // dracula
+        ];
+    
+        const themeIndex = parseInt(localStorage.getItem("theme") || "0", 10);
+        const root = document.documentElement;
+    
+        root.className = themeClasses[themeIndex] || themeClasses[0];
+      })();
+    </script>
+    
+  </body>
+</html>

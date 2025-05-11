@@ -1,52 +1,51 @@
 import React, { useState } from "react";
-import { FaPlus, FaUpload, FaTrash } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import CardTitle from "../../../components/card/CardTitle";
+import ExportWord from "./ExportWord";
+import ImageUpload from "./ImageUploader";
+import { useMutation } from "@tanstack/react-query";
+import { postChapter } from "../../../api/chapter";
+import { useToast } from "../../../util/ToastContext";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const CreateChapter = () => {
   const [title, setTitle] = useState("");
+  const [price, setPrice] = useState(0.0);
   const [description, setDescription] = useState("");
-  const [covers, setCovers] = useState<File[]>([]);
-  const [previews, setPreviews] = useState<string[]>([]);
+  const [success, setSuccess] = useState<boolean>(true);
+  const [file, setFile] = useState<File[]>([]);
+  const { showToast } = useToast();
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-      const newFiles: File[] = [];
-      const newPreviews: string[] = [];
+  const mutation = useMutation({
+    mutationKey: ["addchapter"],
+    mutationFn: (formData: FormData) => postChapter(formData),
+    onSuccess: () => {
+      showToast("Thêm chương thành công", "success");
+      setTitle("");
+      setPrice(0.0);
+      setFile([]);
+      setDescription("");
+      setSuccess(true); // Enable submit button again
+    },
 
-      Array.from(files).forEach((file) => {
-        if (file.size <= 2 * 1024 * 1024) {
-          newFiles.push(file);
-          newPreviews.push(URL.createObjectURL(file));
-        } else {
-          alert(`Ảnh "${file.name}" phải nhỏ hơn 2MB!`);
-        }
-      });
+    onError: (error) => {
+      showToast(error.message, "error");
+      setSuccess(true); // Enable submit button again
+    },
+  });
 
-      setCovers((prev) => [...prev, ...newFiles]);
-      setPreviews((prev) => [...prev, ...newPreviews]);
-    }
-  };
-
-  const removeImage = (index: number) => {
-    const updatedCovers = [...covers];
-    const updatedPreviews = [...previews];
-    updatedCovers.splice(index, 1);
-    updatedPreviews.splice(index, 1);
-    setCovers(updatedCovers);
-    setPreviews(updatedPreviews);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newStory = {
-      title,
-      description,
-      covers,
+    setSuccess(false); // Disable button during the mutation
+    const formData = new FormData();
+    const chapterJson = {
+      story_id: localStorage.getItem("id_story"),
+      content: title,
+      price: price,
     };
-    console.log("Story submitted:", newStory);
-
-    // TODO: Gửi dữ liệu lên server tại đây
+    formData.append("chapterJson", JSON.stringify(chapterJson));
+    file.forEach((f) => formData.append("files", f));
+    await mutation.mutate(formData);
   };
 
   return (
@@ -54,56 +53,10 @@ const CreateChapter = () => {
       <CardTitle title="Thêm chương" />
       <form
         onSubmit={handleSubmit}
-        className="flex gap-6 flex-wrap md:flex-nowrap m-3"
+        className="flex gap-6 flex-wrap md:flex-nowrap m-3 justify-center"
       >
-        {/* LEFT: Ảnh bìa */}
-        <div className="flex flex-col space-y-4 w-full md:w-1/3 h-full">
-          <label className="block text-sm font-medium text-gray-300 mb-1">
-            Ảnh bìa
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer bg-indigo-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-indigo-700 transition justify-center">
-            <FaUpload />
-            <span>Chọn ảnh</span>
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleImageChange}
-              className="hidden"
-            />
-          </label>
-
-          {/* Danh sách ảnh preview dạng cột dọc */}
-          <div className="flex flex-col gap-4 max-h-[500px] overflow-y-auto">
-            {previews.length === 0 ? (
-              <div className="relative w-full h-40 border-dashed border-2 border-gray-400 rounded-lg flex items-center justify-center text-gray-500">
-                <span>Chưa chọn ảnh</span>
-              </div>
-            ) : (
-              previews.map((src, index) => (
-                <div key={index} className="relative w-full h-60">
-                  <img
-                    src={src}
-                    alt={`preview-${index}`}
-                    className="rounded-lg w-full h-full object-cover border"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeImage(index)}
-                    className="absolute top-0 right-0 bg-red-500 text-white text-xs px-2 py-1 rounded-bl-lg hover:bg-red-600 transition"
-                  >
-                    <FaTrash className="inline-block mr-1" />
-                    Xoá
-                  </button>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-
-        {/* RIGHT: Thông tin truyện */}
+        {/* RIGHT */}
         <div className="w-full md:w-2/3 space-y-4">
-          {/* Title */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">
               Tên chương
@@ -112,33 +65,77 @@ const CreateChapter = () => {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 text-black"
-              placeholder="Nhập tên truyện"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-black"
+              placeholder="Nhập tên chương"
               required
             />
           </div>
 
-          {/* Description */}
+          {/* Thêm trường giá trị */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">
-              Nội dung chương
+              Giá
             </label>
             <input
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 text-black"
-              placeholder="Nhập mô tả cho truyện"
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(parseFloat(e.target.value))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-black"
+              placeholder="Nhập giá chương"
               required
             />
           </div>
 
-          {/* Submit */}
+          {localStorage.getItem("type") === "NOVEL" ? (
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1">
+                Nội dung chương
+              </label>
+
+              <ExportWord
+                title={title}
+                description={description}
+                setDescription={setDescription}
+                setFile={setFile}
+              />
+            </div>
+          ) : (
+            <div>
+              <h2>Upload Images</h2>
+              <ImageUpload setFile={setFile} />{" "}
+              {/* Truyền setFile vào ImageUpload */}
+            </div>
+          )}
+
           <button
+            disabled={!success || file.length === 0} // Kiểm tra nếu không có file
             type="submit"
-            className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white py-2 px-4 rounded-xl hover:bg-indigo-700 transition"
+            className={`w-full flex items-center justify-center gap-2 cursor-pointer ${
+              success && file.length > 0
+                ? "bg-indigo-600"
+                : "bg-stone-500 cursor-not-allowed"
+            } text-white py-2 px-4 rounded-xl transition`}
           >
-            <FaPlus />
-            Thêm Truyện
+            {!success ? (
+              <ClipLoader
+                color={"white"}
+                cssOverride={{ display: "block", margin: "0 auto" }}
+                loading={!success}
+                size={30}
+                aria-label="Loading Spinner"
+              />
+            ) : (
+              <>
+                {file.length <= 0 ? (
+                  <p>Chưa có file nào</p>
+                ) : (
+                  <>
+                    <FaPlus />
+                    Thêm chương
+                  </>
+                )}
+              </>
+            )}
           </button>
         </div>
       </form>

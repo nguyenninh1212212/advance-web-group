@@ -1,27 +1,35 @@
 import { Link } from "react-router-dom";
 import ComicContainer from "./ComicContainer";
-import ComicRank from "./ComicRank";
 import CardTitle from "../../components/card/CardTitle";
+import { IStoriesResponse, IStory } from "../../type/comic";
+import React from "react";
+import ComicRank from "./ComicRank";
 
-const Comic = () => {
+interface IPayload {
+  Comming: IStoriesResponse;
+  Recommend: IStoriesResponse;
+  Rank: IStory[];
+}
+
+const Comic: React.FC<IPayload> = ({ Rank, Recommend, Comming }) => {
   return (
     <div className="flex flex-col gap-3 ">
       <div>
         <CardTitle title="Comming soon" />
-        <ComicContainer />
+        <ComicContainer data={Comming} />
       </div>
       <div>
         <CardTitle title="Top truyện" />
-        <ComicRank />
+        <ComicRank data={Rank} />
       </div>
       <div>
         <div className="flex items-center w-full justify-between">
-          <CardTitle title="Lịch sử xem" />
+          <CardTitle title="Đề xuất" />
           <Link to="/" className="text-cyan-500">
             Xem thêm
           </Link>
         </div>
-        <ComicContainer />
+        <ComicContainer data={Recommend} />
       </div>
     </div>
   );

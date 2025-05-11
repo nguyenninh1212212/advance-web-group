@@ -1,134 +1,165 @@
 import React, { useState, useRef, useEffect } from "react";
 import { GrSearch } from "react-icons/gr";
-import { LayoutRouteProps, useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
 import { IoAlbums } from "react-icons/io5";
-import Profile from "../components/popup/Profile";
 import { GiAngularSpider } from "react-icons/gi";
-import { fakedatadetail } from "../FakeData/FakedataDetail";
-import CardSearchResult from "../components/card/CardSearchResult";
 import { LiaSlidersHSolid } from "react-icons/lia";
-import { useDispatch } from "react-redux";
-import { setCategory } from "../redux/slices/categorySlice";
+import { Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
 
-const Header: React.FC<LayoutRouteProps> = ({ children }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isFocused, setIsFocused] = useState(false);
-  const searchContainerRef = useRef<HTMLDivElement>(null);
+import Profile from "../components/popup/Profile";
+import CardSearchResult from "../components/card/CardSearchResult";
+
+import { setCategory } from "../redux/slices/categorySlice";
+import { selectTheme } from "../redux/slices/themeSlice";
+import { elasticSearch } from "../api/stories";
+import { IStory } from "../type/comic";
+
+const Header: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const theme = useSelector(selectTheme);
 
-  // Đóng lại khi điều hướng trang khác
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+
+  // Gọi API tìm kiếm khi có từ khóa
+  const {
+    data: searchResults,
+    error: searchError,
+    isLoading: isSearching,
+  } = useQuery({
+    queryKey: ["search", searchTerm],
+    queryFn: () => elasticSearch(searchTerm, 0, 10),
+    enabled: !!searchTerm,
+  });
+  console.log("🚀 ~ searchResults:", searchResults);
+
+  // Đóng popup tìm kiếm khi điều hướng
   useEffect(() => {
-    setIsFocused(false);
-    setIsOpen(false);
+    setIsSearchFocused(false);
+    setIsProfileOpen(false);
   }, [location]);
+
+  // Đóng popup khi click bên ngoài
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (e: MouseEvent) => {
       if (
         searchContainerRef.current &&
-        !searchContainerRef.current.contains(event.target as Node)
+        !searchContainerRef.current.contains(e.target as Node)
       ) {
-        setIsFocused(false);
+        setIsSearchFocused(false);
       }
     };
-
-    // Add event listener
     document.addEventListener("mousedown", handleClickOutside);
-
-    // Clean up
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
     <div className="flex flex-col min-h-screen overflow-auto scrollbar-hide">
-      {/* Navbar cố định */}
-      <header className="fixed w-screen bg-gray-800 flex justify-center z-50 border-b pb-1 border-primary-200 ">
-        <div className="md:w-[1200px] w-full h-[70px] flex justify-between items-center p-3">
+      {/* Header cố định */}
+      <header
+        className={`fixed w-screen z-50 border-b pb-1 ${theme.border_bottom} ${theme.header}`}
+      >
+        <div className="md:w-[1200px] w-full h-[70px] flex justify-between items-center p-3 mx-auto">
           {/* Logo */}
           <Link
             to="/"
-            className="w-fit flex items-center text-white font-bold gap-2"
-            onClick={() => dispatch(setCategory("Home"))}
+            onClick={() => dispatch(setCategory({ id: "Home", name: "Home" }))}
+            className="flex items-center font-bold gap-2"
           >
             <GiAngularSpider className="text-5xl" />
-            <p className="font-semibold font-sans md:text-3xl whitespace-nowrap">
+            <span className="font-semibold font-sans md:text-3xl whitespace-nowrap">
               TruyenVerse
-            </p>
+            </span>
           </Link>
 
-          {/* Ô tìm kiếm */}
-          <div className="flex items-center gap-3 ">
-            <section className="flex flex-col" ref={searchContainerRef}>
-              <div className="hidden md:flex bg-gray-700 rounded-md items-center px-2 gap-2 overflow-hidden transition-all duration-300 border-2 border-transparent hover:border-gray-600 focus-within:border-primary-200 w-[400px]">
+          {/* Thanh công cụ bên phải */}
+          <div className="flex items-center gap-3">
+            {/* Ô tìm kiếm */}
+            <section
+              ref={searchContainerRef}
+              className="relative hidden md:flex flex-col"
+            >
+              <div
+                className={`flex items-center gap-2 px-2 rounded-md bg-gray-700 border-2 border-transparent hover:border-gray-600 focus-within:${theme.background_card} transition-all duration-300`}
+              >
                 <input
-                  type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  onFocus={() => setIsFocused(true)}
-                  className="md:w-[400px] h-10 bg-gray-700 text-white outline-none px-2 placeholder-gray-400 transition-all duration-500 ease-in-out focus:bg-gray-600"
+                  onFocus={() => setIsSearchFocused(true)}
                   placeholder="Tìm kiếm truyện..."
+                  className={`md:w-[400px] h-10 bg-gray-700 text-white px-2 placeholder-gray-400 outline-none transition-all duration-500 focus:${theme.background}`}
                 />
-
                 <GrSearch
-                  className={`text-xl cursor-pointer text-white transition-all duration-300 ${
-                    isFocused ? "scale-125" : ""
+                  className={`text-xl text-white cursor-pointer transition-transform ${
+                    isSearchFocused ? "scale-125" : ""
                   }`}
                 />
               </div>
-              {isFocused && (
-                <div className="absolute mt-16 w-[430px] min-h-96 bg-zinc-900 p-4 rounded-xl shadow-lg">
-                  {fakedatadetail.length === 0 ? (
-                    <p className="text-center flex justify-between">
-                      <p> Không tìm thấy...</p>
-                    </p>
+
+              {isSearchFocused && (
+                <div className="absolute top-14 w-[430px] min-h-96 bg-zinc-900 p-4 rounded-xl shadow-lg z-50">
+                  {isSearching ? (
+                    <p className="text-white">Đang tìm kiếm...</p>
+                  ) : searchError ? (
+                    <p className="text-red-500">Lỗi khi tìm kiếm!</p>
+                  ) : searchResults?.result.data.length === 0 ? (
+                    <p className="text-white">Không tìm thấy kết quả...</p>
                   ) : (
                     <>
-                      <p className="flex justify-between">
-                        Kết quả tìm kiếm...
+                      <p className="text-white font-semibold mb-2">
+                        Kết quả tìm kiếm:
                       </p>
-                      {fakedatadetail.slice(0, 4).map((e, _i) => (
-                        <div className="flex-1 h-32" key={_i}>
-                          <CardSearchResult data={e} />
-                        </div>
-                      ))}
+                      {searchResults?.result.data
+                        ?.slice(0, 10)
+                        .map((story: IStory, index: number) => (
+                          <div key={index} className="flex-1 h-32">
+                            <CardSearchResult data={story} />
+                          </div>
+                        ))}
                     </>
                   )}
                 </div>
               )}
             </section>
 
-            {/* Album icon */}
-            <Link to={"/filter"}>
-              <LiaSlidersHSolid className="text-3xl cursor-pointer text-white hover:text-primary-200 transition-colors duration-300" />
-            </Link>
-            <Link to={"/my/favorite"}>
-              <IoAlbums className="text-3xl cursor-pointer text-white hover:text-primary-200 transition-colors duration-300" />
+            {/* Nút điều hướng khác */}
+            <Link to="/filter">
+              <LiaSlidersHSolid className="text-3xl text-white hover:text-primary-200 transition-colors" />
             </Link>
 
-            {/* User Profile */}
+            <Link to="/my/favorite">
+              <IoAlbums className="text-3xl text-white hover:text-primary-200 transition-colors" />
+            </Link>
+
+            {/* Hồ sơ người dùng */}
             <div className="relative">
               <FaUser
-                className="text-2xl cursor-pointer hover:text-primary-200 transition-colors duration-300"
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => setIsProfileOpen((prev) => !prev)}
+                className="text-2xl text-white cursor-pointer hover:text-primary-200 transition-colors"
               />
-              {isOpen && <Profile onClose={() => setIsOpen(!isOpen)} />}
+              {isProfileOpen && (
+                <Profile onClose={() => setIsProfileOpen(false)} />
+              )}
             </div>
           </div>
         </div>
       </header>
 
-      {/* Phần nội dung chính */}
-      <main className="flex-grow pt-24 px-4 md:max-w-[1200px] overflow-hidden w-screen mx-auto h-auto">
+      {/* Nội dung chính */}
+      <main className="flex-grow pt-24 px-4 md:max-w-[1200px] w-full mx-auto">
         {children}
       </main>
 
-      {/* Footer cố định */}
-      <footer className="bg-gray-800 w-full border-t-2 border-primary-200 h-40 flex items-center justify-center mt-auto">
+      {/* Footer */}
+      <footer
+        className={`w-full h-40 flex items-center justify-center mt-auto border-t-2 ${theme.header} ${theme.text} ${theme.border}`}
+      >
         <p className="text-white">© 2025 Tư Bản Truyện. All rights reserved.</p>
       </footer>
     </div>

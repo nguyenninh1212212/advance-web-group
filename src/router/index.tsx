@@ -4,6 +4,8 @@ import ComicDetail from "../page/Comic/ComicDetail";
 import Chapter from "../page/Chapter/Chapter";
 import Login from "../page/Auth/Login";
 import Register from "../page/Auth/Register";
+import ForgotPassword from "../page/Auth/ForgotPassword";
+import ResetPassword from "../page/Auth/ResetPassword";
 import HomeLayout from "../layout/HomeLayout";
 import ResultSearch from "../page/Result/ResultSearch";
 import Favorite from "../page/My/Favorite";
@@ -11,12 +13,34 @@ import History from "../page/My/History";
 import List from "../page/My/Story/List";
 import CreateStory from "../page/My/Story/CreateStory";
 import CreateChapter from "../page/My/Story/CreateChapter";
+import SubscriptionPlan from "../page/Subscription/SubscriptionPlan";
+import PaymentHistory from "../page/My/Payment/PaymentHistory";
+import TrashList from "../page/My/Story/TrashList";
+import AuthorDetail from "../page/Comic/AuthorDetail";
+import { Profile } from "../page/My/Profile";
+import OAuth2RedirectHandler from "../page/Auth/OAuth2RedirectHandler";
+import TopUpPage from "../page/My/Payment/TopUpPage";
+import VnpayReturn from "../page/My/Payment/VnpayReturn";
+import Withdraw from "../page/My/Payment/Withdraw";
+import VerifyRegister from "../page/Auth/VerifyRegister";
 
 const RoutesConfig = () => {
   const publicRoutes = [
     {
       path: "/auth/login",
       component: Login,
+    },
+    {
+      path: "/auth/success",
+      component: VerifyRegister,
+    },
+    {
+      path: "/auth/forgot-password",
+      component: ForgotPassword,
+    },
+    {
+      path: "/auth/reset-password",
+      component: ResetPassword,
     },
     {
       path: "/auth/register",
@@ -38,7 +62,12 @@ const RoutesConfig = () => {
       layout: Header,
     },
     {
-      path: "/:name/chapter/:id/:number",
+      path: "/author/detail/:id",
+      component: AuthorDetail,
+      layout: Header,
+    },
+    {
+      path: "/:name/chapter/:id",
       component: Chapter,
       layout: Header,
     },
@@ -53,31 +82,61 @@ const RoutesConfig = () => {
       layout: Header,
     },
     {
-      path: "/my/stories",
+      path: "/my/list",
       component: List,
       layout: Header,
     },
     {
-      path: "/my/stories/create",
+      path: "/my/list/trash",
+      component: TrashList,
+      layout: Header,
+    },
+    {
+      path: "/my/list/create",
       component: CreateStory,
       layout: Header,
     },
     {
-      path: "/my/stories/:name/chapter/add",
+      path: "/my/list/:name/chapter/add",
       component: CreateChapter,
+      layout: Header,
+    },
+    {
+      path: "/subscription-plan",
+      component: SubscriptionPlan,
+      layout: Header,
+    },
+    {
+      path: "/my/payment-history",
+      component: PaymentHistory,
+      layout: Header,
+    },
+    {
+      path: "/oauth2/redirect",
+      component: OAuth2RedirectHandler,
+    },
+    {
+      path: "/withdraw/post",
+      component: Withdraw,
       layout: Header,
     },
   ];
 
   const privateRoutes = [
     {
-      path: "/user/profile",
-      component: () => <div>Profile Page</div>,
+      path: "/my/profile",
+      component: Profile,
+      layout: Header,
+    },
+
+    {
+      path: "/payment/to-up",
+      component: TopUpPage,
       layout: Header,
     },
     {
-      path: "/user/settings",
-      component: () => <div>Settings Page</div>,
+      path: "payment/vnpay-return",
+      component: VnpayReturn,
       layout: Header,
     },
   ];

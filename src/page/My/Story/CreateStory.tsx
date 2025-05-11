@@ -1,47 +1,125 @@
 import React, { useState } from "react";
 import { FaPlus, FaUpload } from "react-icons/fa";
-import { category } from "../../../util/category";
 import CardTitle from "../../../components/card/CardTitle";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getCategory } from "../../../api/category";
+import { ICategory } from "../../../type/comic";
+import { postStory } from "../../../api/stories";
+import ClipLoader from "react-spinners/ClipLoader";
+import { useToast } from "../../../util/ToastContext";
 
 const CreateStory = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
   const [type, setType] = useState<"COMIC" | "NOVEL">("COMIC");
   const [cover, setCover] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [success, setSuccess] = useState<boolean>(true);
+  const { showToast } = useToast();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["category"],
+    queryFn: () => getCategory(),
+  });
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationKey: ["postStory"],
+    mutationFn: (formData: FormData) => postStory(formData),
+    onSuccess: () => {
+      showToast("Thành công khi tạo truyện!", "success");
+      queryClient.invalidateQueries({ queryKey: ["list"] });
+      setSuccess(!success);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    },
+    onError: () => {
+      setSuccess(true);
+      showToast("Tạo truyện không thành công!", "error");
+    },
+  });
+
+  if (isLoading)
+    return (
+      <div>
+        {" "}
+        <ClipLoader
+          color={"gray"}
+          cssOverride={{ display: "block", margin: "0 auto" }}
+          loading={isLoading}
+          size={50}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  if (error) {
+    return (
+      <p>Error : {error instanceof Error ? error.message : String(error)}</p>
+    );
+  }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 2 * 1024 * 1024) {
+        // Hiển thị toast thay vì alert nếu bạn đã có hệ thống toast
         alert("Ảnh phải nhỏ hơn 2MB!");
         return;
       }
 
-      setCover(file);
-      setPreview(URL.createObjectURL(file));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+
+          if (ctx) {
+            // Cố định kích thước 600x900
+            canvas.width = 600;
+            canvas.height = 900;
+
+            // Resize hình ảnh vào kích thước mới (bị co kéo nếu không tỉ lệ)
+            ctx.drawImage(img, 0, 0, 600, 900);
+
+            const newImageUrl = canvas.toDataURL("image/jpeg");
+            setPreview(newImageUrl); // hiển thị ảnh preview
+            setCover(file); // lưu ảnh gốc (nếu cần gửi lên server)
+          }
+        };
+        img.src = reader.result as string;
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newStory = {
-      title,
-      categories,
-      type,
-      cover,
-    };
-    console.log("Story submitted:", newStory);
+  const dataPost = {
+    title: title,
+    description: description,
+    type: type,
+    categories: categories.map((category) => ({
+      id: category.id,
+      name: category.name,
+    })),
+  };
 
-    // TODO: Gửi dữ liệu lên server tại đây
+  const handleSubmitFormdata = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSuccess(false);
+    const formData = new FormData();
+    formData.append("storyJson", JSON.stringify(dataPost));
+    if (cover) {
+      formData.append("image_cover", cover);
+    }
+    mutation.mutate(formData);
   };
 
   return (
     <div className="my-3">
       <CardTitle title="Thêm truyện" />
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmitFormdata}
         className="flex gap-6 flex-wrap md:flex-nowrap m-3"
       >
         {/* LEFT: Ảnh bìa */}
@@ -127,17 +205,18 @@ const CreateStory = () => {
               Thể loại
             </label>
             <div className="flex flex-wrap gap-2">
-              {category.map((cat) => {
-                const isSelected = categories.includes(cat.value);
+              {data?.data.map((cat: ICategory) => {
+                const isSelected = categories.some((c) => c.id === cat.id);
+
                 return (
                   <button
-                    key={cat.name}
+                    key={cat.id}
                     type="button"
                     onClick={() =>
                       setCategories((prev) =>
                         isSelected
-                          ? prev.filter((c) => c !== cat.value)
-                          : [...prev, cat.value]
+                          ? prev.filter((c) => c.id !== cat.id)
+                          : [...prev, cat]
                       )
                     }
                     className={`px-3 py-1 rounded-full text-sm border transition ${
@@ -146,7 +225,7 @@ const CreateStory = () => {
                         : "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700"
                     }`}
                   >
-                    {cat.value}
+                    {cat.name}
                   </button>
                 );
               })}
@@ -178,11 +257,26 @@ const CreateStory = () => {
 
           {/* Submit */}
           <button
+            disabled={!success}
             type="submit"
-            className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white py-2 px-4 rounded-xl hover:bg-indigo-700 transition"
+            className={`w-full flex items-center justify-center gap-2 cursor-pointer ${
+              success ? "bg-indigo-600" : "bg-indigo-400 cursor-not-allowed"
+            } text-white py-2 px-4 rounded-xl transition`}
           >
-            <FaPlus />
-            Thêm Truyện
+            {!success ? (
+              <ClipLoader
+                color={"white"}
+                cssOverride={{ display: "block", margin: "0 auto" }}
+                loading={!success}
+                size={30}
+                aria-label="Loading Spinner"
+              />
+            ) : (
+              <>
+                <FaPlus />
+                Thêm Truyện
+              </>
+            )}
           </button>
         </div>
       </form>

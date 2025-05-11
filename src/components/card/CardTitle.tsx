@@ -1,17 +1,16 @@
+import { useTheme } from "../../util/theme/theme";
+
 const CardTitle = ({
   title,
   font = "font-bold",
-  bg = "bg-primary-200",
-  text = "text-white",
 }: {
   title: string;
   font?: string;
-  bg?: string;
-  text?: string;
 }) => {
+  const theme = useTheme();
   return (
     <p
-      className={`py-2 px-6 mb-1 w-auto inline-block ${text} text-2xl ${font} rounded-sm ${bg} text-center`}
+      className={`py-2 px-6 mb-1 w-auto inline-block ${theme.text} text-2xl ${font} rounded-sm ${theme.background_card} text-center`}
     >
       {title}
     </p>

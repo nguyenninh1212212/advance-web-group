@@ -7,5 +7,20 @@
   <body>
     <div id="root" ></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      (function () {
+        const themeClasses = [
+          "bg-gray-800",     // default
+          "bg-white",        // white
+          "bg-[#282a36]",    // dracula
+        ];
+    
+        const themeIndex = parseInt(localStorage.getItem("theme") || "0", 10);
+        const root = document.documentElement;
+    
+        root.className = themeClasses[themeIndex] || themeClasses[0];
+      })();
+    </script>
+    
   </body>
 </html>

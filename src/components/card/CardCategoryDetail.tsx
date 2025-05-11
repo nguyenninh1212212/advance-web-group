@@ -1,20 +1,20 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setCategory } from "../../redux/slices/categorySlice";
-import { RootState } from "../../redux/store";
 
 interface Props {
   name: string;
+  id: string;
 }
 
-const CardCategoryDetail: React.FC<Props> = ({ name }) => {
+const CardCategoryDetail: React.FC<Props> = ({ name, id }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleClick = () => {
     navigate(`/`);
-    dispatch(setCategory(name));
+    dispatch(setCategory({ name, id }));
   };
 
   return (
