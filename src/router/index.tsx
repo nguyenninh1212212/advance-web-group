@@ -22,12 +22,17 @@ import OAuth2RedirectHandler from "../page/Auth/OAuth2RedirectHandler";
 import TopUpPage from "../page/My/Payment/TopUpPage";
 import VnpayReturn from "../page/My/Payment/VnpayReturn";
 import Withdraw from "../page/My/Payment/Withdraw";
+import VerifyRegister from "../page/Auth/VerifyRegister";
 
 const RoutesConfig = () => {
   const publicRoutes = [
     {
       path: "/auth/login",
       component: Login,
+    },
+    {
+      path: "/auth/success",
+      component: VerifyRegister,
     },
     {
       path: "/auth/forgot-password",

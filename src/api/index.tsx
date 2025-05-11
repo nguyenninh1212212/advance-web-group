@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8081";
+const BASE_URL = import.meta.env.VITE_API_URL;
 export const api = axios.create({
   baseURL: `${BASE_URL}`, // Địa chỉ API backend
   timeout: 5000, // Thời gian timeout

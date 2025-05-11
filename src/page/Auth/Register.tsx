@@ -1,26 +1,44 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GiAngularSpider } from "react-icons/gi";
+import { register } from "../../api/login";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    username: "",
     password: "",
     confirmPassword: "",
     email: "",
+    fullName: "",
+    dateOfBirth: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-    console.log("Registered with: ", formData);
+    try {
+      const response = await register({
+        password: formData.password,
+        retypePassword: formData.confirmPassword,
+        email: formData.email,
+        fullName: formData.fullName,
+        dateOfBirth: formData.dateOfBirth,
+      });
+
+      if (response.code === 1000) {
+        navigate("/auth/success", { state: { encryptedData: response.result } });
+      } else {
+        alert(response.result || "Đăng ký thất bại!");
+      }
+    } catch (error) {
+      alert("Có lỗi xảy ra!");
+    }
   };
 
   const navigate = useNavigate();
@@ -41,9 +59,18 @@ const Register = () => {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            name="username"
-            placeholder="Username"
-            value={formData.username}
+            name="fullName"
+            placeholder="Họ và tên"
+            value={formData.fullName}
+            onChange={handleChange}
+            className="w-full p-2 mb-3 rounded bg-gray-700 text-white"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
             onChange={handleChange}
             className="w-full p-2 mb-3 rounded bg-gray-700 text-white"
             required
@@ -66,11 +93,13 @@ const Register = () => {
             className="w-full p-2 mb-3 rounded bg-gray-700 text-white"
             required
           />
+          
+          
           <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
+            type="date"
+            name="dateOfBirth"
+            placeholder="Ngày sinh"
+            value={formData.dateOfBirth}
             onChange={handleChange}
             className="w-full p-2 mb-3 rounded bg-gray-700 text-white"
             required
