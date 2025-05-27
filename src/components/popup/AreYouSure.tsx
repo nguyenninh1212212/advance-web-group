@@ -21,12 +21,14 @@ const AreYouSure: React.FC<ConfirmPopupProps> = ({
         <p className="mb-4 text-lg text-black">{message}</p>
         <div className="flex justify-center gap-4">
           <button
+            data-testid="cancel-button"
             onClick={onCancel}
             className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
           >
             Không
           </button>
           <button
+            data-testid="confirm-button"
             onClick={onConfirm}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >

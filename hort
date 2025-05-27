@@ -1,0 +1,283 @@
+[33mcommit af2f6b160187d68edb363f77439c2a98c1e0dcab[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdevelop[m[33m, [m[1;31morigin/develop[m[33m)[m
+Merge: effe351 d8c9805
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Tue May 20 15:51:35 2025 +0700
+
+    Merge branch 'develop' of https://github.com/nguyenninh1212212/advance-web-group into develop
+
+[33mcommit effe3511a68deee9431871814a0a7b4c728df150[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Tue May 20 15:51:25 2025 +0700
+
+    add
+
+[33mcommit d8c9805199adfdb26621388c0408bf14c401e0ef[m
+Author: Ml Anhem <m0345194302@gmail.com>
+Date:   Mon May 19 23:28:41 2025 +0700
+
+    Testfile add
+
+[33mcommit 4457e3ebcb551abb2268b887229a40e9b32965fa[m
+Merge: b8b0819 0371a2a
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Sun May 11 12:12:00 2025 +0700
+
+    Merge branch 'develop' of https://github.com/nguyenninh1212212/advance-web-group into develop
+
+[33mcommit b8b0819a1aa6736103a262ca106a358475f28d68[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Sun May 11 12:11:49 2025 +0700
+
+    fix
+
+[33mcommit 0371a2a914cec6a9ed44c0121b9d89b298859b6e[m
+Merge: 54db63c 3597db3
+Author: VanTu04 <141947683+VanTu04@users.noreply.github.com>
+Date:   Sun May 11 00:16:38 2025 +0700
+
+    api
+
+[33mcommit 54db63ce009a8a21b4382fce4d1e15d3d69b3c58[m
+Author: VanTu04 <141947683+VanTu04@users.noreply.github.com>
+Date:   Sun May 11 00:15:41 2025 +0700
+
+    api
+
+[33mcommit 3597db309798fc63ad73578dbbfc9724c8cbfaaf[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Sun May 11 00:11:34 2025 +0700
+
+    add
+
+[33mcommit 13405ee74d77c3ceebd53812cd744c8da409db11[m
+Merge: 46f4711 0a17664
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Sat May 10 23:45:20 2025 +0700
+
+    Merge branch 'develop' of https://github.com/nguyenninh1212212/advance-web-group into develop
+
+[33mcommit 46f471135364f66bd32148924af0daf549388950[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Sat May 10 23:44:51 2025 +0700
+
+    add
+
+[33mcommit 0a1766430942d0ba5ad53c790df00ff0697ad44a[m
+Author: Ml Anhem <m0345194302@gmail.com>
+Date:   Sat May 10 22:34:09 2025 +0700
+
+    Update ForgotPassword.tsx
+
+[33mcommit 6a4038d65a1b1b564257843b5252398bcba008ea[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Sat May 10 19:49:53 2025 +0700
+
+    fix
+
+[33mcommit ba8388c1762f98ae0660b5d7079ed57827245fef[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Sat May 10 14:54:16 2025 +0700
+
+    add
+
+[33mcommit 919ddb1e75502b2e436134c28d9c4c289dd9b86e[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Sat May 10 14:27:00 2025 +0700
+
+    add
+
+[33mcommit 53aedcc7befd8216bcd5c250baa32f659454912e[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Sat May 10 02:58:17 2025 +0700
+
+    add
+
+[33mcommit 2f00d88bea066ceea0926bb5837a01dfb9b4afce[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Sat May 10 02:57:28 2025 +0700
+
+    add
+
+[33mcommit fa6216dc64c21110f98b700883cca70b6a539346[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Fri May 9 23:52:56 2025 +0700
+
+    login notifi
+
+[33mcommit f73180dcf397c9a9bbf094ffbbe76ce60ec7bf0b[m
+Merge: 2eb4f33 184d4ea
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Fri May 9 21:21:35 2025 +0700
+
+    Merge branch 'develop' of https://github.com/nguyenninh1212212/advance-web-group into develop
+
+[33mcommit 2eb4f33a6131bfc8f79f90b584c54f520f96c0d8[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Fri May 9 21:21:21 2025 +0700
+
+    add
+
+[33mcommit 184d4ea100fa94c8d2d714b0fcd5f80b8226f412[m
+Author: VanTu04 <141947683+VanTu04@users.noreply.github.com>
+Date:   Fri May 9 15:45:23 2025 +0700
+
+    elastic search
+
+[33mcommit 9c3fd457741714bdb7205dbe76a61df564653c10[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Thu May 8 01:35:02 2025 +0700
+
+    update
+
+[33mcommit 0e46b05394d3171742cb7a013205f5e4d56bcc34[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Mon May 5 16:28:33 2025 +0700
+
+    add
+
+[33mcommit 06b2f0abd3fa2ce71d6770c6af056108aeb5a12a[m
+Merge: 8c8a158 5b789ec
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Sat May 3 20:43:08 2025 +0700
+
+    update
+
+[33mcommit 8c8a158665cd85bb3a9290bd732bf266698799b7[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Sat May 3 20:41:36 2025 +0700
+
+    add
+
+[33mcommit 5b789ec0053bb2c0b9778d5508ab5b088b3668d7[m
+Author: VanTu04 <141947683+VanTu04@users.noreply.github.com>
+Date:   Sat May 3 03:11:29 2025 +0700
+
+    hoàn thành nạp tiền
+
+[33mcommit c4914a21a16141470214213830bde3239c6fadc1[m
+Author: VanTu04 <141947683+VanTu04@users.noreply.github.com>
+Date:   Fri May 2 17:34:58 2025 +0700
+
+    finish login gg
+
+[33mcommit 5c202a4227975c5926fb98d01d9e929c101d266e[m
+Author: VanTu04 <141947683+VanTu04@users.noreply.github.com>
+Date:   Fri Apr 25 16:50:50 2025 +0700
+
+    fav
+
+[33mcommit 2fb29232bf248012448bc7c7dd9e08b9d9784079[m
+Merge: 72c54b4 113fa4a
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Fri Apr 25 14:52:31 2025 +0700
+
+    Merge branch 'develop' of https://github.com/nguyenninh1212212/advance-web-group into develop
+
+[33mcommit 72c54b4efefbb500aea265b99f31f48521eb9206[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Fri Apr 25 14:52:05 2025 +0700
+
+    add
+
+[33mcommit 113fa4a68306d519d811caaa4acf1918f4bcb565[m
+Author: VanTu04 <141947683+VanTu04@users.noreply.github.com>
+Date:   Thu Apr 24 16:38:49 2025 +0700
+
+    comment story
+
+[33mcommit 61a7f58abd62de4615cde26b6954a736769fdced[m
+Author: Ml Anhem <m0345194302@gmail.com>
+Date:   Mon Apr 21 13:59:17 2025 +0700
+
+    Update ForgotPassword.tsx
+
+[33mcommit 9d580dc886a7a0f9557c076fdbbcbe71e928081b[m
+Author: Ml Anhem <m0345194302@gmail.com>
+Date:   Sun Apr 20 20:00:01 2025 +0700
+
+    forgotpass fix
+
+[33mcommit cd5de17f32e3f3742eb72e17a6cd42cf79fede13[m
+Merge: af2432b 8e498b6
+Author: VanTu04 <141947683+VanTu04@users.noreply.github.com>
+Date:   Sun Apr 20 17:47:49 2025 +0700
+
+    author detail
+
+[33mcommit af2432b2974e74b3d78824bad965bae85b5717df[m
+Author: VanTu04 <141947683+VanTu04@users.noreply.github.com>
+Date:   Sun Apr 20 15:38:34 2025 +0700
+
+    author detail
+
+[33mcommit 8e498b67e35bed84e77b80e3ec134169cff73216[m
+Author: Ml Anhem <m0345194302@gmail.com>
+Date:   Fri Apr 18 16:29:09 2025 +0700
+
+    APIForgotPass
+
+[33mcommit 0a799b8cc896366d51d8724009ffdf4d285169ad[m
+Merge: bd21d7f 6ae52d0
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Thu Apr 17 23:49:22 2025 +0700
+
+    Merge branch 'develop' of https://github.com/nguyenninh1212212/advance-web-group into develop
+
+[33mcommit bd21d7f48f2fa8b2250d223fefbcf65d5712c065[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Thu Apr 17 23:49:00 2025 +0700
+
+    add
+
+[33mcommit 6ae52d045cdc2d3368d0bdfa36edb3672a7d52c4[m
+Author: Ml Anhem <m0345194302@gmail.com>
+Date:   Thu Apr 17 21:29:43 2025 +0700
+
+    addResetPassPage&&ForgotPassPage
+
+[33mcommit e647ff916d7344e826a3caf3b46f402fc512bda6[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Thu Apr 17 16:42:22 2025 +0700
+
+    add
+
+[33mcommit 715d205e05587e2ddf940cb48f2be2fc07078bd9[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Thu Apr 17 00:37:59 2025 +0700
+
+    add
+
+[33mcommit 2287b0862b19e898a2417e7730afd7e8b0ba3237[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Thu Apr 17 00:28:56 2025 +0700
+
+    add
+
+[33mcommit 0e818eafbd8664276f065390c14d3eb106b2ceab[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Wed Apr 16 10:37:13 2025 +0700
+
+    add
+
+[33mcommit 3c60af508f5925f19db4a904a74f4ab49c0dad59[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Wed Apr 16 00:28:53 2025 +0700
+
+    update
+
+[33mcommit 51d7477bc347ddd51498becb8a17e5f3c91293ec[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Mon Apr 14 16:55:58 2025 +0700
+
+    add
+
+[33mcommit c69aaebc51346e59775481b5a204a93b29358bbb[m
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Mon Apr 14 01:18:01 2025 +0700
+
+    update
+
+[33mcommit fe26759e72da54b2812513d6d211c964e49f2ca6[m
+Merge: 3fc104d a9a2c9d
+Author: nguyenanninh1212212 <ninh56085@gmail.com>
+Date:   Sun

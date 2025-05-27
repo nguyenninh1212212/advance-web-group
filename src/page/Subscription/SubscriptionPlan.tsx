@@ -107,6 +107,7 @@ const SubscriptionPlan = () => {
       <div className="p-6 text-white flex justify-center items-start gap-8 flex-wrap">
         {dynamicPlans.map((plan, index) => (
           <div
+            role="dialog"
             key={index}
             className="bg-gray-900 w-full md:w-64 p-6 rounded-2xl shadow-lg flex flex-col justify-between"
           >
@@ -128,8 +129,9 @@ const SubscriptionPlan = () => {
               <hr className="my-4 border-gray-600" />
             </div>
             <button
+              data-testid="subscribe-now-button"
               disabled={plan.active || hasActivePlan}
-              className={`mt-4 w-full ${
+              className={` mt-4 w-full ${
                 plan.active
                   ? "bg-stone-500"
                   : hasActivePlan

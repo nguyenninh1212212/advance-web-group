@@ -1,0 +1,202 @@
+{
+  "summary": {
+    "total": 24,
+    "passed": 10,
+    "failed": 14,
+    "pass_rate": "41.67%"
+  },
+  "details": [
+    {
+      "test_name": "test_case_sensitivity",
+      "description": "Kiểm tra case sensitive của email",
+      "success": true,
+      "message": "Hiển thị lỗi đăng nhập đúng",
+      "email": "Q0934455620@GMAIL.COM",
+      "expected": "login_error"
+    },
+    {
+      "test_name": "test_email_with_spaces",
+      "description": "Email có space đầu cuối",
+      "success": true,
+      "message": "Hiển thị lỗi đăng nhập đúng",
+      "email": "  q0934455620@gmail.com  ",
+      "expected": "login_error"
+    },
+    {
+      "test_name": "test_empty_both",
+      "description": "Đăng nhập với cả hai trường trống",
+      "success": true,
+      "message": "Hiển thị cả hai lỗi đúng",
+      "email": "",
+      "expected": "both_error"
+    },
+    {
+      "test_name": "test_empty_email",
+      "description": "Đăng nhập với email trống",
+      "success": true,
+      "message": "Hiển thị lỗi email đúng",
+      "email": "",
+      "expected": "email_error"
+    },
+    {
+      "test_name": "test_empty_password",
+      "description": "Đăng nhập với password trống",
+      "success": true,
+      "message": "Hiển thị lỗi password đúng",
+      "email": "q0934455620@gmail.com",
+      "expected": "password_error"
+    },
+    {
+      "test_name": "test_invalid_email_1",
+      "description": "Đăng nhập với email không hợp lệ: không@lớn",
+      "success": false,
+      "message": "Kết quả không như mong đợi. Errors: {'email_error': False, 'password_error': False, 'login_error': False}",
+      "email": "không@lớn",
+      "expected": "email_error"
+    },
+    {
+      "test_name": "test_invalid_email_2",
+      "description": "Đăng nhập với email không hợp lệ: hơn@.com",
+      "success": false,
+      "message": "Kết quả không như mong đợi. Errors: {'email_error': False, 'password_error': False, 'login_error': False}",
+      "email": "hơn@.com",
+      "expected": "email_error"
+    },
+    {
+      "test_name": "test_invalid_email_3",
+      "description": "Đăng nhập với email không hợp lệ: cũng@sau",
+      "success": false,
+      "message": "Kết quả không như mong đợi. Errors: {'email_error': False, 'password_error': False, 'login_error': False}",
+      "email": "cũng@sau",
+      "expected": "email_error"
+    },
+    {
+      "test_name": "test_invalid_password_1",
+      "description": "Đăng nhập với password không hợp lệ",
+      "success": true,
+      "message": "Hiển thị lỗi đăng nhập đúng",
+      "email": "q0934455620@gmail.com",
+      "expected": "login_error"
+    },
+    {
+      "test_name": "test_invalid_password_2",
+      "description": "Đăng nhập với password không hợp lệ",
+      "success": true,
+      "message": "Hiển thị lỗi đăng nhập đúng",
+      "email": "q0934455620@gmail.com",
+      "expected": "login_error"
+    },
+    {
+      "test_name": "test_invalid_password_3",
+      "description": "Đăng nhập với password không hợp lệ",
+      "success": true,
+      "message": "Hiển thị lỗi đăng nhập đúng",
+      "email": "q0934455620@gmail.com",
+      "expected": "login_error"
+    },
+    {
+      "test_name": "test_long_email",
+      "description": "Email quá dài",
+      "success": false,
+      "message": "Kết quả không như mong đợi. Errors: {'email_error': False, 'password_error': False, 'login_error': True}",
+      "email": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@test.com",
+      "expected": "email_error"
+    },
+    {
+      "test_name": "test_long_password",
+      "description": "Password quá dài",
+      "success": true,
+      "message": "Hiển thị lỗi đăng nhập đúng",
+      "email": "q0934455620@gmail.com",
+      "expected": "login_error"
+    },
+    {
+      "test_name": "test_password_with_spaces",
+      "description": "Password có space đầu cuối",
+      "success": true,
+      "message": "Hiển thị lỗi đăng nhập đúng",
+      "email": "q0934455620@gmail.com",
+      "expected": "login_error"
+    },
+    {
+      "test_name": "test_sql_injection_1",
+      "description": "Kiểm tra SQL injection: admin@test.com' OR '1'='1",
+      "success": false,
+      "message": "Kết quả không như mong đợi. Errors: {'email_error': False, 'password_error': False, 'login_error': True}",
+      "email": "admin@test.com' OR '1'='1",
+      "expected": "email_error"
+    },
+    {
+      "test_name": "test_sql_injection_2",
+      "description": "Kiểm tra SQL injection: admin@test.com'; DROP TABLE users; --",
+      "success": false,
+      "message": "Kết quả không như mong đợi. Errors: {'email_error': False, 'password_error': False, 'login_error': True}",
+      "email": "admin@test.com'; DROP TABLE users; --",
+      "expected": "email_error"
+    },
+    {
+      "test_name": "test_sql_injection_3",
+      "description": "Kiểm tra SQL injection: admin@test.com' UNION SELECT * FROM users --",
+      "success": false,
+      "message": "Kết quả không như mong đợi. Errors: {'email_error': False, 'password_error': False, 'login_error': True}",
+      "email": "admin@test.com' UNION SELECT * FROM users --",
+      "expected": "email_error"
+    },
+    {
+      "test_name": "test_unicode_email_1",
+      "description": "Kiểm tra unicode: tést@ëxämplë.cöm",
+      "success": false,
+      "message": "Kết quả không như mong đợi. Errors: {'email_error': False, 'password_error': False, 'login_error': True}",
+      "email": "tést@ëxämplë.cöm",
+      "expected": "email_error"
+    },
+    {
+      "test_name": "test_unicode_email_2",
+      "description": "Kiểm tra unicode: 用户@测试.com",
+      "success": false,
+      "message": "Kết quả không như mong đợi. Errors: {'email_error': False, 'password_error': False, 'login_error': True}",
+      "email": "用户@测试.com",
+      "expected": "email_error"
+    },
+    {
+      "test_name": "test_unicode_email_3",
+      "description": "Kiểm tra unicode: юзер@тест.ру",
+      "success": false,
+      "message": "Kết quả không như mong đợi. Errors: {'email_error': False, 'password_error': False, 'login_error': True}",
+      "email": "юзер@тест.ру",
+      "expected": "email_error"
+    },
+    {
+      "test_name": "test_valid_login",
+      "description": "Đăng nhập thành công với thông tin hợp lệ",
+      "success": false,
+      "message": "Không đăng nhập được",
+      "email": "q0934455620@gmail.com",
+      "expected": "success"
+    },
+    {
+      "test_name": "test_xss_attempt_1",
+      "description": "Kiểm tra XSS: <script>alert('XSS')</script>@test.com",
+      "success": false,
+      "message": "Kết quả không như mong đợi. Errors: {'email_error': False, 'password_error': False, 'login_error': True}",
+      "email": "<script>alert('XSS')</script>@test.com",
+      "expected": "email_error"
+    },
+    {
+      "test_name": "test_xss_attempt_2",
+      "description": "Kiểm tra XSS: javascript:alert('XSS')@test.com",
+      "success": false,
+      "message": "Kết quả không như mong đợi. Errors: {'email_error': False, 'password_error': False, 'login_error': True}",
+      "email": "javascript:alert('XSS')@test.com",
+      "expected": "email_error"
+    },
+    {
+      "test_name": "test_xss_attempt_3",
+      "description": "Kiểm tra XSS: <img src=x onerror=alert('XSS')>@test.com",
+      "success": false,
+      "message": "Kết quả không như mong đợi. Errors: {'email_error': False, 'password_error': False, 'login_error': True}",
+      "email": "<img src=x onerror=alert('XSS')>@test.com",
+      "expected": "email_error"
+    }
+  ]
+}
