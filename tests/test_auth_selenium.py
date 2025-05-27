@@ -513,14 +513,14 @@ class TestReporter:
 if __name__ == '__main__':
     # Chạy tất cả tests
     loader = unittest.TestLoader()
-    suite = loader.loadTestsFromTestCase(TruyenVerseLoginTest)
+    suite = loader.loadTestsFromTestCase(LoginTestGenerator)
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     
     # Tạo báo cáo
     reporter = TestReporter()
-    if hasattr(TruyenVerseLoginTest, 'test_results'):
-        reporter.generate_report(TruyenVerseLoginTest.test_results)
+    if hasattr(LoginTestGenerator, 'test_results'):
+        reporter.generate_report(LoginTestGenerator.test_results)
     
     # Exit với mã lỗi nếu có test thất bại
     exit(0 if result.wasSuccessful() else 1)
