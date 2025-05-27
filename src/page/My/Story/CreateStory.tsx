@@ -33,9 +33,9 @@ const CreateStory = () => {
         window.location.reload();
       }, 1000);
     },
-    onError: () => {
+    onError: (error) => {
       setSuccess(true);
-      showToast("Tạo truyện không thành công!", "error");
+      showToast(error.message, "error");
     },
   });
 

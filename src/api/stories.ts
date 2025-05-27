@@ -63,6 +63,7 @@ export const postStory = async (formData: FormData) => {
     headers: {
       "Content-Type": "multipart/form-data",
     },
+    timeout: 30000,
   });
   return response.data;
 };
@@ -98,7 +99,7 @@ export const elasticSearch = async (
     },
   });
   return response.data;
-}
+};
 
 export const toggleVisibility = async (isVisibility: boolean, id: string) => {
   await api.patch("/story/visibility", null, {
